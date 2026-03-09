@@ -10,5 +10,6 @@ public class AcademiCymraegApplication {
 		SpringApplication.run(AcademiCymraegApplication.class, args);
 	}
 
+	
 }
 
