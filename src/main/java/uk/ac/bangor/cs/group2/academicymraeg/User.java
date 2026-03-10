@@ -127,6 +127,5 @@ public class User implements SQLObject<User> {
 				+ email + ", firstName=" + firstName + ", lastName=" + lastName + ", enabled=" + enabled + ", role="
 				+ role + "]";
 	}
-	
 
 }
