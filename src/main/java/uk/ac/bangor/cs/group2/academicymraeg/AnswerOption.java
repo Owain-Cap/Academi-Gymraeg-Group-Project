@@ -82,5 +82,4 @@ public class AnswerOption implements SQLObject<AnswerOption> {
 				+ ", isCorrect=" + isCorrect + "]";
 	}
 	
-
 }
