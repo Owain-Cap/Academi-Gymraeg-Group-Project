@@ -102,5 +102,4 @@ public class Answer implements SQLObject<Answer> {
 				+ studentAnswer + ", isCorrect=" + isCorrect + ", answeredAt=" + answeredAt + "]";
 	}
 	
-	
 }
