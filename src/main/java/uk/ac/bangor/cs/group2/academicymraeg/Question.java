@@ -14,7 +14,7 @@ public class Question implements SQLObject<Question> {
 	private String questionText;
 	private String correctAnswer;
 	private NounBackup nounBackup;
-	
+
 	
 	public Question() {
 		
