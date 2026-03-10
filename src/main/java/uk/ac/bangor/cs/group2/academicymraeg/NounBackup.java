@@ -93,5 +93,4 @@ public class NounBackup implements SQLObject<NounBackup>{
 				+ ", welshWord=" + welshWord + ", gender=" + gender + "]";
 	}
 	
-	
 }
