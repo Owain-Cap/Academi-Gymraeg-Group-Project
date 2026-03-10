@@ -114,5 +114,4 @@ public class Test implements SQLObject<Test>{
 				+ ", submittedAt=" + submittedAt + ", score=" + score + "]";
 	}
 	
-	
 }
