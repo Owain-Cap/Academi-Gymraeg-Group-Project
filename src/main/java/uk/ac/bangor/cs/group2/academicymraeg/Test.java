@@ -1,8 +1,6 @@
 package uk.ac.bangor.cs.group2.academicymraeg;
 
-import java.sql.ResultSet;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 public class Test{

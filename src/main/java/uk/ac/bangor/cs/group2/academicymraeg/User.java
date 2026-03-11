@@ -1,8 +1,5 @@
 package uk.ac.bangor.cs.group2.academicymraeg;
 
-import java.sql.ResultSet;
-import java.util.Collection;
-
 public class User {
 	private long userID;
 	private String username;
