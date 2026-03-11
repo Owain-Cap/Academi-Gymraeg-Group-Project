@@ -1,9 +1,22 @@
-package uk.ac.bangor.cs.group2.academicymraeg;
+package uk.ac.bangor.cs.group2.academicymraeg.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+
+@Entity
 public class AnswerOption{
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long optionID;
 	
-	//foreign key
+	@ManyToOne
+	@JoinColumn(name = "questionID")
 	private Question question;
 	
 	private String optionText;

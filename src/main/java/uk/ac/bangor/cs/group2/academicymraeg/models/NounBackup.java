@@ -1,8 +1,22 @@
-package uk.ac.bangor.cs.group2.academicymraeg;
+/*
+package uk.ac.bangor.cs.group2.academicymraeg.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+
+@Entity
 public class NounBackup{
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long backupID;
+	
+	@OneToOne
+	@JoinColumn(name = "questionID")
 	private Question question;
 	private String englishWord;
 	private String welshWord;
@@ -67,3 +81,4 @@ public class NounBackup{
 	}
 	
 }
+*/

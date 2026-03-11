@@ -1,12 +1,29 @@
-package uk.ac.bangor.cs.group2.academicymraeg;
+package uk.ac.bangor.cs.group2.academicymraeg.models;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Answer {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long answerID;
+	
+	@ManyToOne
+	@JoinColumn(name = "testID")
 	private Test test;
+	
+	@ManyToOne
+	@JoinColumn(name = "questionID")
 	private Question question;
+	
 	private String studentAnswer;
 	private boolean isCorrect;
 	private LocalDateTime answeredAt;

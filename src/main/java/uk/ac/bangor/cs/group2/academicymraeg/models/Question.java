@@ -1,30 +1,41 @@
-package uk.ac.bangor.cs.group2.academicymraeg;
+package uk.ac.bangor.cs.group2.academicymraeg.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+
+@Entity
 public class Question {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long questionID;
+	
+	@ManyToOne
+	@JoinColumn(name = "nounID")
 	private Noun noun;
-	public enum QuestionType{
-		GENDER,ENGLISH,WELSH
-	};
+	public enum QuestionType{GENDER,ENGLISH,WELSH};
 
 	private QuestionType questionType;
 	private String questionText;
 	private String correctAnswer;
-	private NounBackup nounBackup;
 
 	
 	public Question() {
 		
 	}
 
-	public Question(long questionID, Noun noun, QuestionType questionType, String questionText, String correctAnswer,NounBackup nounBackup) {
+	public Question(long questionID, Noun noun, QuestionType questionType, String questionText, String correctAnswer) {
 		super();
 		this.questionID = questionID;
 		this.noun = noun;
 		this.questionType = questionType;
 		this.questionText = questionText;
 		this.correctAnswer = correctAnswer;
-		this.nounBackup = nounBackup;
 	}
 
 	public Noun getNoun() {
@@ -63,18 +74,10 @@ public class Question {
 		return questionID;
 	}
 
-	public NounBackup getNounBackup() {
-	    return nounBackup;
-	}
-	public void setNounBackup(NounBackup nounBackup) {
-	    this.nounBackup = nounBackup;
-	}
-
-
 	@Override
 	public String toString() {
 		return "Question [questionID=" + questionID + ", noun=" + noun + ", questionType=" + questionType
-				+ ", questionText=" + questionText + ", correctAnswer=" + correctAnswer + ", nounBackup=" + nounBackup
+				+ ", questionText=" + questionText + ", correctAnswer=" + correctAnswer
 				+ "]";
 	}
 

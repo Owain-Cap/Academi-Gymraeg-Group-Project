@@ -1,13 +1,26 @@
-package uk.ac.bangor.cs.group2.academicymraeg;
+package uk.ac.bangor.cs.group2.academicymraeg.models;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Test{
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long testID;
+	
+	@ManyToOne
+	@JoinColumn(name = "userID")
 	private User Student;
-	private List<String> answer;
+	//private List<String> answer;
 	private LocalDateTime startedAt;
 	private LocalDateTime submittedAt;
 	private int score;
@@ -17,12 +30,12 @@ public class Test{
 
 	}
 
-	public Test(long testID, User student, List<String> answer, LocalDateTime startedAt, LocalDateTime submittedAt,
+	public Test(long testID, User student, LocalDateTime startedAt, LocalDateTime submittedAt,
 			int score) {
 		super();
 		this.testID = testID;
 		Student = student;
-		this.answer = answer;
+		//this.answer = answer;
 		this.startedAt = startedAt;
 		this.submittedAt = submittedAt;
 		this.score = score;
@@ -36,6 +49,7 @@ public class Test{
 		Student = student;
 	}
 
+	/*
 	public List<String> getAnswer() {
 		return answer;
 	}
@@ -43,6 +57,7 @@ public class Test{
 	public void setAnswer(List<String> answer) {
 		this.answer = answer;
 	}
+	*/
 
 	public LocalDateTime getStartedAt() {
 		return startedAt;
@@ -85,7 +100,7 @@ public class Test{
 
 	@Override
 	public String toString() {
-		return "Test [testID=" + testID + ", Student=" + Student + ", answer=" + answer + ", startedAt=" + startedAt
+		return "Test [testID=" + testID + ", Student=" + Student + ", startedAt=" + startedAt
 				+ ", submittedAt=" + submittedAt + ", score=" + score + "]";
 	}
 	
