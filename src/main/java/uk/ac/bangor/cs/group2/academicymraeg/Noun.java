@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-public class Noun implements SQLObject<Noun> {
+public class Noun {
 	private long nounID;
 	private String englishWord;
 	private String welshWord;
@@ -90,29 +90,6 @@ public class Noun implements SQLObject<Noun> {
 		return nounID;
 	}
 
-	@Override
-	public Collection<Noun> fromResultSet(ResultSet rs) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toDeleteSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toInsertSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toUpdateSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String toString() {

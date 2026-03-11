@@ -3,7 +3,7 @@ package uk.ac.bangor.cs.group2.academicymraeg;
 import java.sql.ResultSet;
 import java.util.Collection;
 
-public class User implements SQLObject<User> {
+public class User {
 	private long userID;
 	private String username;
 	private String passwordHash;
@@ -97,29 +97,6 @@ public class User implements SQLObject<User> {
 		return userID;
 	}
 
-	@Override
-	public Collection<User> fromResultSet(ResultSet rs) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toDeleteSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toInsertSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toUpdateSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String toString() {

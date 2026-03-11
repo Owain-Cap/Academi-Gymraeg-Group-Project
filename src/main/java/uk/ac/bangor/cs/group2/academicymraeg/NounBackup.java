@@ -3,7 +3,7 @@ package uk.ac.bangor.cs.group2.academicymraeg;
 import java.sql.ResultSet;
 import java.util.Collection;
 
-public class NounBackup implements SQLObject<NounBackup>{
+public class NounBackup{
 
 	private long backupID;
 	private Question question;
@@ -61,30 +61,6 @@ public class NounBackup implements SQLObject<NounBackup>{
 
 	public long getBackupID() {
 		return backupID;
-	}
-
-	@Override
-	public Collection<NounBackup> fromResultSet(ResultSet rs) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toDeleteSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toInsertSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toUpdateSQL() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

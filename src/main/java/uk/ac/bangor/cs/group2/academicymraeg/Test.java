@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-public class Test implements SQLObject<Test>{
+public class Test{
 
 	private long testID;
 	private User Student;
@@ -84,29 +84,6 @@ public class Test implements SQLObject<Test>{
 
 	}
 
-	@Override
-	public Collection<Test> fromResultSet(ResultSet rs) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toDeleteSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toInsertSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toUpdateSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String toString() {

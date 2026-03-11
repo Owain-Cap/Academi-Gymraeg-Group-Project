@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-public class Answer implements SQLObject<Answer> {
+public class Answer {
 
 	private long answerID;
 	private Test test;
@@ -72,29 +72,6 @@ public class Answer implements SQLObject<Answer> {
 		return answerID;
 	}
 
-	@Override
-	public Collection<Answer> fromResultSet(ResultSet rs) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toDeleteSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toInsertSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toUpdateSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String toString() {

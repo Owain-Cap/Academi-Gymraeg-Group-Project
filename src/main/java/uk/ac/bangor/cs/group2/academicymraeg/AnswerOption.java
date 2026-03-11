@@ -3,7 +3,7 @@ package uk.ac.bangor.cs.group2.academicymraeg;
 import java.sql.ResultSet;
 import java.util.Collection;
 
-public class AnswerOption implements SQLObject<AnswerOption> {
+public class AnswerOption{
 	private long optionID;
 	
 	//foreign key
@@ -50,30 +50,6 @@ public class AnswerOption implements SQLObject<AnswerOption> {
 
 	public long getOptionID() {
 		return optionID;
-	}
-
-	@Override
-	public Collection<AnswerOption> fromResultSet(ResultSet rs) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toDeleteSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toInsertSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toUpdateSQL() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

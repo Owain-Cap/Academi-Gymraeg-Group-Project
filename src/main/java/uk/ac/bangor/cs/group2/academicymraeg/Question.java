@@ -3,7 +3,7 @@ package uk.ac.bangor.cs.group2.academicymraeg;
 import java.sql.ResultSet;
 import java.util.Collection;
 
-public class Question implements SQLObject<Question> {
+public class Question {
 	private long questionID;
 	private Noun noun;
 	public enum QuestionType{
@@ -73,29 +73,6 @@ public class Question implements SQLObject<Question> {
 	    this.nounBackup = nounBackup;
 	}
 
-	@Override
-	public Collection<Question> fromResultSet(ResultSet rs) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toDeleteSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toInsertSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toUpdateSQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String toString() {
