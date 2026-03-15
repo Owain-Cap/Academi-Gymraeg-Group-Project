@@ -1,6 +1,8 @@
 package uk.ac.bangor.cs.group2.academicymraeg.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,7 +24,8 @@ public class User {
 
 	};
 
-	private boolean enabled;
+//	private boolean enabled;
+	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	public User() {
@@ -39,7 +42,7 @@ public class User {
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.enabled = enabled;
+//		this.enabled = enabled;
 		this.role = role;
 	}
 
@@ -83,13 +86,13 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+//	public boolean isEnabled() {
+//		return enabled;
+//	}
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+//	public void setEnabled(boolean enabled) {
+//		this.enabled = enabled;
+//	}
 
 	public Role getRole() {
 		return role;
@@ -107,7 +110,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userID=" + userID + ", username=" + username + ", passwordHash=" + passwordHash + ", email="
-				+ email + ", firstName=" + firstName + ", lastName=" + lastName + ", enabled=" + enabled + ", role="
+				+ email + ", firstName=" + firstName + ", lastName=" + lastName + ", role="
 				+ role + "]";
 	}
 
