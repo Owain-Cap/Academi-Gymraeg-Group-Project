@@ -1,107 +1,68 @@
 package uk.ac.bangor.cs.group2.academicymraeg.models;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Test{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long testID;
+	private long testId;
+	private String username;
+	private int result;
+	private LocalDateTime createdAt;
 	
-	@ManyToOne
-	@JoinColumn(name = "userID")
-	private User Student;
-	//private List<String> answer;
-	private LocalDateTime startedAt;
-	private LocalDateTime submittedAt;
-	private int score;
-
-
-	public Test() {
-
-	}
-
-	public Test(long testID, User student, LocalDateTime startedAt, LocalDateTime submittedAt,
-			int score) {
+	public Test(long testId, String username, int result, LocalDateTime createdAt) {
 		super();
-		this.testID = testID;
-		Student = student;
-		//this.answer = answer;
-		this.startedAt = startedAt;
-		this.submittedAt = submittedAt;
-		this.score = score;
+		this.testId = testId;
+		this.username = username;
+		this.result = result;
+		this.createdAt = createdAt;
 	}
 
-	public User getStudent() {
-		return Student;
+	public long getTestId() {
+		return testId;
 	}
 
-	public void setStudent(User student) {
-		Student = student;
+	public String getUsername() {
+		return username;
 	}
 
-	/*
-	public List<String> getAnswer() {
-		return answer;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public void setAnswer(List<String> answer) {
-		this.answer = answer;
-	}
-	*/
-
-	public LocalDateTime getStartedAt() {
-		return startedAt;
+	public int getResult() {
+		return result;
 	}
 
-	public void setStartedAt(LocalDateTime startedAt) {
-		this.startedAt = startedAt;
+	public void setResult(int result) {
+		this.result = result;
 	}
 
-	public LocalDateTime getSubmittedAt() {
-		return submittedAt;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setSubmittedAt(LocalDateTime submittedAt) {
-		this.submittedAt = submittedAt;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
-
-	public long getTestID() {
-		return testID;
-	}
-
-	public boolean isSubmitted(){
-		return submittedAt !=null;
-
-	}
-
-	public void calculateScore() {
-		// going to be for calculating the score
-
-	}
-
 
 	@Override
 	public String toString() {
-		return "Test [testID=" + testID + ", Student=" + Student + ", startedAt=" + startedAt
-				+ ", submittedAt=" + submittedAt + ", score=" + score + "]";
+		return "Test [testId=" + testId + ", username=" + username + ", result=" + result + ", createdAt=" + createdAt
+				+ "]";
 	}
 	
+
+	
+	
 }
+	
+
+

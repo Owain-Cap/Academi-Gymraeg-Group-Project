@@ -6,17 +6,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Noun {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long nounID;
-	private String englishWord;
-	private String welshWord;
+	private long nounId;
+	private String english;
+	private String welsh;
 
 	public enum Gender {
 		MASCULINE, FEMININE
@@ -24,42 +22,38 @@ public class Noun {
 
 	private Gender gender;
 	
-	@ManyToOne
-	@JoinColumn(name = "userID")
-	private User addedBy;
+	private String createdByUsername;
 	private LocalDateTime createdAt;
-	private boolean active;
-
-	public Noun() {
-
-	}
-
-	public Noun(long nounID, String englishWord, String welshWord, Gender gender, User addedBy, LocalDateTime createdAt,
-			boolean active) {
+	
+	public Noun(long nounId, String english, String welsh, Gender gender, String createdByUsername,
+			LocalDateTime createdAt) {
 		super();
-		this.nounID = nounID;
-		this.englishWord = englishWord;
-		this.welshWord = welshWord;
+		this.nounId = nounId;
+		this.english = english;
+		this.welsh = welsh;
 		this.gender = gender;
-		this.addedBy = addedBy;
+		this.createdByUsername = createdByUsername;
 		this.createdAt = createdAt;
-		this.active = active;
 	}
 
-	public String getEnglishWord() {
-		return englishWord;
+	public long getNounId() {
+		return nounId;
+	}
+	
+	public String getEnglish() {
+		return english;
 	}
 
-	public void setEnglishWord(String englishWord) {
-		this.englishWord = englishWord;
+	public void setEnglish(String english) {
+		this.english = english;
 	}
 
-	public String getWelshWord() {
-		return welshWord;
+	public String getWelsh() {
+		return welsh;
 	}
 
-	public void setWelshWord(String welshWord) {
-		this.welshWord = welshWord;
+	public void setWelsh(String welsh) {
+		this.welsh = welsh;
 	}
 
 	public Gender getGender() {
@@ -70,42 +64,23 @@ public class Noun {
 		this.gender = gender;
 	}
 
-	// unsure if we needed this so we can always delete
-	public User getAddedBy() {
-		return addedBy;
+	public String getCreatedByUsername() {
+		return createdByUsername;
 	}
 
-	// unsure if we needed this so we can always delete
-	public void setAddedBy(User addedBy) {
-		this.addedBy = addedBy;
+	public void setCreatedByUsername(String createdByUsername) {
+		this.createdByUsername = createdByUsername;
 	}
 
-	// unsure if we needed this so we can always delete
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	// unsure if we needed this so we can always delete
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
+	
 
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	public long getNounID() {
-		return nounID;
-	}
-
-
-	@Override
-	public String toString() {
-		return "Noun [nounID=" + nounID + ", englishWord=" + englishWord + ", welshWord=" + welshWord + ", gender="
-				+ gender + ", addedBy=" + addedBy + ", createdAt=" + createdAt + ", active=" + active + "]";
-	}
+	
+	
 }
