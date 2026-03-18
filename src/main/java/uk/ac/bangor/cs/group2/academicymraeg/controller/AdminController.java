@@ -11,12 +11,12 @@ import uk.ac.bangor.cs.group2.academicymraeg.models.User;
 import uk.ac.bangor.cs.group2.academicymraeg.service.UserService;
 
 @Controller
-public class NewUserController {
+public class AdminController {
 
 	private final UserService userService;
 	private final PasswordEncoder passwordEncoder;
 
-	public NewUserController(UserService userService, PasswordEncoder passwordEncoder) {
+	public AdminController(UserService userService, PasswordEncoder passwordEncoder) {
 		this.userService = userService;
 		this.passwordEncoder = passwordEncoder;
 	}
