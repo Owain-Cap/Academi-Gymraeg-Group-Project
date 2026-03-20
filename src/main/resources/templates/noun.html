@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Noun page</title>
+<style>
+table {
+	width: 60%;
+	margin: auto auto;
+	border-collapse: collapse;
+}
+
+th, td {
+	border: 1px solid black;
+	margin: auto;
+	text-align: center
+}
+
+h1 {
+	text-align: center;
+}
+
+a {
+	text-decoration: none;
+}
+
+button {
+	text-align: center;
+	padding: 10px;
+	font-size: 15px;
+	border-radius: 5px;
+}
+
+.top {
+	position: relative;
+	height: 60px;
+}
+
+.top a {
+	position: absolute;
+	left: 20px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.top input {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	top: 50%;
+	width: 300px;
+	text-align: center;
+	padding: 10px;
+	font-size: 15px;
+	border-radius: 5px;
+}
+</style>
+</head>
+
+
+<body>
+	<h1>Nouns</h1>
+	<div class="top">
+		<a href="/nouns/edit">
+			<button>Add new Noun</button>
+		</a> 
+		<input type="text" placeholder="Search Noun" />
+	</div>
+	<br>
+	<table>
+		<thead>
+			<tr>
+				<th>Noun ID</th>
+				<th>Welsh</th>
+				<th>English</th>
+				<th>Gender</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr th:each="noun : ${nouns}">
+				<td th:text="${noun.nounId}">NOUN ID</td>
+				<td th:text="${noun.welsh}">Welsh Word</td>
+				<td th:text="${noun.english}">English Word</td>
+				<td th:text="${noun.gender}">Gender</td>
+				<td><a th:href="@{/nouns/edit/{id}(id=${noun.nounId})}">Edit Noun</a></td>
+			</tr>
+		</tbody>
+
+	</table>
+
+
+
+</body>
+
+</html>

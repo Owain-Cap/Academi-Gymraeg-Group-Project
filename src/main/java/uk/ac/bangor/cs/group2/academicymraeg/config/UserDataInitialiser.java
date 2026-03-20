@@ -23,9 +23,9 @@ public class UserDataInitialiser {
 			user.setLastName("Bobson");
 			user.setRole(Role.STUDENT);
 
-			userRepository.save(user);
+			//userRepository.save(user);
 
-			System.out.println("User saved to DB:" + user);
+			//System.out.println("User saved to DB:" + user);
 		};
 	}
 }

@@ -9,10 +9,10 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Noun {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long nounId;
+	private Long nounId;
 	private String english;
 	private String welsh;
 
@@ -21,11 +21,15 @@ public class Noun {
 	}
 
 	private Gender gender;
-	
+
 	private String createdByUsername;
 	private LocalDateTime createdAt;
-	
-	public Noun(long nounId, String english, String welsh, Gender gender, String createdByUsername,
+
+	public Noun() {
+
+	}
+
+	public Noun(Long nounId, String english, String welsh, Gender gender, String createdByUsername,
 			LocalDateTime createdAt) {
 		super();
 		this.nounId = nounId;
@@ -36,10 +40,14 @@ public class Noun {
 		this.createdAt = createdAt;
 	}
 
-	public long getNounId() {
+	public Long getNounId() {
 		return nounId;
 	}
 	
+	public void setNounId(Long nounId) {
+	    this.nounId = nounId;
+	}
+
 	public String getEnglish() {
 		return english;
 	}
@@ -79,8 +87,12 @@ public class Noun {
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
-	
 
-	
-	
+	@Override
+	public String toString() {
+
+		return "Noun [nounId=" + nounId + ", english=" + english + ", welsh=" + welsh + ", gender="
+				+ gender + ", createdByUsername=" + createdByUsername + ", createdAt=" + createdAt + "]";
+	}
+
 }

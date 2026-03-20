@@ -30,9 +30,10 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain permissionsFilter(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated() // access to any page requires a login
-		).formLogin(withDefaults());
-		return http.build();
+	    http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated()
+	    ).formLogin(withDefaults());
+
+	    return http.build();
 	}
 	
 	@Bean
