@@ -13,28 +13,32 @@ import uk.ac.bangor.cs.group2.academicymraeg.service.UserService;
 @Controller
 public class AdminController {
 
-	private final UserService userService;
-	private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-	public AdminController(UserService userService, PasswordEncoder passwordEncoder) {
-		this.userService = userService;
-		this.passwordEncoder = passwordEncoder;
-	}
+    public AdminController(UserService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-	// Show the new user form
-	@GetMapping("/register")
-	public String showNewUserForm(Model model) {
-		model.addAttribute("user", new User());
-		return "NewUser";
-	}
+    // Show the new user form
+    @GetMapping("/register")
+    public String showNewUserForm(Model model) {
+        model.addAttribute("user", new User());
+        return "NewUser";
+    }
 
-	// Handle form submission
-	@PostMapping("/register")
-	public String saveNewUser(@ModelAttribute("user") User user, Model model) {
-		user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
-		userService.saveUser(user);
-		model.addAttribute("successMessage", "User " + user.getUsername() + " has been added successfully.");
-		model.addAttribute("user", new User());
-		return "NewUser";
-	}
+    // Handle form submission
+    @PostMapping("/register")
+    public String saveNewUser(@ModelAttribute("user") User user, Model model) {
+        if (userService.getUserByUsername(user.getUsername()).isPresent()) {
+            model.addAttribute("errorMessage", "Username " + user.getUsername() + " already exists.");
+            return "NewUser";
+        }
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+        userService.saveUser(user);
+        model.addAttribute("successMessage", "User " + user.getUsername() + " has been added successfully.");
+        model.addAttribute("user", new User());
+        return "NewUser";
+    }
 }
