@@ -64,8 +64,11 @@ button {
 	<div class="top">
 		<a href="/nouns/edit">
 			<button>Add new Noun</button>
-		</a> 
-		<input type="text" placeholder="Search Noun" />
+		</a>
+		<form th:action="@{/nouns}" method="get">
+			<input type="text" name="search" placeholder="Search Noun"
+				th:value="${search}" />
+		</form>
 	</div>
 	<br>
 	<table>
@@ -89,9 +92,6 @@ button {
 		</tbody>
 
 	</table>
-
-
-
 </body>
 
 </html>

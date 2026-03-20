@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import uk.ac.bangor.cs.group2.academicymraeg.models.Noun;
 import uk.ac.bangor.cs.group2.academicymraeg.service.NounService;
@@ -21,13 +22,23 @@ public class NounView {
 		this.nounService = nounService;
 	}
 
-
+	//Main Noun Page
 	@GetMapping("/nouns")
-	public String getNouns(Model model) {
-		model.addAttribute("nouns", nounService.getAllNouns());
-		return "noun";
+	public String getNouns(@RequestParam(required = false) String search, Model model) {
+
+		//this is the search function on the noun page
+	    if (search != null && !search.isEmpty()) {
+	        model.addAttribute("nouns", nounService.searchNouns(search));
+	    } else {
+	        model.addAttribute("nouns", nounService.getAllNouns());
+	    }
+
+	    model.addAttribute("search", search);
+
+	    return "noun";
 	}
 
+	//This is to add the new noun
 	@GetMapping("/nouns/edit")
 	public String addNoun(Model model) {
 		Noun noun = new Noun();
@@ -37,7 +48,7 @@ public class NounView {
 		return "editNoun";
 	}
 
-
+	//editing a noun by ID
 	@GetMapping("/nouns/edit/{nounId}")
 	public String editNoun(@PathVariable Long nounId, Model model) {
 		Noun noun = nounService.getNounById(nounId);
@@ -46,7 +57,7 @@ public class NounView {
 		return "editNoun";
 	}
 
-
+	//this saves the Noun
 	@PostMapping("/nouns/save")
 	public String saveNoun(@ModelAttribute Noun noun) {
 		noun.setCreatedAt(LocalDateTime.now());
@@ -54,7 +65,7 @@ public class NounView {
 		return "redirect:/nouns";
 	}
 
-	
+	//deletes the noun
 	@PostMapping("/nouns/delete/{nounId}")
 	public String deleteNoun(@PathVariable Long nounId) {
 		nounService.deleteNoun(nounId);

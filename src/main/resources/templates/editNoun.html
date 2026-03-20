@@ -68,22 +68,16 @@ a {
 
 	<form th:action="@{/nouns/save}" th:object="${noun}" method="post">
 		<input type="hidden" th:name="${_csrf.parameterName}"
-			th:value="${_csrf.token}" /> 
-			<input type="hidden" th:field="*{nounId}" />
-			<label>Noun ID:</label> <input
-			type="text" th:field="*{nounId}" readonly th:if="${!isNew}" /> 
-			<label>English:</label>
+			th:value="${_csrf.token}" /> <input type="hidden"
+			th:field="*{nounId}" /> <label>Noun ID:</label> <input type="text"
+			th:field="*{nounId}" readonly th:if="${!isNew}" /> <label>English:</label>
 		<input type="text" th:field="*{english}" placeholder="Enter English"
-			pattern="[A-Za-z\s]+" title="Letters only" required /> 
-			<label>Welsh:</label>
+			pattern="[A-Za-z\s]+" title="Letters only" required /> <label>Welsh:</label>
 		<input type="text" th:field="*{welsh}" placeholder="Enter Welsh"
-			pattern="[A-Za-z\s]+" title="Letters only" required /> 
-			<label>Gender:</label>
+			pattern="[A-Za-z\s]+" title="Letters only" required /> <label>Gender:</label>
 		<select th:field="*{gender}" required>
-			<option th:value="MASCULINE"
-				th:selected="${noun.gender == T(uk.ac.bangor.cs.group2.academicymraeg.models.Noun.Gender).MASCULINE}">Masculine</option>
-			<option th:value="FEMININE"
-				th:selected="${noun.gender == T(uk.ac.bangor.cs.group2.academicymraeg.models.Noun.Gender).FEMININE}">Feminine</option>
+			<option value="MASCULINE">Masculine</option>
+			<option value="FEMININE">Feminine</option>
 		</select>
 
 		<div class="button-container">
@@ -98,7 +92,7 @@ a {
 		</div>
 	</form>
 
-
+	<!-- This section is the browser pop up to confirm choice to delete -->
 	<script th:inline="javascript">
 		function confirmDelete() {
 			var nounId = /*[[${noun.nounId}]]*/0;

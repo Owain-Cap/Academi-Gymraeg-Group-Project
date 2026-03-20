@@ -33,4 +33,7 @@ public class NounService {
 	public void deleteNoun(Long id) {
 		nounRepository.deleteById(id);
 	}
+	public List<Noun> searchNouns(String search) {
+	    return nounRepository.findByEnglishContainingIgnoreCaseOrWelshContainingIgnoreCase(search, search);
+	}
 }
