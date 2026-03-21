@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Test Preview</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f7f7f7;
+        }
+
+        .page-title {
+            margin-bottom: 10px;
+        }
+
+        .meta {
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        .question-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .question-number {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            margin-bottom: 12px;
+        }
+
+        .options {
+            margin-left: 10px;
+        }
+
+        .option {
+            margin-bottom: 6px;
+            padding: 6px 0;
+        }
+
+        .correct-answer {
+            margin-top: 12px;
+            color: green;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="page-title">Generated Test Preview</h1>
+
+    <div class="meta">
+        <div><strong>Test ID:</strong> <span th:text="${test.testId}"></span></div>
+        <div><strong>User:</strong> <span th:text="${test.username}"></span></div>
+        <div><strong>Created:</strong> <span th:text="${test.createdAt}"></span></div>
+    </div>
+
+    <div th:each="question : ${questions}" class="question-card">
+        <div class="question-number">
+            Question <span th:text="${question.position}"></span>
+        </div>
+
+        <div class="question-text" th:text="${question.question}"></div>
+
+        <div class="options">
+            <div class="option">
+                A. <span th:text="${question.optionA}"></span>
+            </div>
+            <div class="option">
+                B. <span th:text="${question.optionB}"></span>
+            </div>
+            <div class="option" th:if="${question.optionC != null}">
+                C. <span th:text="${question.optionC}"></span>
+            </div>
+        </div>
+
+        <div class="correct-answer">
+            Correct answer: <span th:text="${question.correctAnswer}"></span>
+        </div>
+    </div>
+
+</body>
+</html>

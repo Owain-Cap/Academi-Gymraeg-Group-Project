@@ -1,11 +1,13 @@
 package uk.ac.bangor.cs.group2.academicymraeg.models;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+@Entity
 public class TestQuestions {
 	
 	@Id
@@ -13,11 +15,11 @@ public class TestQuestions {
 	private long testQuestionId;
 	
 	@ManyToOne
-	@JoinColumn(name = "testId")
+	@JoinColumn(name = "testId", nullable = false)
 	private Test test; 
 	
 	private String question;
-	private int posiiton;
+	private int position;
 	private String optionA;
 	private String optionB;
 	private String optionC;
@@ -25,13 +27,15 @@ public class TestQuestions {
 	private String userAnswer;
 	private boolean correct;
 	
-	public TestQuestions(long testQuestionId, Test test, String question, int posiiton, String optionA, String optionB,
+    protected TestQuestions() {
+    }
+	
+	public TestQuestions(long testQuestionId, Test test, String question, int position, String optionA, String optionB,
 			String optionC, String correctAnswer, String userAnswer, boolean correct) {
-		super();
 		this.testQuestionId = testQuestionId;
 		this.test = test;
 		this.question = question;
-		this.posiiton = posiiton;
+		this.position = position;
 		this.optionA = optionA;
 		this.optionB = optionB;
 		this.optionC = optionC;
@@ -61,12 +65,12 @@ public class TestQuestions {
 		this.question = question;
 	}
 
-	public int getPosiiton() {
-		return posiiton;
+	public int getPosition() {
+		return position;
 	}
 
-	public void setPosiiton(int posiiton) {
-		this.posiiton = posiiton;
+	public void setPosition(int position) {
+		this.position = position;
 	}
 
 	public String getOptionA() {
@@ -120,7 +124,7 @@ public class TestQuestions {
 	@Override
 	public String toString() {
 		return "TestQuestions [testQuestionId=" + testQuestionId + ", test=" + test + ", question=" + question
-				+ ", posiiton=" + posiiton + ", optionA=" + optionA + ", optionB=" + optionB + ", optionC=" + optionC
+				+ ", position=" + position + ", optionA=" + optionA + ", optionB=" + optionB + ", optionC=" + optionC
 				+ ", correctAnswer=" + correctAnswer + ", userAnswer=" + userAnswer + ", correct=" + correct + "]";
 	}
 	
