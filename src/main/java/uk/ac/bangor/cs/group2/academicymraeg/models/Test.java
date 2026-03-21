@@ -31,6 +31,12 @@ public class Test{
 		this.createdAt = createdAt;
 	}
 
+	
+
+	public Test() {
+	}
+
+
 
 	public long getTestId() {
 		return testId;

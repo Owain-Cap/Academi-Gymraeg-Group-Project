@@ -8,6 +8,6 @@ import uk.ac.bangor.cs.group2.academicymraeg.models.Test;
 import uk.ac.bangor.cs.group2.academicymraeg.models.TestQuestions;
 
 public interface TestQuestionRepository extends JpaRepository<TestQuestions, Long> {
-	List<TestQuestions> orderByPositionAsc(Test test);
+	List<TestQuestions> findByTestOrderByPositionAsc(Test test);
 
 }
