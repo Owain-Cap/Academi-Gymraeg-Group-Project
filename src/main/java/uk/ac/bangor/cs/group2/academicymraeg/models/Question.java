@@ -14,6 +14,9 @@ public class Question {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long questionId;
 	
+	public Question() {
+	}
+
 	public enum QuestionType{GENDER,ENGLISH,WELSH};
 
 	@Enumerated(EnumType.STRING)

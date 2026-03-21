@@ -28,6 +28,9 @@ public class Noun {
 	private String createdByUsername;
 	private LocalDateTime createdAt;
 	
+	protected Noun() {
+	}
+	
 	public Noun(long nounId, String english, String welsh, Gender gender, String createdByUsername,
 			LocalDateTime createdAt) {
 		super();
