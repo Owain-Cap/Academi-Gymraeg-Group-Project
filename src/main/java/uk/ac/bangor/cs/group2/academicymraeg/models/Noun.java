@@ -3,6 +3,8 @@ package uk.ac.bangor.cs.group2.academicymraeg.models;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,6 +22,8 @@ public class Noun {
 		MASCULINE, FEMININE
 	}
 
+	//Had to add this as the data type has been changed to vchar so if we will have varhar fields in db this will need to be added
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
 	private String createdByUsername;

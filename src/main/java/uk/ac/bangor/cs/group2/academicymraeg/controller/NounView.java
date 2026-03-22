@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.Authentication;
 
 import uk.ac.bangor.cs.group2.academicymraeg.models.Noun;
 import uk.ac.bangor.cs.group2.academicymraeg.service.NounService;
@@ -59,9 +60,11 @@ public class NounView {
 
 	//this saves the Noun
 	@PostMapping("/nouns/save")
-	public String saveNoun(@ModelAttribute Noun noun) {
+	public String saveNoun(@ModelAttribute Noun noun, Authentication authentication) {
 		noun.setCreatedAt(LocalDateTime.now());
+		noun.setCreatedByUsername(authentication.getName()); //get the username of the person adding the noun
 		nounService.saveNoun(noun);
+		
 		return "redirect:/nouns";
 	}
 
