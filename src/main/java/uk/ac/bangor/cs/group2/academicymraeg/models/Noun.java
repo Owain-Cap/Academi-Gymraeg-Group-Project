@@ -3,6 +3,8 @@ package uk.ac.bangor.cs.group2.academicymraeg.models;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,10 +22,14 @@ public class Noun {
 		MASCULINE, FEMININE
 	}
 
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
 	private String createdByUsername;
 	private LocalDateTime createdAt;
+	
+	protected Noun() {
+	}
 	
 	public Noun(long nounId, String english, String welsh, Gender gender, String createdByUsername,
 			LocalDateTime createdAt) {
