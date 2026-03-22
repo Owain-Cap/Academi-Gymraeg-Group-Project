@@ -25,7 +25,6 @@ public class TestGeneratorService {
 	private TestQuestionRepository testQuestionRepository;
 	public TestGeneratorService(NounRepository nounRepository, TestRepository testRepository,
 			TestQuestionRepository testQuestionRepository) {
-		super();
 		this.nounRepository = nounRepository;
 		this.testRepository = testRepository;
 		this.testQuestionRepository = testQuestionRepository;
@@ -77,6 +76,48 @@ public class TestGeneratorService {
 		return savedTest;
 	}
 		
+	
+    public Test getTestById(long testId) {
+        return testRepository.findById(testId)
+                .orElseThrow(() -> new IllegalArgumentException("Test not found"));
+    }
+
+    public List<TestQuestions> getQuestionsForTest(Test test) {
+        return testQuestionRepository.findByTestOrderByPositionAsc(test);
+    }
+
+    @Transactional
+    public void submitTest(long testId, List<String> answers) {
+        Test test = getTestById(testId);
+        List<TestQuestions> questions = getQuestionsForTest(test);
+
+        if (answers.size() != questions.size()) {
+            throw new IllegalArgumentException("Number of answers does not match number of questions");
+        }
+
+        int score = 0;
+
+        for (int i = 0; i < questions.size(); i++) {
+            TestQuestions question = questions.get(i);
+            String userAnswer = answers.get(i);
+
+            question.setUserAnswer(userAnswer);
+
+            boolean isCorrect = userAnswer != null
+                    && userAnswer.equalsIgnoreCase(question.getCorrectAnswer());
+
+            question.setCorrect(isCorrect);
+
+            if (isCorrect) {
+                score++;
+            }
+
+            testQuestionRepository.save(question);
+        }
+
+        test.setResult(score);
+        testRepository.save(test);
+    }
 	
 	private List<QuestionBlueprint> buildQuestionPool(List<Noun> nouns) {
         List<QuestionBlueprint> pool = new ArrayList<>();
