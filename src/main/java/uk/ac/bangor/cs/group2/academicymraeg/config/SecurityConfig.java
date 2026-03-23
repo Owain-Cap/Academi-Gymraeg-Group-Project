@@ -32,8 +32,8 @@ public class SecurityConfig {
 	public SecurityFilterChain permissionsFilter(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated() // access to any page requires a login
 				).formLogin(withDefaults());
-// For testing purposes
-//		http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+
+		
 		return http.build();
 	}
 
