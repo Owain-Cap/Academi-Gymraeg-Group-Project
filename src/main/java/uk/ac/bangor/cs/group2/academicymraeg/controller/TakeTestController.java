@@ -1,5 +1,6 @@
 package uk.ac.bangor.cs.group2.academicymraeg.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -23,12 +24,22 @@ public class TakeTestController {
 	}
 	
 	
-	@GetMapping("/tests/take")
-	public String startTest() {
-		Test test = testGeneratorService.generateTestForUser("demoUser");
-		return "redirect:/tests/take/" + test.getTestId();
-	}
+//	@GetMapping("/tests/take")
+//	public String startTest() {
+//		Test test = testGeneratorService.generateTestForUser("demoUser");
+//		return "redirect:/tests/take/" + test.getTestId();
+//	}
 	
+	
+    @GetMapping("/tests/take")
+    public String startTest(Principal principal) {
+    	//Get username
+        String username = principal.getName();
+        Test test = testGeneratorService.generateTestForUser(username);
+        return "redirect:/tests/take/" + test.getTestId();
+    }
+	
+    
 	@GetMapping("/tests/take/{testId}")
     public String showTest(@PathVariable long testId, Model model) {
         Test test = testGeneratorService.getTestById(testId);
