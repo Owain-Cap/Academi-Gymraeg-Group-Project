@@ -45,6 +45,7 @@ public class TestGeneratorService {
 		
 		Collections.shuffle(questionPool);
 		
+		//add test date-time
 		Test test = new Test(0, username, 0, LocalDateTime.now());
 		Test savedTest = testRepository.save(test);
 		
