@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long userId;
+	private Long userId;
 	
 	private String username;
 	private String passwordHash;
@@ -33,7 +33,7 @@ public class User {
 	}
 
 	//Constructors
-	public User(long userId, String username, String passwordHash, String email, String firstName, String lastName,
+	public User(Long userId, String username, String passwordHash, String email, String firstName, String lastName,
 			boolean enabled, Role role) {
 		super();
 		this.userId = userId;
@@ -102,8 +102,13 @@ public class User {
 		this.role = role;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
+	}
+	
+	// Used for editing a user
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 
