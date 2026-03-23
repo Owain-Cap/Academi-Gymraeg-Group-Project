@@ -18,23 +18,36 @@ public class User {
 	private String email;
 	private String firstName;
 	private String lastName;
-
-	public enum Role {
-		STUDENT, INSTRUCTOR, SYSTEM_ADMIN
-
+	
+	public enum IsInstructor {
+		NO, YES
 	};
+	
+	public enum IsAdmin {
+		NO, YES
+	};
+	
+	private IsInstructor isInstructor;
+	
+	private IsAdmin isAdmin;
+	
+	
+
+//	public enum Role {
+//		STUDENT, INSTRUCTOR, SYSTEM_ADMIN
+//
+//	};
 
 //	private boolean enabled;
-	@Enumerated(EnumType.STRING)
-	private Role role;
+//	@Enumerated(EnumType.STRING)
+//	private Role role;
 
 	public User() {
 
 	}
 
 	//Constructors
-	public User(long userId, String username, String passwordHash, String email, String firstName, String lastName,
-			boolean enabled, Role role) {
+	public User(long userId, String username, String passwordHash, String email, String firstName, String lastName, IsInstructor isInstructor, IsAdmin isAdmin) {
 		super();
 		this.userId = userId;
 		this.username = username;
@@ -42,8 +55,26 @@ public class User {
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.isInstructor = isInstructor;
+		this.isAdmin = isAdmin;
 //		this.enabled = enabled;
-		this.role = role;
+//		this.role = role;
+	}
+
+	public IsInstructor getIsInstructor() {
+		return isInstructor;
+	}
+
+	public void setIsInstructor(IsInstructor isInstructor) {
+		this.isInstructor = isInstructor;
+	}
+
+	public IsAdmin getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(IsAdmin isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 	public String getUsername() {
@@ -94,13 +125,13 @@ public class User {
 //		this.enabled = enabled;
 //	}
 
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
+//	public Role getRole() {
+//		return role;
+//	}
+//
+//	public void setRole(Role role) {
+//		this.role = role;
+//	}
 
 	public long getUserId() {
 		return userId;
@@ -110,8 +141,8 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", username=" + username + ", passwordHash=" + passwordHash + ", email="
-				+ email + ", firstName=" + firstName + ", lastName=" + lastName + ", role="
-				+ role + "]";
+				+ email + ", firstName=" + firstName + ", lastName=" + lastName + ", isInstructor="
+				+ isInstructor + ", isAdmin=" + isAdmin + "]";
 	}
 
 }
