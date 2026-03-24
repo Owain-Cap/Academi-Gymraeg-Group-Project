@@ -63,25 +63,25 @@ button {
 
 			<div th:text="${question.question}"></div>
 
-			<div class="option">
-				<label> <input type="radio"
-					th:name="|answers[${stat.index}]|" th:value="${question.optionA}" />
-					<span th:text="${question.optionA}"></span>
-				</label>
+			<div th:if="${question.questionType.name() == 'GENDER'}">
+				<div class="option">
+					<label> <input type="radio"
+						th:name="|answers[${stat.index}]|" th:value="${question.optionA}"
+						required /> <span th:text="${question.optionA}"></span>
+					</label>
+				</div>
+
+				<div class="option">
+					<label> <input type="radio"
+						th:name="|answers[${stat.index}]|" th:value="${question.optionB}"
+						required /> <span th:text="${question.optionB}"></span>
+					</label>
+				</div>
 			</div>
 
-			<div class="option">
-				<label> <input type="radio"
-					th:name="|answers[${stat.index}]|" th:value="${question.optionB}" />
-					<span th:text="${question.optionB}"></span>
-				</label>
-			</div>
-
-			<div class="option" th:if="${question.optionC != null}">
-				<label> <input type="radio"
-					th:name="|answers[${stat.index}]|" th:value="${question.optionC}" />
-					<span th:text="${question.optionC}"></span>
-				</label>
+			<div th:unless="${question.questionType.name() == 'GENDER'}" class="">
+				<input type="text" name="|answers[${stat.index}]"
+					placeholder="Type your answer here" required/>
 			</div>
 		</div>
 

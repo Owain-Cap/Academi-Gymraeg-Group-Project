@@ -1,6 +1,8 @@
 package uk.ac.bangor.cs.group2.academicymraeg.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,9 +22,12 @@ public class TestQuestions {
 	
 	private String question;
 	private int position;
+	
+	@Enumerated(EnumType.STRING)
+	private Question.QuestionType questionType;
+	
 	private String optionA;
 	private String optionB;
-	private String optionC;
 	private String correctAnswer;
 	private String userAnswer;
 	private boolean correct;
@@ -30,15 +35,15 @@ public class TestQuestions {
     protected TestQuestions() {
     }
 	
-	public TestQuestions(long testQuestionId, Test test, String question, int position, String optionA, String optionB,
-			String optionC, String correctAnswer, String userAnswer, boolean correct) {
+	public TestQuestions(long testQuestionId, Test test, String question, Question.QuestionType questionType, int position, String optionA, String optionB,
+			String correctAnswer, String userAnswer, boolean correct) {
 		this.testQuestionId = testQuestionId;
 		this.test = test;
 		this.question = question;
 		this.position = position;
+		this.questionType = questionType;
 		this.optionA = optionA;
 		this.optionB = optionB;
-		this.optionC = optionC;
 		this.correctAnswer = correctAnswer;
 		this.userAnswer = userAnswer;
 		this.correct = correct;
@@ -81,6 +86,14 @@ public class TestQuestions {
 		this.optionA = optionA;
 	}
 
+	public Question.QuestionType getQuestionType() {
+		return questionType;
+	}
+
+	public void setQuestionType(Question.QuestionType questionType) {
+		this.questionType = questionType;
+	}
+
 	public String getOptionB() {
 		return optionB;
 	}
@@ -89,13 +102,6 @@ public class TestQuestions {
 		this.optionB = optionB;
 	}
 
-	public String getOptionC() {
-		return optionC;
-	}
-
-	public void setOptionC(String optionC) {
-		this.optionC = optionC;
-	}
 
 	public String getCorrectAnswer() {
 		return correctAnswer;
@@ -124,8 +130,8 @@ public class TestQuestions {
 	@Override
 	public String toString() {
 		return "TestQuestions [testQuestionId=" + testQuestionId + ", test=" + test + ", question=" + question
-				+ ", position=" + position + ", optionA=" + optionA + ", optionB=" + optionB + ", optionC=" + optionC
-				+ ", correctAnswer=" + correctAnswer + ", userAnswer=" + userAnswer + ", correct=" + correct + "]";
+				+ ", position=" + position + ", questionType=" + questionType + ", optionA=" + optionA + ", optionB=" + optionB +
+				", correctAnswer=" + correctAnswer + ", userAnswer=" + userAnswer + ", correct=" + correct + "]";
 	}
 	
 	
