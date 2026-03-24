@@ -14,7 +14,7 @@ public class Noun {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long nounId;
+	private Long nounId;
 	private String english;
 	private String welsh;
 
@@ -31,7 +31,7 @@ public class Noun {
 	protected Noun() {
 	}
 	
-	public Noun(long nounId, String english, String welsh, Gender gender, String createdByUsername,
+	public Noun(Long nounId, String english, String welsh, Gender gender, String createdByUsername,
 			LocalDateTime createdAt) {
 		super();
 		this.nounId = nounId;
