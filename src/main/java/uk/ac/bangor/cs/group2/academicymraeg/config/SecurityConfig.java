@@ -31,10 +31,12 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain permissionsFilter(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated() // access to any page requires a login
-		).formLogin(withDefaults());
+				).formLogin(withDefaults());
+
+		
 		return http.build();
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 	    return new BCryptPasswordEncoder();
