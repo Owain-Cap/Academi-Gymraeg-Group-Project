@@ -77,7 +77,9 @@ button {
 				<td th:text="${user.firstName}">First Name</td>
 				<td th:text="${user.lastName}">Last Name</td>
 				<td th:text="${user.email}">Email</td>
-				<td th:text="${user.role}">Role</td>
+				<td
+					th:text="${user.isAdmin == T(uk.ac.bangor.cs.group2.academicymraeg.models.User.IsAdmin).YES ? 'System Admin' : 
+               (user.isInstructor == T(uk.ac.bangor.cs.group2.academicymraeg.models.User.IsInstructor).YES ? 'Instructor' : 'Student')}">Role</td>
 				<td class="actions"><a
 					th:href="@{/admin/users/edit/{id}(id=${user.userId})}"> <!-- Send to exact users edit form -->
 						<button type="button">Edit</button>
