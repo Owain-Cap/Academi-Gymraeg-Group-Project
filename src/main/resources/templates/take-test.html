@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+h1 {
+	margin-bottom: 8px;
+}
+
+.meta {
+	margin-bottom: 20px;
+	color: #555;
+}
+
+.question-card {
+	background: white;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 16px;
+	margin-bottom: 16px;
+}
+
+.question-title {
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.option {
+	margin: 8px 0;
+}
+
+.submit-row {
+	margin-top: 20px;
+}
+
+button {
+	padding: 10px 18px;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+}
+</style>
+</head>
+<body>
+	<h1>Take Test</h1>
+	<div class="meta">
+		<div>
+			<strong>Test ID:</strong> <span th:text="${test.testId}"></span>
+		</div>
+		<div>
+			<strong>User:</strong> <span th:text="${test.username}"></span>
+		</div>
+	</div>
+
+	<form th:action="@{/tests/take/{testId}(testId=${test.testId})}"
+		th:object="${testSubmissionForm}" method="post">
+
+		<div th:each="question, stat : ${questions}" class="question-card">
+			<div class="question-title">
+				Question <span th:text="${question.position}"></span>
+			</div>
+
+			<div th:text="${question.question}"></div>
+
+			<div th:if="${question.questionType.name() == 'GENDER'}">
+				<div class="option">
+					<label> <input type="radio"
+						th:name="|answers[${stat.index}]|" th:value="${question.optionA}"
+						required /> <span th:text="${question.optionA}"></span>
+					</label>
+				</div>
+
+				<div class="option">
+					<label> <input type="radio"
+						th:name="|answers[${stat.index}]|" th:value="${question.optionB}"
+						required /> <span th:text="${question.optionB}"></span>
+					</label>
+				</div>
+			</div>
+
+			<div th:unless="${question.questionType.name() == 'GENDER'}" class="">
+				<input type="text" name="|answers[${stat.index}]"
+					placeholder="Type your answer here" required/>
+			</div>
+		</div>
+
+		<div class="submit-row">
+			<button type="submit">Submit Test</button>
+		</div>
+	</form>
+</body>
+</html>

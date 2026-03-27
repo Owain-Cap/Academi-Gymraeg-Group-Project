@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.summary {
+	background: white;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 16px;
+	margin-bottom: 20px;
+}
+
+.question-card {
+	background: white;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 16px;
+	margin-bottom: 16px;
+}
+
+.correct {
+	color: green;
+	font-weight: bold;
+}
+
+.incorrect {
+	color: red;
+	font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+	<h1>Test Result</h1>
+
+	<div class="summary">
+		<div>
+			<strong>Test ID:</strong> <span th:text="${test.testId}"></span>
+		</div>
+		<div>
+			<strong>User:</strong> <span th:text="${test.username}"></span>
+		</div>
+		<div>
+			<strong>Score:</strong> <span th:text="${test.result}"></span> / <span
+				th:text="${#lists.size(questions)}"></span>
+		</div>
+	</div>
+
+	<div th:each="question : ${questions}" class="question-card">
+		<div>
+			<strong>Question <span th:text="${question.position}"></span>:
+			</strong>
+		</div>
+		<div th:text="${question.question}"></div>
+
+		<div>
+			<strong>Your answer:</strong> <span th:text="${question.userAnswer}"></span>
+		</div>
+		<div>
+			<strong>Correct answer:</strong> <span
+				th:text="${question.correctAnswer}"></span>
+		</div>
+
+		<div th:if="${question.correct}" class="correct">Correct</div>
+		<div th:unless="${question.correct}" class="incorrect">Incorrect</div>
+	</div>
+</body>
+</html>
