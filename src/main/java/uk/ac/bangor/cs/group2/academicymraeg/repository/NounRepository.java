@@ -9,6 +9,6 @@ import uk.ac.bangor.cs.group2.academicymraeg.models.Noun;
 
 @Repository
 public interface NounRepository extends JpaRepository<Noun, Long> {
-	//shows the results in a list 
+	//shows the results in a list for the search
 	List<Noun> findByEnglishContainingIgnoreCaseOrWelshContainingIgnoreCase(String english, String welsh);
 }
