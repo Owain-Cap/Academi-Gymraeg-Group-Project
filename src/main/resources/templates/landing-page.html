@@ -1,1 +1,229 @@
-<!-- Landing page - just getting the files ready for now not doing any actual content -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Academi Gymraeg</title>
+<style>
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: "DM Sans", sans-serif;
+	background: #f4f6f3;
+	color: #1e2a3a;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+/* NAV */
+.topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 56px;
+	padding: 0 40px;
+	background: #1c3a1c;
+	border-bottom: 3px solid #dc2626;
+	flex-shrink: 0;
+}
+
+.nav-logo {
+	font-family: "Fraunces", serif;
+	font-size: 18px;
+	font-weight: 700;
+	color: #fff;
+}
+
+.nav-logo em {
+	font-style: italic;
+	font-weight: 400;
+	color: #a8d5a2;
+}
+
+.nav-user {
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.65);
+}
+
+/* MAIN AREA */
+.content {
+	display: flex;
+	flex: 1;
+}
+
+/* HERO */
+.hero {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 64px 48px;
+	background: #fff;
+	border-right: 1px solid #e5e7e5;
+}
+
+.hero-text {
+	font-size: 12px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: #6c757d;
+	margin-bottom: 20px;
+}
+
+.hero h1 {
+	font-family: "Fraunces", serif;
+	font-size: 48px;
+	font-weight: 700;
+	line-height: 1.15;
+	margin-bottom: 16px;
+}
+
+.hero p {
+	font-size: 16px;
+	color: #6c757d;
+	line-height: 1.6;
+	margin-bottom: 40px;
+	max-width: 320px;
+}
+
+.hero-cta {
+	display: inline-block;
+	background: #dc2626;
+	color: #fff;
+	padding: 14px 32px;
+	border-radius: 40px;
+	font-size: 15px;
+	font-weight: 600;
+	text-decoration: none;
+	box-shadow: 0 4px 14px rgba(220, 38, 38, 0.28);
+	transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+	align-self: flex-start;
+}
+
+.hero-cta:hover {
+	background: #b91c1c;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 18px rgba(185, 28, 28, 0.32);
+}
+
+/* SECTIONS PANEL */
+.sections-panel {
+	width: 320px;
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.section-group {
+	flex: 1;
+	padding: 32px 40px;
+	border-bottom: 1px solid #e5e7e5;
+}
+
+.section-group:last-child {
+	border-bottom: none;
+}
+
+.student {
+	background: #f7fbf6;
+}
+
+.teacher {
+	background: #fffafa;
+}
+
+.admin {
+	background: #f6f8fd;
+}
+
+.section-group h3 {
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	padding-bottom: 8px;
+	margin-bottom: 14px;
+	border-bottom: 2px solid;
+}
+
+.student h3 {
+	color: #2d5a27;
+	border-color: #2d5a27;
+}
+
+.teacher h3 {
+	color: #dc2626;
+	border-color: #dc2626;
+}
+
+.admin h3 {
+	color: #1a2d6b;
+	border-color: #1a2d6b;
+}
+
+.section-link {
+	display: block;
+	padding: 6px 0;
+	color: #1e2a3a;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.section-link:hover {
+	text-decoration: underline;
+}
+
+/* FOOTER */
+footer {
+	text-align: center;
+	font-size: 11px;
+	color: #6c757d;
+	padding: 16px;
+	border-top: 1px solid #e5e7e5;
+	flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+	<div class="topbar">
+		<div class="nav-logo">
+			Academi <em>Gymraeg</em>
+		</div>
+		<span class="nav-user" th:text="'Helo, ' + ${username}"></span>
+	</div>
+
+	<div class="content">
+		<div class="hero">
+			<p class="hero-text">Croeso yn ôl — Welcome back</p>
+			<h1>Welsh, made simple.</h1>
+			<p>Practice your Welsh with quick tests and track your progress.</p>
+			<a class="hero-cta" th:href="@{/tests/take}">Start a test</a>
+		</div>
+
+		<div class="sections-panel">
+			<div class="section-group student">
+				<h3>Student</h3>
+				<a class="section-link" th:href="@{/tests/take}">Take a test</a>
+			</div>
+			<div class="section-group instructor">
+				<h3>Instructor</h3>
+				<a class="section-link" th:href="@{/nouns}">View nouns</a>
+				<a class="section-link" th:href="@{/nouns/edit}">Add a noun</a>
+			</div>
+			<div class="section-group admin">
+				<h3>Admin</h3>
+				<a class="section-link" th:href="@{/admin}">Manage users</a>
+				<a class="section-link" th:href="@{/register}">Add user</a>
+			</div>
+		</div>
+	</div>
+
+	<footer>Academi Gymraeg</footer>
+
+</body>
+</html>
