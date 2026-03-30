@@ -26,17 +26,30 @@ public class TestQuestions {
 	@Enumerated(EnumType.STRING)
 	private Question.QuestionType questionType;
 	
+	
+	public enum AnswerStatus {
+	    CORRECT,
+	    INCORRECT,
+	    SKIPPED,
+	    NOT_ANSWERED
+	}
+	
 	private String optionA;
 	private String optionB;
 	private String correctAnswer;
 	private String userAnswer;
-	private boolean correct;
+	
+	@Enumerated(EnumType.STRING)
+	private AnswerStatus answerStatus;
+	
+	private boolean diacriticReminder;
+
 	
     protected TestQuestions() {
     }
 	
 	public TestQuestions(long testQuestionId, Test test, String question, Question.QuestionType questionType, int position, String optionA, String optionB,
-			String correctAnswer, String userAnswer, boolean correct) {
+			String correctAnswer, String userAnswer, AnswerStatus answerStatus, boolean diacriticReminder) {
 		this.testQuestionId = testQuestionId;
 		this.test = test;
 		this.question = question;
@@ -46,7 +59,16 @@ public class TestQuestions {
 		this.optionB = optionB;
 		this.correctAnswer = correctAnswer;
 		this.userAnswer = userAnswer;
-		this.correct = correct;
+		this.answerStatus = answerStatus;
+		this.diacriticReminder = diacriticReminder;
+	}
+
+	public boolean isDiacriticReminder() {
+		return diacriticReminder;
+	}
+
+	public void setDiacriticReminder(boolean diacriticReminder) {
+		this.diacriticReminder = diacriticReminder;
 	}
 
 	public long getTestQuestionId() {
@@ -119,20 +141,26 @@ public class TestQuestions {
 		this.userAnswer = userAnswer;
 	}
 
-	public boolean isCorrect() {
-		return correct;
+
+	public AnswerStatus getAnswerStatus() {
+		return answerStatus;
 	}
 
-	public void setCorrect(boolean correct) {
-		this.correct = correct;
+	public void setAnswerStatus(AnswerStatus answerStatus) {
+		this.answerStatus = answerStatus;
 	}
 
 	@Override
 	public String toString() {
 		return "TestQuestions [testQuestionId=" + testQuestionId + ", test=" + test + ", question=" + question
-				+ ", position=" + position + ", questionType=" + questionType + ", optionA=" + optionA + ", optionB=" + optionB +
-				", correctAnswer=" + correctAnswer + ", userAnswer=" + userAnswer + ", correct=" + correct + "]";
+				+ ", position=" + position + ", questionType=" + questionType + ", optionA=" + optionA + ", optionB="
+				+ optionB + ", correctAnswer=" + correctAnswer + ", userAnswer=" + userAnswer + ", answerStatus="
+				+ answerStatus + ", diacriticReminder=" + diacriticReminder + "]";
 	}
+
+
+
+	
 	
 	
 	
