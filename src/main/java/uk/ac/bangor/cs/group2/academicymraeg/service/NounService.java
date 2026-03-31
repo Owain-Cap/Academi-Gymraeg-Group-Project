@@ -41,4 +41,8 @@ public class NounService {
 	public List<Noun> searchNouns(String search) {
 	    return nounRepository.findByEnglishContainingIgnoreCaseOrWelshContainingIgnoreCase(search, search);
 	}
+	
+	public boolean isValid(String word) {
+		return word.matches("[a-zA-ZáéíóúŵẃỳÁÉÍÓÚŴẂỲ]+");
+	}
 }

@@ -22,6 +22,7 @@ public class Noun {
 		MASCULINE, FEMININE
 	}
 
+	
 	//Had to add this as the data type has been changed to vchar so if we will have varhar fields in db this will need to be added
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
