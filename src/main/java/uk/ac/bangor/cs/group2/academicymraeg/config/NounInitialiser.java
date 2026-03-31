@@ -47,7 +47,15 @@ public class NounInitialiser {
         				createNoun("ruler","mesurydd",Gender.MASCULINE),
         				createNoun("glue","glud",Gender.MASCULINE),
         				createNoun("exam","arholiad",Gender.MASCULINE),
-        				createNoun("scissors","siswrn",Gender.FEMININE)
+        				createNoun("scissors","siswrn",Gender.FEMININE),
+        				createNoun("school","ysgol",Gender.FEMININE),
+        				createNoun("board","bwrdd",Gender.MASCULINE),
+        				createNoun("test","prawf",Gender.MASCULINE),
+        				createNoun("lesson","gwers",Gender.FEMININE),
+        				createNoun("reading","darllen",Gender.FEMININE),
+        				createNoun("bag","bag",Gender.MASCULINE),
+        				createNoun("project","prosiect",Gender.FEMININE),
+        				createNoun("hall","neuadd",Gender.MASCULINE)
         				);
         		//this saves the nouns
         		nounRepository.saveAll(nouns);
