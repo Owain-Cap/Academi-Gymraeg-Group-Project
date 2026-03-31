@@ -2,6 +2,7 @@ package uk.ac.bangor.cs.group2.academicymraeg.controller;
 
 import java.time.LocalDateTime;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.security.core.Authentication;
 
 import uk.ac.bangor.cs.group2.academicymraeg.models.Noun;
 import uk.ac.bangor.cs.group2.academicymraeg.service.NounService;
@@ -60,7 +60,17 @@ public class NounView {
 
 	//this saves the Noun
 	@PostMapping("/nouns/save")
-	public String saveNoun(@ModelAttribute Noun noun, Authentication authentication) {
+	public String saveNoun(@ModelAttribute Noun noun, Authentication authentication,Model model) {
+		
+		if (!nounService.isValid(noun.getEnglish()) || !nounService.isValid(noun.getWelsh())) {
+	        
+			
+	        model.addAttribute("error", "Nouns must only contain letters");
+	        model.addAttribute("noun", noun);
+	        model.addAttribute("isNew", noun.getNounId() == null);
+	        return "editNoun";
+	    }
+		
 		noun.setCreatedAt(LocalDateTime.now());
 		noun.setCreatedByUsername(authentication.getName()); //get the username of the person adding the noun
 		nounService.saveNoun(noun);
