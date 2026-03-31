@@ -11,24 +11,37 @@
 }
 
 body {
-	font-family: "DM Sans", sans-serif;
-	background: #f5f7f5;
-	color: #1e2a3a;
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
+    font-family: "DM Sans", sans-serif;
+    color: #1e2a3a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image: url('/images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
 }
 
-/* NAV */
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.28);
+	z-index: 0;
+}
+
 .topbar {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	height: 56px;
 	padding: 0 40px;
-	background: #1f3d2b;
-	border-bottom: 3px solid #2f6f4f;
+	background: rgba(31, 61, 43, 0.95);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 	flex-shrink: 0;
+	position: relative;
+	z-index: 1;
 }
 
 .nav-logo {
@@ -46,32 +59,32 @@ body {
 
 .nav-user {
 	font-size: 14px;
-	color: rgba(255, 255, 255, 0.65);
+	color: rgba(255, 255, 255, 0.85);
 }
 
-/* MAIN AREA */
 .content {
 	display: flex;
 	flex: 1;
+	background: rgba(255, 255, 255, 0.08);
+	position: relative;
+	z-index: 1;
 }
 
-/* HERO */
 .hero {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	padding: 64px 48px;
-	background: #ffffff;
-	border-right: 1px solid #e3e8e3;
 }
 
 .hero-text {
 	font-size: 12px;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
-	color: #4b6b57;
+	color: #ffffff;
 	margin-bottom: 20px;
+	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 .hero h1 {
@@ -80,64 +93,67 @@ body {
 	font-weight: 700;
 	line-height: 1.15;
 	margin-bottom: 16px;
+	color: #ffffff;
+	text-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
 }
 
 .hero p {
 	font-size: 16px;
-	color: #6c757d;
+	color: #ffffff;
 	line-height: 1.6;
 	margin-bottom: 40px;
 	max-width: 320px;
+	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 .hero-cta {
 	display: inline-block;
-	background: #c8102e;
-	color: #ffffff;
+	background: rgba(255, 255, 255, 0.92);
+	color: #1e2a3a;
 	padding: 14px 32px;
 	border-radius: 40px;
 	font-size: 15px;
 	font-weight: 600;
 	text-decoration: none;
-	box-shadow: 0 4px 14px rgba(200, 16, 46, 0.25);
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
 	transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 	align-self: flex-start;
 }
 
 .hero-cta:hover {
-	background: #a50d26;
+	background: rgba(255, 255, 255, 1);
 	transform: translateY(-2px);
-	box-shadow: 0 6px 18px rgba(165, 13, 38, 0.3);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
-/* SECTIONS PANEL */
 .sections-panel {
-	width: 320px;
-	flex-shrink: 0;
 	display: flex;
 	flex-direction: column;
-	padding: 16px;
+	padding: 24px;
 	gap: 12px;
-	background: #f0f4f1;
+	justify-content: center;
 }
 
 .section-group {
-	padding: 24px 24px;
+	width: 280px;
+	padding: 24px;
 	border-radius: 12px;
-	background: #ffffff;
+	background: rgba(255, 255, 255, 0.88);
 	border: 1px solid #e3e8e3;
+	backdrop-filter: blur(6px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .student {
-	background: #f7fbf8;
+	background: rgba(247, 251, 248, 0.88);
 }
 
-.teacher {
-	background: #f9fcfa;
+.instructor {
+	background: rgba(249, 252, 250, 0.88);
 }
 
 .admin {
-	background: #f6f8fd;
+	background: rgba(246, 248, 253, 0.88);
 }
 
 .section-group h3 {
@@ -153,7 +169,7 @@ body {
 	color: #2f6f4f;
 }
 
-.teacher h3 {
+.instructor h3 {
 	color: #3f7a5a;
 }
 
@@ -173,16 +189,17 @@ body {
 	text-decoration: underline;
 }
 
-/* FOOTER */
 footer {
 	text-align: center;
 	font-size: 11px;
-	color: #6c757d;
+	color: rgba(255, 255, 255, 0.85);
 	padding: 16px;
-	border-top: 1px solid #e3e8e3;
 	flex-shrink: 0;
-	text-decoration: underline;
-	text-decoration-color: #c8102e;
+	background: rgba(31, 61, 43, 0.95);
+	border-top: 1px solid rgba(255, 255, 255, 0.15);
+	text-decoration: none;
+	position: relative;
+	z-index: 1;
 }
 </style>
 </head>
