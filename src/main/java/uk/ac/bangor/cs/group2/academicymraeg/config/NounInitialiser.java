@@ -33,7 +33,21 @@ public class NounInitialiser {
         				createNoun("table","bwrdd",Gender.MASCULINE),
         				createNoun("car","car",Gender.MASCULINE),
         				createNoun("dog","ci",Gender.MASCULINE),
-        				createNoun("school","ysgol",Gender.MASCULINE)
+        				createNoun("teacher(male)","athro",Gender.MASCULINE),
+        				createNoun("teacher(female)","athrawes",Gender.FEMININE),
+        				createNoun("pencil","pensil",Gender.MASCULINE),
+        				createNoun("pen","beiro",Gender.MASCULINE),
+        				createNoun("paper","papur",Gender.MASCULINE),
+        				createNoun("mathematics","mathemateg",Gender.MASCULINE),
+        				createNoun("geography","daearyddiaeth",Gender.FEMININE),
+        				createNoun("music","cerddoriaeth",Gender.FEMININE),
+        				createNoun("geography","daearyddiaeth",Gender.FEMININE),
+        				createNoun("history","hanes",Gender.MASCULINE),
+        				createNoun("canteen","ffreutur",Gender.FEMININE),
+        				createNoun("ruler","mesurydd",Gender.MASCULINE),
+        				createNoun("glue","glud",Gender.MASCULINE),
+        				createNoun("exam","arholiad",Gender.MASCULINE),
+        				createNoun("scissors","siswrn",Gender.FEMININE)
         				);
         		//this saves the nouns
         		nounRepository.saveAll(nouns);

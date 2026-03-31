@@ -43,6 +43,6 @@ public class NounService {
 	}
 	
 	public boolean isValid(String word) {
-		return word.matches("[a-zA-Z]+");
+		return word.matches("[a-zA-ZáéíóúŵẃỳÁÉÍÓÚŴẂỲ]+");
 	}
 }

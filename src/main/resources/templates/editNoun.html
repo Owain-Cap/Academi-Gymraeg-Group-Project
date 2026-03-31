@@ -74,7 +74,7 @@ a {
 		<input type="text" th:field="*{english}" placeholder="Enter English"
 			pattern="[A-Za-z\s]+" title="Letters only" required /> <label>Welsh:</label>
 		<input type="text" th:field="*{welsh}" placeholder="Enter Welsh"
-			pattern="[A-Za-z\s]+" title="Letters only" required /> <label>Gender:</label>
+			pattern="[a-zA-ZáéíóúŵẃỳÁÉÍÓÚŴẂỲ]+" title="Letters only" required /> <label>Gender:</label>
 		<select th:field="*{gender}" required>
 			<option value="MASCULINE">Masculine</option>
 			<option value="FEMININE">Feminine</option>
