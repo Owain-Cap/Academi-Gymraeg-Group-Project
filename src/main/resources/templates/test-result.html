@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Test Result</title>
 <style>
+body {
+	font-family: Arial, sans-serif;
+	margin: 30px;
+	background-color: #f7f7f7;
+}
+
 .summary {
 	background: white;
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	padding: 16px;
 	margin-bottom: 20px;
+}
+
+.summary-line {
+	margin-bottom: 6px;
 }
 
 .question-card {
@@ -29,6 +39,18 @@
 	color: red;
 	font-weight: bold;
 }
+
+.skipped {
+	color: #666;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.diacritic-note {
+	color: #8a6d3b;
+	font-size: 0.9em;
+	margin-top: 6px;
+}
 </style>
 </head>
 
@@ -36,35 +58,68 @@
 	<h1>Test Result</h1>
 
 	<div class="summary">
-		<div>
+		<div class="summary-line">
 			<strong>Test ID:</strong> <span th:text="${test.testId}"></span>
 		</div>
-		<div>
+		<div class="summary-line">
 			<strong>User:</strong> <span th:text="${test.username}"></span>
 		</div>
-		<div>
-			<strong>Score:</strong> <span th:text="${test.result}"></span> / <span
-				th:text="${#lists.size(questions)}"></span>
+		<div class="summary-line">
+			<strong>Score:</strong>
+			<span th:text="${correctCount}"></span> /
+			<span th:text="${#lists.size(questions)}"></span>
+		</div>
+		<div class="summary-line">
+			<strong>Skipped:</strong> <span th:text="${skippedCount}"></span>
+		</div>
+		<div class="summary-line">
+			<strong>Incorrect:</strong> <span th:text="${incorrectCount}"></span>
 		</div>
 	</div>
 
 	<div th:each="question : ${questions}" class="question-card">
 		<div>
-			<strong>Question <span th:text="${question.position}"></span>:
-			</strong>
+			<strong>Question <span th:text="${question.position}"></span>:</strong>
 		</div>
+
 		<div th:text="${question.question}"></div>
 
 		<div>
-			<strong>Your answer:</strong> <span th:text="${question.userAnswer}"></span>
-		</div>
-		<div>
-			<strong>Correct answer:</strong> <span
-				th:text="${question.correctAnswer}"></span>
+			<strong>Your answer:</strong>
+
+			<span th:if="${question.answerStatus.name() == 'SKIPPED'}">
+				Skipped
+			</span>
+
+			<span th:if="${question.answerStatus.name() != 'SKIPPED'}"
+			      th:text="${question.userAnswer}">
+			</span>
 		</div>
 
-		<div th:if="${question.correct}" class="correct">Correct</div>
-		<div th:unless="${question.correct}" class="incorrect">Incorrect</div>
+		<div>
+			<strong>Correct answer:</strong>
+			<span th:text="${question.correctAnswer}"></span>
+		</div>
+
+		<!-- STATUS -->
+		<div th:if="${question.answerStatus.name() == 'CORRECT'}" class="correct">
+			Correct
+		</div>
+
+		<div th:if="${question.answerStatus.name() == 'INCORRECT'}" class="incorrect">
+			Incorrect
+		</div>
+
+		<div th:if="${question.answerStatus.name() == 'SKIPPED'}" class="skipped">
+			Skipped
+		</div>
+
+		<!-- DIACRITIC REMINDER -->
+		<div th:if="${question.diacriticReminder}" class="diacritic-note">
+			Note: accepted without diacritics.
+			Correct spelling:
+			<span th:text="${question.correctAnswer}"></span>
+		</div>
 	</div>
 </body>
 </html>

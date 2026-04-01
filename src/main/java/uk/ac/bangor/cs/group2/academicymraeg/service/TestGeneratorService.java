@@ -1,5 +1,6 @@
 package uk.ac.bangor.cs.group2.academicymraeg.service;
 
+import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,7 @@ import uk.ac.bangor.cs.group2.academicymraeg.models.Noun;
 import uk.ac.bangor.cs.group2.academicymraeg.models.Question;
 import uk.ac.bangor.cs.group2.academicymraeg.models.Test;
 import uk.ac.bangor.cs.group2.academicymraeg.models.TestQuestions;
+import uk.ac.bangor.cs.group2.academicymraeg.models.TestQuestions.AnswerStatus;
 import uk.ac.bangor.cs.group2.academicymraeg.repository.NounRepository;
 import uk.ac.bangor.cs.group2.academicymraeg.repository.TestQuestionRepository;
 import uk.ac.bangor.cs.group2.academicymraeg.repository.TestRepository;
@@ -21,6 +23,11 @@ public class TestGeneratorService {
 	private NounRepository nounRepository;
 	private TestRepository testRepository;
 	private TestQuestionRepository testQuestionRepository;
+	private static final String SKIPPED = "SKIPPED_BY_USER";
+
+	private enum AnswerCheckResult {
+		CORRECT_EXACT, CORRECT_WITHOUT_DIACRITICS, INCORRECT, SKIPPED
+	}
 
 	public TestGeneratorService(NounRepository nounRepository, TestRepository testRepository,
 			TestQuestionRepository testQuestionRepository) {
@@ -59,8 +66,9 @@ public class TestGeneratorService {
 				optionB = "FEMININE";
 			}
 
-			TestQuestions testQuestion = new TestQuestions(0, savedTest, blueprint.questionText(), blueprint.questionType(), i + 1, optionA,
-					optionB, blueprint.correctAnswer(), null, false);
+			TestQuestions testQuestion = new TestQuestions(0, savedTest, blueprint.questionText(),
+					blueprint.questionType(), i + 1, optionA, optionB, blueprint.correctAnswer(), null,
+					TestQuestions.AnswerStatus.NOT_ANSWERED, false);
 
 			testQuestionRepository.save(testQuestion);
 		}
@@ -80,28 +88,46 @@ public class TestGeneratorService {
 		Test test = getTestById(testId);
 		List<TestQuestions> questions = getQuestionsForTest(test);
 
+		validateSubmittedAnswers(questions, answers);
+
 		int score = 0;
 
 		for (int i = 0; i < questions.size(); i++) {
 			TestQuestions question = questions.get(i);
-			
-			String userAnswer = null;
 
-			if (answers != null && i< answers.size()) {
-				userAnswer = answers.get(i);
-			}
-			
+			String userAnswer = answers.get(i);
+
 			if (userAnswer != null) {
 				userAnswer = userAnswer.trim();
 			}
-			
+
 			question.setUserAnswer(userAnswer);
 
-			boolean isCorrect = answersMatch(userAnswer, question.getCorrectAnswer());
-			question.setCorrect(isCorrect);
+			AnswerCheckResult result = checkAnswer(userAnswer, question.getCorrectAnswer(), question.getQuestionType());
 
-			if (isCorrect) {
+			switch (result) {
+			case SKIPPED:
+				question.setAnswerStatus(AnswerStatus.SKIPPED);
+				question.setDiacriticReminder(false);
+				break;
+
+			case CORRECT_EXACT:
+				question.setAnswerStatus(AnswerStatus.CORRECT);
+				question.setDiacriticReminder(false);
 				score++;
+				break;
+
+			case CORRECT_WITHOUT_DIACRITICS:
+				question.setAnswerStatus(AnswerStatus.CORRECT);
+				question.setDiacriticReminder(true);
+				score++;
+				break;
+
+			case INCORRECT:
+			default:
+				question.setAnswerStatus(AnswerStatus.INCORRECT);
+				question.setDiacriticReminder(false);
+				break;
 			}
 
 			testQuestionRepository.save(question);
@@ -111,11 +137,87 @@ public class TestGeneratorService {
 		testRepository.save(test);
 	}
 
-	private boolean answersMatch(String userAnswer, String correctAnswer) {
-		if (userAnswer == null || correctAnswer == null || userAnswer.isBlank()) {
-			return false;
+	private void validateSubmittedAnswers(List<TestQuestions> questions, List<String> answers) {
+		// make sure answers aren't empty or are intentional skipped
+		if (answers == null || answers.size() < questions.size()) {
+			throw new IllegalArgumentException("Please answer every question, or click skip, before submitting.");
 		}
-		return userAnswer.trim().equalsIgnoreCase(correctAnswer.trim());
+
+		for (int i = 0; i < questions.size(); i++) {
+			TestQuestions question = questions.get(i);
+			String answer = answers.get(i);
+
+			// make sure answer isn't empty
+			if (answer == null || answer.trim().isEmpty()) {
+				throw new IllegalArgumentException(
+						"Question " + (i + 1) + " must be answered or skipped by clicking 'skip'.");
+			}
+
+			String cleanAns = answer.trim().toUpperCase();
+
+			// if answer was skipped, end validation.
+			if (cleanAns.equals(SKIPPED)) {
+				continue;
+			}
+
+			if (question.getQuestionType() == Question.QuestionType.GENDER) {
+				// Validate gender questions
+
+				if (!cleanAns.equals("MASCULINE") && !cleanAns.equals("FEMININE")) {
+					throw new IllegalArgumentException("Invalid answer for question " + (i + 1) + ".");
+				}
+			} else {
+				// Validate translation questions
+				String trimmed = answer.trim();
+
+				// length check
+				if (trimmed.length() > 60) {
+					throw new IllegalArgumentException("Answer for question " + (i + 1) + " is too long");
+				}
+
+				// character validation (letters + diacritics + spaces only)
+				if (!trimmed.matches("^[\\p{L}\\s]+$")) {
+					throw new IllegalArgumentException(
+						"Answer for question " + (i + 1) + " contains invalid characters. Only letters are allowed.");
+				}
+			}
+		}
+	}
+	
+	private AnswerCheckResult checkAnswer(String userAnswer, String correctAnswer, Question.QuestionType questionType) {
+		if (userAnswer == null || correctAnswer == null || userAnswer.isBlank()) {
+			return AnswerCheckResult.INCORRECT;
+		}
+		
+		String cleanUserAns = userAnswer.trim();
+		String cleanCorrectAns = correctAnswer.trim();
+
+		if (cleanUserAns.equalsIgnoreCase(SKIPPED)) {
+			return AnswerCheckResult.SKIPPED;
+		}
+		
+		String exactUserAns = Normalizer.normalize(cleanUserAns, Normalizer.Form.NFC);
+		String exactCorrectAns = Normalizer.normalize(cleanCorrectAns, Normalizer.Form.NFC);
+
+		if (exactUserAns.equalsIgnoreCase(exactCorrectAns)) {
+		    return AnswerCheckResult.CORRECT_EXACT;
+		}
+		
+		if (questionType == Question.QuestionType.GENDER) {
+			return AnswerCheckResult.INCORRECT;
+		}
+		
+		//remove diacritics
+		String normalisedUserAns = Normalizer.normalize(cleanUserAns, Normalizer.Form.NFD).replaceAll("\\p{M}", "");
+		String normalisedCorrectAns = Normalizer.normalize(cleanCorrectAns, Normalizer.Form.NFD).replaceAll("\\p{M}", "");
+		
+		if (normalisedUserAns.equalsIgnoreCase(normalisedCorrectAns)) {
+			return AnswerCheckResult.CORRECT_WITHOUT_DIACRITICS;
+		}
+		
+		return AnswerCheckResult.INCORRECT;
+		
+
 	}
 
 	private List<QuestionBlueprint> buildQuestionList(List<Noun> nouns) {
@@ -136,6 +238,7 @@ public class TestGeneratorService {
 
 		return questions;
 	}
+
 
 	private record QuestionBlueprint(Question.QuestionType questionType, String questionText, String correctAnswer) {
 	}

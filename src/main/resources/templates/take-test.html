@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Take Test</title>
 <style>
+body {
+	font-family: Arial, sans-serif;
+	margin: 30px;
+	background-color: #f7f7f7;
+}
+
 h1 {
 	margin-bottom: 8px;
 }
@@ -30,6 +36,40 @@ h1 {
 	margin: 8px 0;
 }
 
+.text-answer {
+	margin-top: 10px;
+}
+
+.text-answer input {
+	width: 320px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.skip-row {
+	margin-top: 10px;
+}
+
+.skip-link {
+	color: #8b0000;
+	font-weight: 400;
+	font-size: 0.9em;
+	text-decoration-line: underline;
+	text-decoration-style: dotted;
+	text-underline-offset: 2px;
+	cursor: pointer;
+}
+
+.skip-option {
+	color: #8b0000;
+	font-weight: 400;
+	font-size: 0.9em;
+	text-decoration-line: underline;
+	text-decoration-style: dotted;
+	text-underline-offset: 2px;
+}
+
 .submit-row {
 	margin-top: 20px;
 }
@@ -39,6 +79,10 @@ button {
 	border: none;
 	border-radius: 6px;
 	cursor: pointer;
+}
+
+.unanswered {
+	border: 2px solid #b22222;
 }
 </style>
 </head>
@@ -53,10 +97,18 @@ button {
 		</div>
 	</div>
 
-	<form th:action="@{/tests/take/{testId}(testId=${test.testId})}"
-		th:object="${testSubmissionForm}" method="post">
+	<div th:if="${errorMessage}"
+		style="color: #b22222; margin-bottom: 16px; font-weight: bold;">
+		<span th:text="${errorMessage}"></span>
+	</div>
 
-		<div th:each="question, stat : ${questions}" class="question-card">
+	<form th:action="@{/tests/take/{testId}(testId=${test.testId})}"
+		th:object="${testSubmissionForm}" method="post"
+		onsubmit="return validateBeforeSubmit();">
+
+		<div th:each="question, stat : ${questions}" class="question-card"
+			th:attr="id=|question-card-${stat.index}|">
+
 			<div class="question-title">
 				Question <span th:text="${question.position}"></span>
 			</div>
@@ -66,22 +118,36 @@ button {
 			<div th:if="${question.questionType.name() == 'GENDER'}">
 				<div class="option">
 					<label> <input type="radio"
-						th:name="|answers[${stat.index}]|" th:value="${question.optionA}"
-						required /> <span th:text="${question.optionA}"></span>
+						th:name="|answers[${stat.index}]|" th:value="${question.optionA}" />
+						<span th:text="${question.optionA}"></span>
 					</label>
 				</div>
 
 				<div class="option">
 					<label> <input type="radio"
-						th:name="|answers[${stat.index}]|" th:value="${question.optionB}"
-						required /> <span th:text="${question.optionB}"></span>
+						th:name="|answers[${stat.index}]|" th:value="${question.optionB}" />
+						<span th:text="${question.optionB}"></span>
+					</label>
+				</div>
+
+				<div class="option">
+					<label> <input type="radio"
+						th:name="|answers[${stat.index}]|" value="SKIPPED_BY_USER" /> <span
+						class="skip-option">Skip</span>
 					</label>
 				</div>
 			</div>
 
-			<div th:unless="${question.questionType.name() == 'GENDER'}" class="">
-				<input type="text" name="|answers[${stat.index}]"
-					placeholder="Type your answer here" required/>
+			<div th:unless="${question.questionType.name() == 'GENDER'}"
+				class="text-answer">
+				<input type="text" th:name="|answers[${stat.index}]|"
+					th:id="|answer-${stat.index}|" placeholder="Type your answer here" pattern="^[\p{Letter}_\s]+$" title="Letters and Spaces only" />
+
+				<div class="skip-row">
+					<a href="#" class="skip-link"
+						th:attr="onclick=|skipQuestion(${stat.index}); return false;|">
+						Skip </a>
+				</div>
 			</div>
 		</div>
 
@@ -89,5 +155,74 @@ button {
 			<button type="submit">Submit Test</button>
 		</div>
 	</form>
+
+	<script>
+		const SKIPPED_VALUE = "SKIPPED_BY_USER";
+
+		function skipQuestion(index) {
+			const input = document.getElementById("answer-" + index);
+			const card = document.getElementById("question-card-" + index);
+
+			if (card) {
+				card.classList.remove("unanswered");
+			}
+
+			if (input) {
+				input.value = SKIPPED_VALUE;
+			}
+		}
+
+		function validateBeforeSubmit() {
+			const questionCards = document.querySelectorAll(".question-card");
+			let firstUnansweredCard = null;
+			let skippedCount = 0;
+
+			questionCards.forEach(card => card.classList.remove("unanswered"));
+
+			for (let i = 0; i < questionCards.length; i++) {
+				const card = questionCards[i];
+				const inputs = document.getElementsByName("answers[" + i + "]");
+
+				if (!inputs || inputs.length === 0) {
+					continue;
+				}
+
+				let answerValue = null;
+				const firstInput = inputs[0];
+
+				if (firstInput.type === "radio") {
+					for (let j = 0; j < inputs.length; j++) {
+						if (inputs[j].checked) {
+							answerValue = inputs[j].value;
+							break;
+						}
+					}
+				} else {
+					answerValue = firstInput.value;
+				}
+
+				if (answerValue == null || answerValue.trim() === "") {
+					card.classList.add("unanswered");
+					if (!firstUnansweredCard) {
+						firstUnansweredCard = card;
+					}
+				} else if (answerValue.trim().toUpperCase() === SKIPPED_VALUE) {
+					skippedCount++;
+				}
+			}
+
+			if (firstUnansweredCard) {
+				alert("Please answer or skip all questions before submitting.");
+				firstUnansweredCard.scrollIntoView({ behavior: "smooth", block: "center" });
+				return false;
+			}
+
+			if (skippedCount > 0) {
+				return confirm("Are you sure you want to submit with skipped questions?");
+			}
+
+			return true;
+		}
+	</script>
 </body>
 </html>
