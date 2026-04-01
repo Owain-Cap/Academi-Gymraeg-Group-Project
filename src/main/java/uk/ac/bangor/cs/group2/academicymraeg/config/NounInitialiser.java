@@ -41,7 +41,7 @@ public class NounInitialiser {
         				createNoun("mathematics","mathemateg",Gender.MASCULINE),
         				createNoun("geography","daearyddiaeth",Gender.FEMININE),
         				createNoun("music","cerddoriaeth",Gender.FEMININE),
-        				createNoun("geography","daearyddiaeth",Gender.FEMININE),
+        				createNoun("tŷ","house",Gender.MASCULINE),
         				createNoun("history","hanes",Gender.MASCULINE),
         				createNoun("canteen","ffreutur",Gender.FEMININE),
         				createNoun("ruler","mesurydd",Gender.MASCULINE),
