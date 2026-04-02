@@ -1,5 +1,6 @@
 package uk.ac.bangor.cs.group2.academicymraeg.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,7 +14,9 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long userId;
 
+	@Column(unique = true, nullable = false)
 	private String username;
+	
 	private String passwordHash;
 	private String email;
 	private String firstName;
@@ -27,18 +30,11 @@ public class User {
 		NO, YES
 	};
 
+	@Enumerated(EnumType.STRING)
 	private IsInstructor isInstructor;
 
+	@Enumerated(EnumType.STRING)
 	private IsAdmin isAdmin;
-
-//	public enum Role {
-//		STUDENT, INSTRUCTOR, SYSTEM_ADMIN
-//
-//	};
-
-//	private boolean enabled;
-//	@Enumerated(EnumType.STRING)
-//	private Role role;
 
 	public User() {
 
@@ -56,8 +52,6 @@ public class User {
 		this.lastName = lastName;
 		this.isInstructor = isInstructor;
 		this.isAdmin = isAdmin;
-//		this.enabled = enabled;
-//		this.role = role;
 	}
 
 	public IsInstructor getIsInstructor() {
@@ -116,31 +110,14 @@ public class User {
 		this.lastName = lastName;
 	}
 
-//	public boolean isEnabled() {
-//		return enabled;
-//	}
-
-//	public void setEnabled(boolean enabled) {
-//		this.enabled = enabled;
-//	}
-
-//	public Role getRole() {
-//		return role;
-//	}
-//
-//	public void setRole(Role role) {
-//		this.role = role;
-//	}
-
 	public long getUserId() {
 		return userId;
 	}
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", passwordHash=" + passwordHash + ", email="
-				+ email + ", firstName=" + firstName + ", lastName=" + lastName + ", isInstructor=" + isInstructor
-				+ ", isAdmin=" + isAdmin + "]";
+		return "User [userId=" + userId + ", username=" + username + ", email=" + email + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", isInstructor=" + isInstructor + ", isAdmin=" + isAdmin + "]";
 	}
 
 }
