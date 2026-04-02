@@ -1,15 +1,13 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Test History</title>
+<title>Review Test</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style>
 :root {
 	--green-dark: #1f3d2b;
 	--green-mid: #2d5a27;
 	--green-light: #b7d6c2;
-	--red: #dc2626;
-	--red-dark: #b91c1c;
 	--text: #1e2a3a;
 	--muted: #6c757d;
 	--surface: #fff;
@@ -84,14 +82,12 @@ body {
 	margin-bottom: 32px;
 }
 
-/* GRID */
-.results-grid {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 16px;
+.test-meta {
+	font-size: 13px;
+	color: var(--muted);
+	margin-bottom: 32px;
 }
 
-/* RESULT CARD */
 .result-card {
 	background: rgba(247, 251, 248, 0.95);
 	border-radius: 12px;
@@ -101,9 +97,10 @@ body {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+	margin-bottom: 16px;
 }
 
-.result-card .test-id {
+.test-id {
 	font-size: 11px;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -111,74 +108,35 @@ body {
 	color: #2f6f4f;
 }
 
-.result-card .test-date {
-	font-size: 13px;
-	color: var(--muted);
+.question-text {
+	font-size: 14px;
+	margin-top: 4px;
+	margin-bottom: 8px;
+	color: var(--text);
 }
 
-.result-card .divider {
+.answer-options {
+	font-size: 13px;
+	color: var(--muted);
+	margin-bottom: 8px;
+	padding-left: 16px;
+}
+
+.answer-text {
+	font-size: 14px;
+	color: var(--text);
+}
+.answer-status {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.divider {
 	border: none;
 	border-top: 1px solid var(--border);
 	margin: 4px 0;
 }
 
-.result-card .grade {
-	display: inline-block;
-	padding: 4px 12px;
-	border-radius: 40px;
-	font-size: 13px;
-	font-weight: 600;
-	align-self: flex-start;
-}
-
-.grade-high {
-	background: #e8f5e9;
-	color: var(--green-mid);
-}
-
-.grade-mid {
-	background: #fff8e1;
-	color: #92610a;
-}
-
-.grade-low {
-	background: #ffebee;
-	color: var(--red-dark);
-}
-
-.grade-row {
-    display: flex;
-    align-items: center;
-    gap: 85px;
-    margin-top: 8px;
-}
-
-.grade-button {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 40px;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    background-color:#ebeff5;
-    color: var(--text);
-    transition: background 0.2s, color 0.2s;
-}
-
-.grade-button:hover {
-    background-color: var(--border);
-    color: var(--text);
-}
-
-/* EMPTY STATE */
-.empty {
-	font-size: 14px;
-	color: var(--muted);
-	text-align: center;
-	padding: 16px 0;
-}
-
-/* BACK LINK */
 .back-link {
 	margin-top: 24px;
 	text-align: center;
@@ -218,30 +176,37 @@ footer {
 	<div class="page">
 		<div class="container">
 
-			<h1 class="page-heading">Test History</h1>
-			<p class="page-message">All completed tests.</p>
+			<h1 class="page-heading" th:text="'Review Test #' + ${test.testId}"></h1>
 
-			<div th:if="${tests.isEmpty()}" class="empty">You have not
-				completed any tests yet.</div>
+			<div class="test-meta">
+				<div th:text="'Score: ' + ${test.result} + '%'"></div>
+				<div
+					th:text="${#temporals.format(test.createdAt, 'dd MMM yyyy, HH:mm')}"></div>
+			</div>
 
-			<div th:unless="${tests.isEmpty()}" class="results-grid">
-				<div th:each="test : ${tests}" class="result-card">
-					<div class="test-id" th:text="'Test #' + ${test.testId}"></div>
-					<div class="test-date"
-						th:text="${#temporals.format(test.createdAt, 'dd MMM yyyy, HH:mm')}"></div>
-					<hr class="divider" />
-					<div class="grade-row">
-						<span th:text="${test.result + '%'}"
-							th:classappend="${test.result >= 70} ? 'grade grade-high' :
-						                 (${test.result >= 40} ? 'grade grade-mid' : 'grade grade-low')">
-						</span> 
-						<a class="grade-button" th:href="@{'/review-test/' + ${test.testId}}" >Review Test</a>
-					</div>
-				</div>
+			<div th:each="q, iterStat : ${questions}" class="result-card">
+				<div class="test-id" th:text="'Question ' + (${iterStat.index + 1})"></div>
+				<div class="question-text" th:text="${q.question}"></div>
+
+				<!-- Show options if they exist -->
+				<ul class="answer-options"
+					th:if="${q.optionA != null or q.optionB != null}">
+					<li th:if="${q.optionA != null}" th:text="${q.optionA}"></li>
+					<li th:if="${q.optionB != null}" th:text="${q.optionB}"></li>
+				</ul>
+
+				<hr class="divider" />
+
+				<!-- User answer -->
+				<div class="answer-text" th:text="'Your answer: ' + ${q.userAnswer}"></div>
+
+				<!-- Answer status -->
+				<div class="answer-status" th:text="${q.answerStatus}"></div>
+
 			</div>
 
 			<div class="back-link">
-				<a th:href="@{/}">Back to dashboard</a>
+				<a th:href="@{/my-tests}">Back to test history</a>
 			</div>
 
 		</div>
