@@ -16,18 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-//	@Bean
-//	public UserDetailsService userDetailsService() {
-//		UserDetails student = User.builder().username("student").password("{noop}password").roles("STUDENT").build();
-//
-//		UserDetails instructor = User.builder().username("instructor").password("{noop}password").roles("INSTRUCTOR")
-//				.build();
-//
-//		UserDetails admin = User.builder().username("admin").password("{noop}password").roles("ADMIN").build();
-//		
-//		return new InMemoryUserDetailsManager(student, instructor, admin);
-//	}
-
 	@Bean
 	public SecurityFilterChain permissionsFilter(HttpSecurity http) throws Exception {
 	    http.authorizeHttpRequests(auth -> auth

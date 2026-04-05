@@ -39,17 +39,43 @@ public class TestGeneratorService {
 	@Transactional
 	public Test generateTestForUser(String username) {
 		List<Noun> nouns = nounRepository.findAll();
+		List<Noun> validNouns = new ArrayList<>();
 
-		if (nouns.size() < 3) {
+		for (Noun noun : nouns) {
+			if (noun.getEnglish() != null && noun.getWelsh() != null && noun.getGender() != null) {
+				validNouns.add(noun);
+			}
+		}
+		if (validNouns.size() < 20) {
 			throw new IllegalStateException("Not enough nouns available for test, please speak to your instructor");
 		}
-		List<QuestionBlueprint> questionList = buildQuestionList(nouns);
-
-		if (questionList.size() < 20) {
-			throw new IllegalStateException("Not enough questions, please contact your instructor or administrator");
+		
+		Collections.shuffle(validNouns);
+		
+		List<Noun> selectedNouns = validNouns.subList(0,  20);
+		
+		List<Question.QuestionType> questionTypes = new ArrayList<>();
+		for (int i = 0; i < 7; i++) {
+			questionTypes.add(Question.QuestionType.ENGLISH);
+		}
+		for (int i = 0; i < 7; i++) {
+			questionTypes.add(Question.QuestionType.WELSH);
+		}
+		for (int i = 0; i < 6; i++) {
+			questionTypes.add(Question.QuestionType.GENDER);
+		}
+		
+		Collections.shuffle(questionTypes);
+		
+		List<QuestionBlueprint> questionList = new ArrayList<>();
+		for (int i = 0; i < 20; i++) {
+			questionList.add(buildQuestionList(selectedNouns.get(i), questionTypes.get(i)));
 		}
 
 		Collections.shuffle(questionList);
+
+
+		
 
 		// add test date-time
 		Test test = new Test(0, username, 0, LocalDateTime.now());
@@ -220,23 +246,23 @@ public class TestGeneratorService {
 
 	}
 
-	private List<QuestionBlueprint> buildQuestionList(List<Noun> nouns) {
-		List<QuestionBlueprint> questions = new ArrayList<>();
+	private QuestionBlueprint buildQuestionList(Noun noun,  Question.QuestionType questionType) {
+		switch (questionType) {
+		case ENGLISH:
+			return new QuestionBlueprint(Question.QuestionType.ENGLISH,
+					"What is the meaning of \"" + noun.getWelsh() + "\"?", noun.getEnglish());
 
-		for (Noun noun : nouns) {
-			if (noun.getEnglish() != null && noun.getWelsh() != null && noun.getGender() != null) {
-				questions.add(new QuestionBlueprint(Question.QuestionType.ENGLISH,
-						"What is the meaning of \"" + noun.getWelsh() + "\"?", noun.getEnglish()));
+		case WELSH:
+			return new QuestionBlueprint(Question.QuestionType.WELSH,
+					"What is the Welsh for \"" + noun.getEnglish() + "\"?", noun.getWelsh());
 
-				questions.add(new QuestionBlueprint(Question.QuestionType.WELSH,
-						"What is the Welsh for \"" + noun.getEnglish() + "\"?", noun.getWelsh()));
+		case GENDER:
+			return new QuestionBlueprint(Question.QuestionType.GENDER,
+					"What gender is the word \"" + noun.getWelsh() + "\"?", noun.getGender().name());
 
-				questions.add(new QuestionBlueprint(Question.QuestionType.GENDER,
-						"What gender is the word \"" + noun.getWelsh() + "\"?", noun.getGender().name()));
-			}
+		default:
+			throw new IllegalArgumentException("Unsupported question type");
 		}
-
-		return questions;
 	}
 
 
