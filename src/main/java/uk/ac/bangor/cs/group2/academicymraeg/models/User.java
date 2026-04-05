@@ -1,146 +1,122 @@
 package uk.ac.bangor.cs.group2.academicymraeg.models;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long userId;
 
-	private String username;
-	private String passwordHash;
-	private String email;
-	private String firstName;
-	private String lastName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long userId;
 
-	public enum IsInstructor {
-		NO, YES
-	};
+    private String username;
+    private String passwordHash;
+    private String email;
+    private String firstName;
+    private String lastName;
 
-	public enum IsAdmin {
-		NO, YES
-	};
+    public enum IsInstructor {
+        NO, YES
+    }
 
-	private IsInstructor isInstructor;
+    public enum IsAdmin {
+        NO, YES
+    }
 
-	private IsAdmin isAdmin;
+    private IsInstructor isInstructor;
+    private IsAdmin isAdmin;
 
-//	public enum Role {
-//		STUDENT, INSTRUCTOR, SYSTEM_ADMIN
-//
-//	};
+    // Default constructor
+    public User() {}
 
-//	private boolean enabled;
-//	@Enumerated(EnumType.STRING)
-//	private Role role;
+    // Constructor
+    public User(long userId, String username, String passwordHash, String email,
+                String firstName, String lastName,
+                IsInstructor isInstructor, IsAdmin isAdmin) {
 
-	public User() {
+        this.userId = userId;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isInstructor = isInstructor;
+        this.isAdmin = isAdmin;
+    }
 
-	}
+    // Getters & Setters
 
-	// Constructors
-	public User(long userId, String username, String passwordHash, String email, String firstName, String lastName,
-			IsInstructor isInstructor, IsAdmin isAdmin) {
-		super();
-		this.userId = userId;
-		this.username = username;
-		this.passwordHash = passwordHash;
-		this.email = email;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.isInstructor = isInstructor;
-		this.isAdmin = isAdmin;
-//		this.enabled = enabled;
-//		this.role = role;
-	}
+    public long getUserId() {
+        return userId;
+    }
 
-	public IsInstructor getIsInstructor() {
-		return isInstructor;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setIsInstructor(IsInstructor isInstructor) {
-		this.isInstructor = isInstructor;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public IsAdmin getIsAdmin() {
-		return isAdmin;
-	}
+    public String getPasswordHash() {
+        return passwordHash;
+    }
 
-	public void setIsAdmin(IsAdmin isAdmin) {
-		this.isAdmin = isAdmin;
-	}
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getPasswordHash() {
-		return passwordHash;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public IsInstructor getIsInstructor() {
+        return isInstructor;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setIsInstructor(IsInstructor isInstructor) {
+        this.isInstructor = isInstructor;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public IsAdmin getIsAdmin() {
+        return isAdmin;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setIsAdmin(IsAdmin isAdmin) {
+        this.isAdmin = isAdmin;
+    }
 
-//	public boolean isEnabled() {
-//		return enabled;
-//	}
-
-//	public void setEnabled(boolean enabled) {
-//		this.enabled = enabled;
-//	}
-
-//	public Role getRole() {
-//		return role;
-//	}
-//
-//	public void setRole(Role role) {
-//		this.role = role;
-//	}
-
-	public long getUserId() {
-		return userId;
-	}
-
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", passwordHash=" + passwordHash + ", email="
-				+ email + ", firstName=" + firstName + ", lastName=" + lastName + ", isInstructor=" + isInstructor
-				+ ", isAdmin=" + isAdmin + "]";
-	}
-
+    @Override
+    public String toString() {
+        return "User [userId=" + userId +
+                ", username=" + username +
+                ", email=" + email +
+                ", firstName=" + firstName +
+                ", lastName=" + lastName +
+                ", isInstructor=" + isInstructor +
+                ", isAdmin=" + isAdmin + "]";
+    }
 }

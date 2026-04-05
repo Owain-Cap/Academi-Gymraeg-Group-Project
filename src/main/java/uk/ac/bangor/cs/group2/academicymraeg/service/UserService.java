@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import uk.ac.bangor.cs.group2.academicymraeg.models.User;
@@ -18,8 +19,11 @@ import uk.ac.bangor.cs.group2.academicymraeg.repository.UserRepository;
 @Service
 public class UserService {
 
-
     private final UserRepository userRepository;
+
+    // Password encoder used to securely hash user passwords
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -28,6 +32,23 @@ public class UserService {
 
     // Create or Update a user
     public User saveUser(User user) {
+
+        // Ensure password is encoded before saving
+        // Prevents storing plain text passwords and avoids login failures
+        if (user.getPasswordHash() != null && !user.getPasswordHash().startsWith("$2a$")) {
+            user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+        }
+
+        // Ensure role flags are not null (default to NO)
+        // Prevents null pointer issues and ensures correct role assignment
+        if (user.getIsInstructor() == null) {
+            user.setIsInstructor(User.IsInstructor.NO);
+        }
+
+        if (user.getIsAdmin() == null) {
+            user.setIsAdmin(User.IsAdmin.NO);
+        }
+
         return userRepository.save(user);
     }
 

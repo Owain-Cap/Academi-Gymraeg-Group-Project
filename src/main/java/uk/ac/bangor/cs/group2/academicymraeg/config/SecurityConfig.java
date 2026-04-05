@@ -4,42 +4,59 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
-//	@Bean
-//	public UserDetailsService userDetailsService() {
-//		UserDetails student = User.builder().username("student").password("{noop}password").roles("STUDENT").build();
-//
-//		UserDetails instructor = User.builder().username("instructor").password("{noop}password").roles("INSTRUCTOR")
-//				.build();
-//
-//		UserDetails admin = User.builder().username("admin").password("{noop}password").roles("ADMIN").build();
-//		
-//		return new InMemoryUserDetailsManager(student, instructor, admin);
-//	}
+    @Bean
+    public SecurityFilterChain permissionsFilter(HttpSecurity http) throws Exception {
 
-	@Bean
-	public SecurityFilterChain permissionsFilter(HttpSecurity http) throws Exception {
-	    http.authorizeHttpRequests(auth -> auth
-	            .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
-	            .anyRequest().authenticated()
-	        ).formLogin(withDefaults());
+        http
+            // Disable CSRF if you're not using forms with tokens (optional but common in dev)
+            .csrf(csrf -> csrf.disable())
 
-	    return http.build();
-	}
+            .authorizeHttpRequests(auth -> auth
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();
-	}
+                // Public resources (no authentication required)
+                .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
+
+                // STUDENT access (all logged-in users)
+                .requestMatchers("/test/**", "/take-test/**")
+                    .hasAnyRole("STUDENT", "INSTRUCTOR", "SYSTEM_ADMIN")
+
+                // INSTRUCTOR access
+                .requestMatchers("/noun/edit/**", "/test/create/**")
+                    .hasAnyRole("INSTRUCTOR", "SYSTEM_ADMIN")
+
+                // SYSTEM ADMIN only access
+                .requestMatchers("/admin/**")
+                    .hasRole("SYSTEM_ADMIN")
+
+                // Any other request requires authentication
+                .anyRequest().authenticated()
+            )
+
+            // Enable default Spring Security login form
+            .formLogin(withDefaults())
+
+            // Enable logout support
+            .logout(logout -> logout
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+            );
+
+        return http.build();
+    }
+
+    // Password encoder for hashing passwords (must match how passwords are stored)
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
