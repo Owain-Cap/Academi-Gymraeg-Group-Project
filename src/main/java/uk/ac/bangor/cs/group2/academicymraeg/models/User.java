@@ -113,6 +113,12 @@ public class User {
 	public long getUserId() {
 		return userId;
 	}
+	
+	// Required by Spring to properly bind the hidden userId during updates, preventing it from being seen as a new user.
+	// Used for updating the user for the admin page edit
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
 
 	@Override
 	public String toString() {
