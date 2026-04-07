@@ -5,6 +5,8 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,19 +21,53 @@ public class Test{
 	private String username;
 	private int result;
 	private LocalDateTime createdAt;
+	public enum TestStatus {
+		IN_PROGRESS,
+		SUBMITTED
+	}
+	
+	@Enumerated(EnumType.STRING)
+	private TestStatus status;
+	private LocalDateTime expiresAt;
 	
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TestQuestions> questions;
 	
-	public Test(long testId, String username, int result, LocalDateTime createdAt) {
+	public Test(long testId, String username, int result, LocalDateTime createdAt, TestStatus status, LocalDateTime expiresAt) {
 		super();
 		this.testId = testId;
 		this.username = username;
 		this.result = result;
 		this.createdAt = createdAt;
+		this.status = status;
+		this.expiresAt = expiresAt;
 	}
 
 	
+
+	public TestStatus getStatus() {
+		return status;
+	}
+
+
+
+	public void setStatus(TestStatus status) {
+		this.status = status;
+	}
+
+
+
+	public LocalDateTime getExpiresAt() {
+		return expiresAt;
+	}
+
+
+
+	public void setExpiresAt(LocalDateTime expiresAt) {
+		this.expiresAt = expiresAt;
+	}
+
+
 
 	public Test() {
 	}
@@ -74,11 +110,15 @@ public class Test{
         this.questions = questions;
     }
 
+
+
 	@Override
 	public String toString() {
 		return "Test [testId=" + testId + ", username=" + username + ", result=" + result + ", createdAt=" + createdAt
-				+ "]";
+				+ ", status=" + status + ", expiresAt=" + expiresAt + ", questions=" + questions + "]";
 	}
+
+
 	
 
 	
