@@ -27,8 +27,9 @@ public class SecurityConfig {
                 .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
 
                 // STUDENT access (all logged-in users)
-                .requestMatchers("/test/**", "/take-test/**")
-                    .hasAnyRole("STUDENT", "INSTRUCTOR", "SYSTEM_ADMIN")
+                .requestMatchers("/tests/**")
+                .hasAnyRole("STUDENT", "INSTRUCTOR", "SYSTEM_ADMIN")
+
 
                 // INSTRUCTOR access
                 .requestMatchers("/noun/edit/**", "/test/create/**")
