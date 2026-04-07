@@ -1,6 +1,8 @@
 package uk.ac.bangor.cs.group2.academicymraeg.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,7 +28,10 @@ public class User {
         NO, YES
     }
 
+    @Enumerated(EnumType.STRING)
     private IsInstructor isInstructor;
+
+    @Enumerated(EnumType.STRING)
     private IsAdmin isAdmin;
 
     // Default constructor
