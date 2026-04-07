@@ -26,18 +26,17 @@ public class SecurityConfig {
                 // Public resources (no authentication required)
                 .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
 
-                // STUDENT access (all logged-in users)
-                .requestMatchers("/tests/**")
+             // STUDENT access (all logged-in users)
+                .requestMatchers("/tests/**", "/my-tests/**")
                 .hasAnyRole("STUDENT", "INSTRUCTOR", "SYSTEM_ADMIN")
 
-
                 // INSTRUCTOR access
-                .requestMatchers("/noun/edit/**", "/test/create/**")
-                    .hasAnyRole("INSTRUCTOR", "SYSTEM_ADMIN")
+                .requestMatchers("/nouns/**")
+                .hasAnyRole("INSTRUCTOR", "SYSTEM_ADMIN")
 
                 // SYSTEM ADMIN only access
-                .requestMatchers("/admin/**")
-                    .hasRole("SYSTEM_ADMIN")
+                .requestMatchers("/admin/**", "/register/**")
+                .hasRole("SYSTEM_ADMIN")
 
                 // Any other request requires authentication
                 .anyRequest().authenticated()
