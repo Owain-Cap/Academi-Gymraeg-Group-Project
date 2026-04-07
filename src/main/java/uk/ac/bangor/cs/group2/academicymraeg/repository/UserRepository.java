@@ -22,4 +22,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	//creates a query to retrieve matching usernames from the database
 	//optional tag added to prevent unregistered usernames crashing the program
 	Optional<User> findByUsername(String username);
+	boolean existsByUsername(String username);
 }

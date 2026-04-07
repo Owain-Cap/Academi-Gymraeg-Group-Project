@@ -1,0 +1,218 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Review Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+:root {
+	--green-dark: #1f3d2b;
+	--green-mid: #2d5a27;
+	--green-light: #b7d6c2;
+	--text: #1e2a3a;
+	--muted: #6c757d;
+	--surface: #fff;
+	--bg: #f4f6f3;
+	--border: #e2e8f0;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: "DM Sans", sans-serif;
+	background: var(--bg);
+	color: var(--text);
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 56px;
+	padding: 0 40px;
+	background: rgba(31, 61, 43, 0.95);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+	flex-shrink: 0;
+}
+
+.nav-logo {
+	font-family: "Fraunces", serif;
+	font-size: 18px;
+	font-weight: 700;
+	color: #fff;
+	text-decoration: none;
+}
+
+.nav-logo em {
+	font-style: italic;
+	font-weight: 400;
+	color: var(--green-light);
+}
+
+.page {
+	flex: 1;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	padding: 48px 24px 64px;
+}
+
+.container {
+	width: 100%;
+	max-width: 860px;
+}
+
+.page-heading {
+	font-family: "Fraunces", serif;
+	font-size: 32px;
+	font-weight: 700;
+	color: var(--text);
+	margin-bottom: 4px;
+}
+
+.page-message {
+	font-size: 14px;
+	color: var(--muted);
+	margin-bottom: 32px;
+}
+
+.test-meta {
+	font-size: 13px;
+	color: var(--muted);
+	margin-bottom: 32px;
+}
+
+.result-card {
+	background: rgba(247, 251, 248, 0.95);
+	border-radius: 12px;
+	padding: 20px 24px;
+	border: 1px solid #e3e8e3;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 16px;
+}
+
+.test-id {
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: #2f6f4f;
+}
+
+.question-text {
+	font-size: 14px;
+	margin-top: 4px;
+	margin-bottom: 8px;
+	color: var(--text);
+}
+
+.answer-options {
+	font-size: 13px;
+	color: var(--muted);
+	margin-bottom: 8px;
+	padding-left: 16px;
+}
+
+.answer-text {
+	font-size: 14px;
+	color: var(--text);
+}
+.answer-status {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.divider {
+	border: none;
+	border-top: 1px solid var(--border);
+	margin: 4px 0;
+}
+
+.back-link {
+	margin-top: 24px;
+	text-align: center;
+}
+
+.back-link a {
+	font-size: 14px;
+	color: var(--muted);
+	text-decoration: none;
+	font-weight: 500;
+	transition: color 0.2s;
+}
+
+.back-link a:hover {
+	color: var(--text);
+	text-decoration: underline;
+}
+
+footer {
+	text-align: center;
+	font-size: 11px;
+	color: rgba(255, 255, 255, 0.85);
+	padding: 16px;
+	flex-shrink: 0;
+	background: rgba(31, 61, 43, 0.95);
+	border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+</style>
+</head>
+
+<body>
+
+	<div class="topbar">
+		<a class="nav-logo" th:href="@{/}">Academi <em>Gymraeg</em></a>
+	</div>
+
+	<div class="page">
+		<div class="container">
+
+			<h1 class="page-heading" th:text="'Review Test #' + ${test.testId}"></h1>
+
+			<div class="test-meta">
+				<div th:text="'Score: ' + ${test.result} + '%'"></div>
+				<div
+					th:text="${#temporals.format(test.createdAt, 'dd MMM yyyy, HH:mm')}"></div>
+			</div>
+
+			<div th:each="q, iterStat : ${questions}" class="result-card">
+				<div class="test-id" th:text="'Question ' + (${iterStat.index + 1})"></div>
+				<div class="question-text" th:text="${q.question}"></div>
+
+				<!-- Show options if they exist -->
+				<ul class="answer-options"
+					th:if="${q.optionA != null or q.optionB != null}">
+					<li th:if="${q.optionA != null}" th:text="${q.optionA}"></li>
+					<li th:if="${q.optionB != null}" th:text="${q.optionB}"></li>
+				</ul>
+
+				<hr class="divider" />
+
+				<!-- User answer -->
+				<div class="answer-text" th:text="'Your answer: ' + ${q.userAnswer}"></div>
+
+				<!-- Answer status -->
+				<div class="answer-status" th:text="${q.answerStatus}"></div>
+
+			</div>
+
+			<div class="back-link">
+				<a th:href="@{/my-tests}">Back to test history</a>
+			</div>
+
+		</div>
+	</div>
+
+	<footer>Academi Gymraeg</footer>
+
+</body>
+</html>

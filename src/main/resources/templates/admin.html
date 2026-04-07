@@ -2,44 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Admin Dashboard</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <!-- Can change the inline css later to dedicated file -->
-<style>
-body {
-	font-family: Arial, sans-serif;
-	margin: 20px;
-}
-
-table {
-	border-collapse: collapse;
-	width: 100%;
-	margin-top: 20px;
-}
-
-th, td {
-	border: 1px solid #ddd;
-	padding: 8px;
-	text-align: left;
-}
-
-th {
-	background-color: #f2f2f2;
-}
-
-h1 {
-	color: #333;
-}
-
-.actions {
-	display: flex;
-	gap: 10px;
-}
-
-button {
-	padding: 5px 10px;
-	cursor: pointer;
-}
-</style>
+<link rel="stylesheet" th:href="@{/css/admin.css}"/>
 </head>
 <body>
 	<!-- Admin page used for managing all users on the application -->
@@ -84,10 +49,43 @@ button {
 					th:href="@{/admin/users/edit/{id}(id=${user.userId})}"> <!-- Send to exact users edit form -->
 						<button type="button">Edit</button>
 				</a>
-					<button type="button" disabled title="Coming soon">Delete</button>
-				</td>
+					<button type="button"
+						th:data-action="@{/admin/users/delete/{id}(id=${user.userId})}"
+						th:data-username="${user.username}"
+						onclick="openDeleteModal(this)"
+						style="background-color: #f44336; color: white; border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer;">
+						Delete</button></td>
 			</tr>
 		</tbody>
 	</table>
+	<!-- Delete Confirmation Modal -->
+	<div id="deleteModal" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2>Confirm Deletion</h2>
+				<span class="close" onclick="closeDeleteModal()">&times;</span>
+			</div>
+			<div class="modal-body">
+				<p>
+					Are you sure you want to delete user <strong id="deleteUserName"></strong>?
+				</p>
+				<p style="color: #f44336; font-size: 0.9em; margin-top: 10px;">This
+					action cannot be undone.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" onclick="closeDeleteModal()"
+					class="btn-cancel">Cancel</button>
+					<!-- th:action is required here so Thymeleaf injects the hidden CSRF token into the form.
+				     Without it, Spring Security will reject the POST request with a 403 Forbidden error.
+				     The actual action URL is overwritten by admin.js at the point when the modal opens. -->
+				<form id="confirmDeleteForm" th:action="@{/}" method="post" style="margin: 0;">
+					<button type="submit" class="btn-confirm-delete">Delete
+						User</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script th:src="@{/js/admin.js}"></script>
 </body>
 </html>

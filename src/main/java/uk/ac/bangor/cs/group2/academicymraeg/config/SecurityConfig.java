@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+<<<<<<< rolebasedpermission
     @Bean
     public SecurityFilterChain permissionsFilter(HttpSecurity http) throws Exception {
 
@@ -60,3 +61,20 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+=======
+	@Bean
+	public SecurityFilterChain permissionsFilter(HttpSecurity http) throws Exception {
+	    http.authorizeHttpRequests(auth -> auth
+	            .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
+	            .anyRequest().authenticated()
+	        ).formLogin(withDefaults());
+
+	    return http.build();
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+	    return new BCryptPasswordEncoder();
+	}
+}
+>>>>>>> main
