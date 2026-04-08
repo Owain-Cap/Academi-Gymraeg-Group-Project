@@ -33,10 +33,15 @@ public class AdminController {
 	 * admin.html Thymeleaf template.
 	 *
 	 * @param model Spring's Model object used to pass data to the view.
+	 * @param principal The currently authenticated user's principal object.
 	 * @return The name of the Thymeleaf template to render ("admin").
 	 */
 	@GetMapping("/admin")
-	public String adminPage(Model model) {
+	public String adminPage(Model model, java.security.Principal principal) {
+		// Extract the username from the Security Principal to display "Helo, [username]" in the navbar
+		if (principal != null) {
+			model.addAttribute("username", principal.getName());
+		}
 		model.addAttribute("users", userService.getAllUsers()); // gets all users from database
 		return "admin"; // returns the admin.html template
 	}

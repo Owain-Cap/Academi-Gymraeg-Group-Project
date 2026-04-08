@@ -37,3 +37,26 @@ window.onclick = function (event) {
 		closeDeleteModal();
 	}
 }
+
+/**
+ * Filters the user table based on the selected role.
+ */
+function filterUsersByRole() {
+	const filterValue = document.getElementById("roleFilter").value;
+	// Get all rows in the table body
+	const rows = document.querySelectorAll("table tbody tr");
+
+	rows.forEach(row => {
+		// The role is in the 6th column (index 5)
+		const roleCell = row.cells[5];
+		if (roleCell) {
+			const role = roleCell.textContent.trim();
+			// Show the row if the filter is "All" or if the role matches the filter value
+			if (filterValue === "All" || role === filterValue) {
+				row.style.display = "";
+			} else {
+				row.style.display = "none";
+			}
+		}
+	});
+}

@@ -1,149 +1,382 @@
 @charset "UTF-8";
 
 /* ---------------------------------------
-   Base Layout & Typography
-------------------------------------------
-*/
+   Global Resets & Layout
+------------------------------------------ */
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
 body {
-	font-family: Arial, sans-serif;
-	margin: 20px;
-}
-
-h1 {
-	color: #333;
-}
-
-/* 
-------------------------------------------
-   User Table Styling
-------------------------------------------
-*/
-table {
-	border-collapse: collapse;
-	width: 100%;
-	margin-top: 20px;
-}
-
-th, td {
-	border: 1px solid #ddd;
-	padding: 8px;
-	text-align: left;
-}
-
-th {
-	background-color: #f2f2f2;
-}
-
-/* Actions column that holds the Edit/Delete buttons */
-.actions {
+	font-family: "DM Sans", sans-serif;
+	color: #1e2a3a;
+	min-height: 100vh;
 	display: flex;
-	gap: 10px;
+	flex-direction: column;
+	background-image: url('../images/background.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	position: relative;
 }
 
-/* Base button styling */
-button {
-	padding: 5px 10px;
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.28);
+	z-index: 0;
+}
+
+/* ---------------------------------------
+   Topbar Navigation Styling - Can/will be placed in the shared nav bar css file as to not duplicate code
+------------------------------------------ */
+.topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 56px;
+	padding: 0 40px;
+	background: rgba(31, 61, 43, 0.95);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+	flex-shrink: 0;
+	position: relative;
+	z-index: 1;
+}
+
+/* Logo typography using Google serif font for emphasis */
+.nav-logo {
+	font-family: "Fraunces", serif;
+	font-size: 18px;
+	font-weight: 700;
+	color: #fff;
+}
+
+.nav-logo em {
+	font-style: italic;
+	font-weight: 400;
+	color: #b7d6c2;
+}
+
+.nav-right {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+.nav-user {
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.85);
+}
+
+/* Secondary button inside the topbar acting as a return anchor */
+.btn-home {
+	background-color: #ffffff;
+	color: rgba(31, 61, 43, 0.95);
+	border-radius: 4px;
+	padding: 6px 12px;
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+	text-decoration: none;
+	transition: background-color 0.2s;
+}
+
+.btn-home:hover {
+	background-color: #b7d6c2;
+}
+
+
+/* ---------------------------------------
+   Dashboard Panel Layout
+------------------------------------------ */
+.content-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 40px 20px;
+	position: relative;
+	z-index: 1;
+	flex: 1;
+}
+
+.dashboard-panel {
+	width: 100%;
+	max-width: 1100px;
+	/* Semi-transparent white background combined with an underlying blur filter */
+	background: rgba(255, 255, 255, 0.92);
+	backdrop-filter: blur(12px);
+	border-radius: 16px;
+	padding: 32px 40px;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.dashboard-header {
+	margin-bottom: 24px;
+}
+
+.dashboard-header h1 {
+	font-family: "Fraunces", serif;
+	font-size: 32px;
+	font-weight: 700;
+	color: #1a2d6b;
+	/* Darker blue/green from admin theme */
+	margin-bottom: 8px;
+}
+
+
+/* ---------------------------------------
+   Action Bar (Buttons & Filters)
+------------------------------------------ */
+.action-bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 24px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.btn-add {
+	display: inline-block;
+	background: #2f6f4f;
+	/* Emerald green theme */
+	color: #ffffff;
+	padding: 10px 24px;
+	border-radius: 40px;
+	font-size: 14px;
+	font-weight: 600;
+	border: none;
+	text-decoration: none;
+	box-shadow: 0 4px 10px rgba(47, 111, 79, 0.2);
+	transition: all 0.2s ease;
 	cursor: pointer;
 }
 
-/* 
-------------------------------------------
-   Delete Confirmation Modal Styling
-------------------------------------------
-*/
+.btn-add:hover {
+	background: #23583d;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 14px rgba(47, 111, 79, 0.3);
+}
 
-/* The hidden background overlay */
+/* Container for the table's filter element, aligning the label and custom select side by side */
+.filter-container {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.filter-container label {
+	font-size: 14px;
+	font-weight: 600;
+	color: #5a6b60;
+}
+
+.filter-select {
+	padding: 8px 16px;
+	border-radius: 8px;
+	border: 1px solid #c8d2cb;
+	background-color: #fff;
+	color: #1e2a3a;
+	font-family: "DM Sans", sans-serif;
+	font-size: 14px;
+	outline: none;
+	cursor: pointer;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+	transition: border-color 0.2s;
+}
+
+.filter-select:focus {
+	border-color: #2f6f4f;
+}
+
+/* ---------------------------------------
+   Modern User Table
+------------------------------------------ */
+table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+th,
+td {
+	padding: 14px 16px;
+	text-align: left;
+	font-size: 14px;
+}
+
+th {
+	font-weight: 600;
+	color: #5a6b60;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	font-size: 12px;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+}
+
+td {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+	color: #334155;
+}
+
+tbody tr {
+	transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+	background-color: rgba(47, 111, 79, 0.03);
+}
+
+tbody tr:last-child td {
+	border-bottom: none;
+}
+
+/* ---------------------------------------
+   Table Actions (Edit/Delete Buttons)
+------------------------------------------ */
+.actions {
+	display: flex;
+	gap: 8px;
+}
+
+/* Edit button shaped pill with grey colouring*/
+.btn-edit {
+	background-color: #f1f5f9;
+	color: #475569;
+	border: 1px solid #e2e8f0;
+	padding: 6px 14px;
+	border-radius: 20px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.btn-edit:hover {
+	background-color: #e2e8f0;
+	color: #1e293b;
+}
+
+/* Delete button styled with red colouring*/
+.btn-delete {
+	background-color: #fef2f2;
+	color: #ef4444;
+	border: 1px solid #fee2e2;
+	padding: 6px 14px;
+	border-radius: 20px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+	background-color: #fee2e2;
+	color: #dc2626;
+	border-color: #fca5a5;
+}
+
+/* ---------------------------------------
+   Delete Confirmation Modal
+------------------------------------------ */
+/* Full screen overlay that darkens and blurs the main app when the popup appears */
 .modal {
 	display: none;
 	position: fixed;
 	z-index: 1000;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
+	inset: 0;
 	background-color: rgba(0, 0, 0, 0.4);
-	align-items: center;    /* Center modal vertically */
-	justify-content: center; /* Center modal horizontally */
+	backdrop-filter: blur(4px);
+	align-items: center;
+	justify-content: center;
 }
 
-/* The actual white modal box */
 .modal-content {
 	background-color: #fff;
-	border-radius: 8px;
-	width: 400px;
+	border-radius: 16px;
+	width: 420px;
 	max-width: 90%;
-	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+	overflow: hidden;
 }
 
-/* Modal Title Header */
 .modal-header {
-	padding: 15px 20px;
-	border-bottom: 1px solid #eee;
+	padding: 24px 24px 16px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
 .modal-header h2 {
-	margin: 0;
-	font-size: 18px;
-	color: #333;
+	font-family: "Fraunces", serif;
+	font-size: 20px;
+	color: #1e2a3a;
 }
 
-/* The 'X' close button */
 .close {
-	color: #aaa;
+	color: #94a3b8;
 	font-size: 24px;
-	font-weight: bold;
+	font-weight: 300;
 	cursor: pointer;
+	line-height: 1;
+	transition: color 0.2s;
 }
 
 .close:hover {
-	color: #333;
+	color: #1e2a3a;
 }
 
-/* Modal inner content area */
 .modal-body {
-	padding: 20px;
-	color: #555;
+	padding: 0 24px 24px;
+	font-size: 15px;
+	color: #475569;
+	line-height: 1.5;
 }
 
-/* Modal actions row at bottom */
 .modal-footer {
-	padding: 15px 20px;
-	border-top: 1px solid #eee;
+	padding: 16px 24px;
 	display: flex;
 	justify-content: flex-end;
-	gap: 10px;
-	background-color: #fafafa;
-	border-bottom-left-radius: 8px;
-	border-bottom-right-radius: 8px;
+	gap: 12px;
+	background-color: #f8fafc;
+	border-top: 1px solid #e2e8f0;
 }
 
-/* Cancel Button */
 .btn-cancel {
 	background-color: #fff;
-	border: 1px solid #ccc;
-	color: #333;
-	border-radius: 4px;
-	padding: 8px 15px;
+	border: 1px solid #cbd5e1;
+	color: #475569;
+	border-radius: 40px;
+	padding: 8px 20px;
+	font-size: 14px;
+	font-weight: 600;
 	cursor: pointer;
+	transition: all 0.2s;
 }
 
 .btn-cancel:hover {
-	background-color: #eee;
+	background-color: #f1f5f9;
 }
 
-/* Confirm Delete Button */
 .btn-confirm-delete {
-	background-color: #f44336;
+	background-color: #ef4444;
 	color: white;
 	border: none;
-	border-radius: 4px;
-	padding: 8px 15px;
+	border-radius: 40px;
+	padding: 8px 20px;
+	font-size: 14px;
+	font-weight: 600;
 	cursor: pointer;
+	box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+	transition: all 0.2s ease;
 }
 
 .btn-confirm-delete:hover {
-	background-color: #d32f2f;
+	background-color: #dc2626;
+	transform: translateY(-1px);
+	box-shadow: 0 6px 14px rgba(239, 68, 68, 0.3);
 }
