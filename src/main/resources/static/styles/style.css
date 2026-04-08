@@ -202,7 +202,6 @@ footer {
 	z-index: 1;
 }
 
-/* BACK LINK */
 .back-link {
     margin-top: 20px;
     text-align: center;
@@ -219,4 +218,22 @@ footer {
 .back-link a:hover {
     color: var(--text);
     text-decoration: underline;
+}
+
+.btn-add {
+    background: var(--green-mid);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-add:hover {
+    background: var(--green-dark);
 }
