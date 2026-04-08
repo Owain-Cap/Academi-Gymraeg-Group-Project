@@ -19,7 +19,7 @@
 		</div>
 	</div>
 
-	<!-- Main content area establishing the grid/flex context and holding the glass panel -->
+	<!-- Main content area for the grid/flex and glass panel -->
 	<div class="content-wrapper">
 		<!-- Container that houses the admin dashboard data -->
 		<div class="dashboard-panel">
@@ -82,7 +82,7 @@
 							<!-- Store the username so it can be displayed in the modal -->
 							<button type="button" th:data-action="@{/admin/users/delete/{id}(id=${user.userId})}"
 								th:data-username="${user.username}" onclick="openDeleteModal(this)"
-								class="btn-delete">Delete</button> <!-- Pass THIS button into JavaScript so we can extract its data -->
+								class="btn-delete">Delete</button> <!-- Pass this button into JavaScript so we can extract its data -->
 						</td>
 					</tr>
 				</tbody>
@@ -91,7 +91,7 @@
 		</div>
 	</div>
 
-	<!-- Delete Confirmation Modal -->
+	<!-- Modal for deleting user -->
 	<div id="deleteModal" class="modal">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -108,8 +108,8 @@
 			<div class="modal-footer">
 				<button type="button" onclick="closeDeleteModal()" class="btn-cancel">Cancel</button>
 				<!-- th:action is required here so Thymeleaf injects the hidden CSRF token into the form.
-				     Without it, Spring Security will reject the POST request with a 403 Forbidden error.
-				     The actual action URL is overwritten by admin.js at the point when the modal opens. -->
+				     Without it Spring Security will reject the POST request with a 403 Forbidden error.
+				      -->
 				<form id="confirmDeleteForm" th:action="@{/}" method="post" style="margin: 0;">
 					<button type="submit" class="btn-confirm-delete">Delete
 						User</button>
