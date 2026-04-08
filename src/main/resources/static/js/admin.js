@@ -15,7 +15,7 @@ function openDeleteModal(button) {
 	const actionUrl = button.getAttribute("data-action");
 	const username = button.getAttribute("data-username");
 
-	// Set the form submission URL to the exact users delete url
+	// Set the form submission URL to the exact users delete url, like: admin/delete/5
 	form.action = actionUrl;
 	// Update the modal text to clearly show which user is being deleted
 	userNameSpan.textContent = username;

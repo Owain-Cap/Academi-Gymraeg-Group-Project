@@ -79,9 +79,10 @@
 								<button type="button" class="btn-edit">Edit</button>
 							</a>
 							<!-- Send to exact users delete form -->
+							<!-- Store the username so it can be displayed in the modal -->
 							<button type="button" th:data-action="@{/admin/users/delete/{id}(id=${user.userId})}"
 								th:data-username="${user.username}" onclick="openDeleteModal(this)"
-								class="btn-delete">Delete</button>
+								class="btn-delete">Delete</button> <!-- Pass THIS button into JavaScript so we can extract its data -->
 						</td>
 					</tr>
 				</tbody>
