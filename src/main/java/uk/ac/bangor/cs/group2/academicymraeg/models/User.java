@@ -19,6 +19,7 @@ public class User {
 	private String firstName;
 	private String lastName;
 
+	
 	public enum IsInstructor {
 		NO, YES
 	};
@@ -27,8 +28,10 @@ public class User {
 		NO, YES
 	};
 
+	@Enumerated(EnumType.STRING)
 	private IsInstructor isInstructor;
 
+	@Enumerated(EnumType.STRING)
 	private IsAdmin isAdmin;
 
 //	public enum Role {
