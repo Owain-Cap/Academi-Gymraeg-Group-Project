@@ -4,90 +4,80 @@
 <title>Admin Dashboard</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!-- Can change the inline css later to dedicated file -->
+<link href="/styles/style.css" rel="stylesheet">
 <style>
 body {
-	font-family: Arial, sans-serif;
-	margin: 20px;
+    background: var(--bg);
+    color: var(--text);
 }
 
-table {
-	border-collapse: collapse;
-	width: 100%;
-	margin-top: 20px;
+.admin-page {
+    flex: 1;
+    padding: 48px 32px 64px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-th, td {
-	border: 1px solid #ddd;
-	padding: 8px;
-	text-align: left;
-}
-
-th {
-	background-color: #f2f2f2;
-}
-
-h1 {
-	color: #333;
-}
-
-.actions {
-	display: flex;
-	gap: 10px;
-}
-
-button {
-	padding: 5px 10px;
-	cursor: pointer;
-}
 </style>
 </head>
 <body>
-	<!-- Admin page used for managing all users on the application -->
-	<h1>Admin Dashboard - Manage Users</h1>
-
-	<div style="margin-bottom: 20px;">
-		<a th:href="@{/register}">
-			<button type="button"
-				style="background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Add
-				New User</button>
-		</a>
+	<div class="topbar">
+	    <a class="nav-logo">Academi <em>Gymraeg</em></a>
 	</div>
+	
+	<div class="admin-page">
+		<!-- Admin page used for managing all users on the application -->
+		<div class="page-header">
+			<h1>Admin - Manage Users</h1>
+			
+			<div style="margin-bottom: 20px;">
+			<a th:href="@{/register}">
+				<button type="button" class="btn-add">Add New User</button>
+			</a>
+			</div>
+		</div>
+		
+	
+		<!-- 
+	        Table displaying all users. 
+	        Thymeleaf's th:each is used to loop through the "users" list 
+	        passed from the AdminController and create a table row for each user.
+	    -->
+	    <div class="table-wrapper">
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Username</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Email</th>
+						<th>Role</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="user : ${users}">
+						<td th:text="${user.userId}">ID</td>
+						<td th:text="${user.username}">Username</td>
+						<td th:text="${user.firstName}">First Name</td>
+						<td th:text="${user.lastName}">Last Name</td>
+						<td th:text="${user.email}">Email</td>
+						<td
+							th:text="${user.isAdmin == T(uk.ac.bangor.cs.group2.academicymraeg.models.User.IsAdmin).YES ? 'System Admin' : 
+		               (user.isInstructor == T(uk.ac.bangor.cs.group2.academicymraeg.models.User.IsInstructor).YES ? 'Instructor' : 'Student')}">Role</td>
+						<td>
+							<a th:href="@{/admin/users/edit/{id}(id=${user.userId})}" class="table-link">Edit</a>
+							<a th:href="@{/admin/users/delete/{id}(id=${user.userId})}" class="table-link">Delete</a>
+						</td>
+						
+					</tr>
+				</tbody>
+			</table>	    
+	    </div>
 
-	<!-- 
-        Table displaying all users. 
-        Thymeleaf's th:each is used to loop through the "users" list 
-        passed from the AdminController and create a table row for each user.
-    -->
-	<table>
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Username</th>
-				<th>First Name</th>
-				<th>Last Name</th>
-				<th>Email</th>
-				<th>Role</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="user : ${users}">
-				<td th:text="${user.userId}">ID</td>
-				<td th:text="${user.username}">Username</td>
-				<td th:text="${user.firstName}">First Name</td>
-				<td th:text="${user.lastName}">Last Name</td>
-				<td th:text="${user.email}">Email</td>
-				<td
-					th:text="${user.isAdmin == T(uk.ac.bangor.cs.group2.academicymraeg.models.User.IsAdmin).YES ? 'System Admin' : 
-               (user.isInstructor == T(uk.ac.bangor.cs.group2.academicymraeg.models.User.IsInstructor).YES ? 'Instructor' : 'Student')}">Role</td>
-				<td class="actions"><a
-					th:href="@{/admin/users/edit/{id}(id=${user.userId})}"> <!-- Send to exact users edit form -->
-						<button type="button">Edit</button>
-				</a>
-					<button type="button" disabled title="Coming soon">Delete</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	</div>
+	<footer>Academi Gymraeg</footer>
 </body>
 </html>

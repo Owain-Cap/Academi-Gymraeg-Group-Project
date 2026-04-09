@@ -308,3 +308,62 @@ input[type="checkbox"] {
 .text-input:focus {
 	border-color: #2f6f4f;
 }
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.page-header h1 {
+    font-family: "Fraunces", serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+
+.table-wrapper {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th {
+    text-align: left;
+    padding: 14px 16px;
+    background: #f9fbf8;
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+}
+
+td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #edf2ed;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.table-link {
+    color: var(--green-mid);
+    text-decoration: none;
+    margin-left: 10px;
+    margin-right:10px;
+}
+
+.table-link:hover {
+    text-decoration: underline;
+}
