@@ -33,7 +33,7 @@ public class AdminController {
 	 * admin.html Thymeleaf template.
 	 *
 	 * @param model Spring's Model object used to pass data to the view.
-	 * @param principal The currently authenticated user's principal object.
+	 * @param principal The currently authenticated users principal object.
 	 * @return The name of the Thymeleaf template to render ("admin").
 	 */
 	@GetMapping("/admin")

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /* ---------------------------------------
-   Global Resets & Layout
+   Global Layout
 ------------------------------------------ */
 * {
 	box-sizing: border-box;
@@ -31,7 +31,7 @@ body::before {
 }
 
 /* ---------------------------------------
-   Topbar Navigation Styling - Can/will be placed in the shared nav bar css file as to not duplicate code
+   Nav bar Navigation Styling - Can/will be placed in the shared nav bar css file as to not duplicate code
 ------------------------------------------ */
 .topbar {
 	display: flex;
@@ -46,7 +46,7 @@ body::before {
 	z-index: 1;
 }
 
-/* Logo typography using Google serif font for emphasis */
+/* Logo using serif font for emphasis */
 .nav-logo {
 	font-family: "Fraunces", serif;
 	font-size: 18px;
@@ -71,7 +71,7 @@ body::before {
 	color: rgba(255, 255, 255, 0.85);
 }
 
-/* Secondary button inside the topbar acting as a return anchor */
+/* Secondary button inside the nav bar acting as a return anchor */
 .btn-home {
 	background-color: #ffffff;
 	color: rgba(31, 61, 43, 0.95);
@@ -105,7 +105,7 @@ body::before {
 .dashboard-panel {
 	width: 100%;
 	max-width: 1100px;
-	/* Semi-transparent white background combined with an underlying blur filter */
+	/* Semi transparent white background combined with a blur filter */
 	background: rgba(255, 255, 255, 0.92);
 	backdrop-filter: blur(12px);
 	border-radius: 16px;
@@ -162,7 +162,7 @@ body::before {
 	box-shadow: 0 6px 14px rgba(47, 111, 79, 0.3);
 }
 
-/* Container for the table's filter element, aligning the label and custom select side by side */
+/* Container for the tables filter element, aligning the label and custom select side by side */
 .filter-container {
 	display: flex;
 	align-items: center;
@@ -194,7 +194,7 @@ body::before {
 }
 
 /* ---------------------------------------
-   Modern User Table
+   User Table
 ------------------------------------------ */
 table {
 	width: 100%;
