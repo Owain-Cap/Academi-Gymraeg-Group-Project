@@ -23,6 +23,7 @@ import uk.ac.bangor.cs.group2.academicymraeg.models.User;
 import uk.ac.bangor.cs.group2.academicymraeg.service.UserService;
 
 class AdminControllerTest {
+	//unit test for adding users
 
 	@Mock
 	private UserService userService;
