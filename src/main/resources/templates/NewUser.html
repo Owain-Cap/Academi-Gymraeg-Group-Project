@@ -3,59 +3,12 @@
 <head>
 <title>Add / Edit User</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="/styles/style.css" rel="stylesheet">
 <style>
-:root {
-    --green-dark: #1f3d2b;
-    --green-mid: #2d5a27;
-    --green-light: #b7d6c2;
-    --red: #dc2626;
-    --red-dark: #b91c1c;
-    --text: #1e2a3a;
-    --muted: #6c757d;
-    --surface: #fff;
-    --bg: #f4f6f3;
-    --border: #e2e8f0;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
 
 body {
-    font-family: "DM Sans", sans-serif;
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-
-.topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 56px;
-    padding: 0 40px;
-    background: rgba(31, 61, 43, 0.95);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    flex-shrink: 0;
-}
-
-.nav-logo {
-    font-family: "Fraunces", serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: #fff;
-    text-decoration: none;
-}
-
-.nav-logo em {
-    font-style: italic;
-    font-weight: 400;
-    color: var(--green-light);
 }
 
 /* PAGE BODY */
@@ -192,14 +145,6 @@ input[type="password"]:focus {
     gap: 10px;
 }
 
-input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    accent-color: var(--green-mid);
-    cursor: pointer;
-    flex-shrink: 0;
-}
-
 .checkbox-row label {
     font-size: 14px;
     font-weight: 400;
@@ -221,59 +166,7 @@ input[type="checkbox"] {
     justify-content: flex-end;
 }
 
-input[type="submit"] {
-    background: rgba(31, 61, 43, 0.95);
-    color: #fff;
-    padding: 13px 32px;
-    border: none;
-    border-radius: 40px;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: inherit;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-}
 
-input[type="submit"]:hover {
-    background: var(--green-mid);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-}
-
-input[type="submit"]:active {
-    transform: translateY(0);
-}
-
-/* BACK LINK */
-.back-link {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.back-link a {
-    font-size: 14px;
-    color: var(--muted);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s;
-}
-
-.back-link a:hover {
-    color: var(--text);
-    text-decoration: underline;
-}
-
-
-footer {
-    text-align: center;
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.85);
-    padding: 16px;
-    flex-shrink: 0;
-    background: rgba(31, 61, 43, 0.95);
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-}
 </style>
 </head>
 

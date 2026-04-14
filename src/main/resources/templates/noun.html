@@ -1,97 +1,92 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Noun page</title>
+<title>Nouns</title>
+<link href="/styles/style.css" rel="stylesheet">
 <style>
-table {
-	width: 60%;
-	margin: auto auto;
-	border-collapse: collapse;
+body {
+    background: var(--bg);
+    color: var(--text);
 }
 
-th, td {
-	border: 1px solid black;
-	margin: auto;
-	text-align: center
+.nouns-page {
+    flex: 1;
+    padding: 48px 32px 64px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-h1 {
-	text-align: center;
+.search-form {
+    margin: 0;
 }
 
-a {
-	text-decoration: none;
+.search-input {
+    padding: 10px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 40px;
+    font-size: 14px;
+    width: 260px;
+    font-family: inherit;
+    background: white;
 }
 
-button {
-	text-align: center;
-	padding: 10px;
-	font-size: 15px;
-	border-radius: 5px;
+.search-input:focus {
+    outline: none;
+    border-color: var(--green-mid);
 }
 
-.top {
-	position: relative;
-	height: 60px;
-}
 
-.top a {
-	position: absolute;
-	left: 20px;
-	top: 50%;
-	transform: translateY(-50%);
-}
-
-.top input {
-	position: absolute;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	top: 50%;
-	width: 300px;
-	text-align: center;
-	padding: 10px;
-	font-size: 15px;
-	border-radius: 5px;
+.empty-row td {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
 }
 </style>
 </head>
-
-
 <body>
-	<h1>Nouns</h1>
-	<div class="top">
-		<a href="/nouns/edit">
-			<button>Add new Noun</button>
-		</a>
-		<form th:action="@{/nouns}" method="get">
-			<input type="text" name="search" placeholder="Search Noun"
-				th:value="${search}" />
-		</form>
-	</div>
-	<br>
-	<table>
-		<thead>
-			<tr>
-				<th>Noun ID</th>
-				<th>Welsh</th>
-				<th>English</th>
-				<th>Gender</th>
-			</tr>
-		</thead>
 
-		<tbody>
-			<tr th:each="noun : ${nouns}">
-				<td th:text="${noun.nounId}">NOUN ID</td>
-				<td th:text="${noun.welsh}">Welsh Word</td>
-				<td th:text="${noun.english}">English Word</td>
-				<td th:text="${noun.gender}">Gender</td>
-				<td><a th:href="@{/nouns/edit/{id}(id=${noun.nounId})}">Edit Noun</a></td>
-			</tr>
-		</tbody>
+<div class="topbar">
+    <a class="nav-logo">Academi <em>Gymraeg</em></a>
+</div>
 
-	</table>
+<div class="nouns-page">
+    <div class="page-header">
+        <h1>Nouns</h1>
+        <div style="display: flex; gap: 12px;">
+            <form class="search-form" th:action="@{/nouns}" method="get">
+                <input type="text" name="search" class="search-input" placeholder="Search Noun" th:value="${search}" />
+            </form>
+            <a th:href="@{/nouns/edit}" class="btn-add">Add new Noun</a>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Noun ID</th>
+                    <th>Welsh</th>
+                    <th>English</th>
+                    <th>Gender</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="noun : ${nouns}">
+                    <td th:text="${noun.nounId}">1</td>
+                    <td th:text="${noun.welsh}">cath</td>
+                    <td th:text="${noun.english}">cat</td>
+                    <td th:text="${noun.gender}">FEMININE</td>
+                    <td><a th:href="@{/nouns/edit/{id}(id=${noun.nounId})}" class="table-link">Edit</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer>Academi Gymraeg</footer>
+
 </body>
-
 </html>
