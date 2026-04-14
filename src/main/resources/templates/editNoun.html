@@ -165,7 +165,6 @@ input[readonly] {
         </p>
 
         <form th:action="@{/nouns/save}" th:object="${noun}" method="post">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <input type="hidden" th:field="*{nounId}" />
 
             <div class="field" th:if="${!isNew}">
