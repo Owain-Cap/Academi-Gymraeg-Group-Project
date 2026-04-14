@@ -1,6 +1,8 @@
 package uk.ac.bangor.cs.group2.academicymraeg.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +40,9 @@ public class AdminController {
 	@GetMapping("/admin")
 	public String adminPage(Model model) {
 		model.addAttribute("users", userService.getAllUsers()); // gets all users from database
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	String username = auth.getName();
+    	model.addAttribute("username", username);
 		return "admin"; // returns the admin.html template
 	}
 
@@ -45,6 +50,9 @@ public class AdminController {
 	@GetMapping("/register")
 	public String showNewUserForm(Model model) {
 		model.addAttribute("user", new User());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	String username = auth.getName();
+    	model.addAttribute("username", username);
 		return "NewUser";
 	}
 
