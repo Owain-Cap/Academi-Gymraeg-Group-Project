@@ -220,14 +220,7 @@ input[readonly] {
 			form.method = 'post';
 			form.action = '/nouns/delete/' + nounId;
 
-			var csrfParam = /*[[${_csrf.parameterName}]]*/'_csrf';
-			var csrfToken = /*[[${_csrf.token}]]*/'';
-			var csrfInput = document.createElement('input');
-			csrfInput.type = 'hidden';
-			csrfInput.name = csrfParam;
-			csrfInput.value = csrfToken;
-			form.appendChild(csrfInput);
-
+			
 			document.body.appendChild(form);
 			form.submit();
 		} else {
