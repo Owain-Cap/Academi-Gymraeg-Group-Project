@@ -5,252 +5,259 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link href="/styles/style.css" rel="stylesheet">
 <style>
-
 body {
-    background: var(--bg);
-    color: var(--text);
+	background: var(--bg);
+	color: var(--text);
 }
 
 /* PAGE BODY */
 .page {
-    flex: 1;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 48px 24px 64px;
+	flex: 1;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	padding: 48px 24px 64px;
 }
 
 .container {
-    width: 100%;
-    max-width: 520px;
+	width: 100%;
+	max-width: 520px;
 }
 
 .page-heading {
-    font-family: "Fraunces", serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 4px;
+	font-family: "Fraunces", serif;
+	font-size: 32px;
+	font-weight: 700;
+	color: var(--text);
+	margin-bottom: 4px;
 }
 
 .page-message {
-    font-size: 14px;
-    color: var(--muted);
-    margin-bottom: 32px;
+	font-size: 14px;
+	color: var(--muted);
+	margin-bottom: 32px;
 }
 
 /* MESSAGES */
 .msg {
-    padding: 13px 18px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 20px;
+	padding: 13px 18px;
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: 500;
+	margin-bottom: 20px;
 }
 
 .msg-success {
-    background: #e8f5e9;
-    border-left: 4px solid var(--green-mid);
-    color: #1e4a2f;
+	background: #e8f5e9;
+	border-left: 4px solid var(--green-mid);
+	color: #1e4a2f;
 }
 
 .msg-error {
-    background: #ffebee;
-    border-left: 4px solid var(--red);
-    color: var(--red-dark);
+	background: #ffebee;
+	border-left: 4px solid var(--red);
+	color: var(--red-dark);
 }
 
 /* FORM CARD — matches .section-group aesthetic */
 form {
-    background: rgba(247, 251, 248, 0.95);
-    border-radius: 12px;
-    padding: 32px;
-    border: 1px solid #e3e8e3;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+	background: rgba(247, 251, 248, 0.95);
+	border-radius: 12px;
+	padding: 32px;
+	border: 1px solid #e3e8e3;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .form-row {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 20px;
+	display: flex;
+	gap: 16px;
+	margin-bottom: 20px;
 }
 
 .field {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    margin-bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	margin-bottom: 20px;
 }
 
 .form-row .field {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 6px;
-    letter-spacing: 0.02em;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--text);
+	margin-bottom: 6px;
+	letter-spacing: 0.02em;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-size: 14px;
-    font-family: inherit;
-    background: #fefefe;
-    color: var(--text);
-    transition: border-color 0.2s, box-shadow 0.2s;
+input[type="text"], input[type="email"], input[type="password"] {
+	width: 100%;
+	padding: 11px 14px;
+	border: 1.5px solid var(--border);
+	border-radius: 10px;
+	font-size: 14px;
+	font-family: inherit;
+	background: #fefefe;
+	color: var(--text);
+	transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-    outline: none;
-    border-color: var(--green-mid);
-    box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.12);
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus
+	{
+	outline: none;
+	border-color: var(--green-mid);
+	box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.12);
 }
 
 .hint {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 5px;
+	font-size: 12px;
+	color: var(--muted);
+	margin-top: 5px;
 }
 
 /* ROLES SECTION */
 .roles-label {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #2f6f4f;
-    margin-bottom: 10px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: #2f6f4f;
+	margin-bottom: 10px;
 }
 
 .roles {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 28px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 28px;
 }
 
 .checkbox-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
 
 .checkbox-row label {
-    font-size: 14px;
-    font-weight: 400;
-    margin-bottom: 0;
-    cursor: pointer;
-    letter-spacing: 0;
+	font-size: 14px;
+	font-weight: 400;
+	margin-bottom: 0;
+	cursor: pointer;
+	letter-spacing: 0;
 }
 
 /* DIVIDER */
 .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 24px 0;
+	border: none;
+	border-top: 1px solid var(--border);
+	margin: 24px 0;
 }
-
 
 .submit-row {
-    display: flex;
-    justify-content: flex-end;
+	display: flex;
+	justify-content: flex-end;
 }
-
-
 </style>
 </head>
 
 <body>
 
-<div class="topbar">
-    <a class="nav-logo">Academi <em>Gymraeg</em></a>
-</div>
+	<div class="topbar">
+		<div class="nav-logo">
+			Academi <em>Gymraeg</em>
+		</div>
 
-<div class="page">
-    <div class="container">
+		<div class="nav-right">
+			<span class="nav-user" th:text="'Helo, ' + ${username}"></span>
 
-        <h1 class="page-heading"
-            th:text="${user.userId == 0 ? 'Add user' : 'Edit user'}">Add user</h1>
-        <p class="page-message"
-           th:text="${user.userId == 0 ? 'Fill in the details below to create a new account.' : 'Update the details below and save.'}">
-            Fill in the details below to create a new account.
-        </p>
+			<form th:action="@{/logout}" method="post">
+				<button type="submit" class="logout-btn">Logout</button>
+			</form>
+		</div>
+	</div>
 
-        <div th:if="${successMessage}" class="msg msg-success" th:text="${successMessage}"></div>
-        <div th:if="${errorMessage}"   class="msg msg-error"   th:text="${errorMessage}"></div>
+	<div class="page">
+		<div class="container">
 
-        <form th:action="@{/register}" th:object="${user}" method="post">
+			<h1 class="page-heading"
+				th:text="${user.userId == 0 ? 'Add user' : 'Edit user'}">Add
+				user</h1>
+			<p class="page-message"
+				th:text="${user.userId == 0 ? 'Fill in the details below to create a new account.' : 'Update the details below and save.'}">
+				Fill in the details below to create a new account.</p>
 
-            <input type="hidden" th:field="*{userId}" />
+			<div th:if="${successMessage}" class="msg msg-success"
+				th:text="${successMessage}"></div>
+			<div th:if="${errorMessage}" class="msg msg-error"
+				th:text="${errorMessage}"></div>
 
-            <div class="form-row">
-                <div class="field">
-                    <label for="firstName">First name</label>
-                    <input type="text" id="firstName" th:field="*{firstName}" required />
-                </div>
-                <div class="field">
-                    <label for="lastName">Last name</label>
-                    <input type="text" id="lastName" th:field="*{lastName}" required />
-                </div>
-            </div>
+			<form th:action="@{/register}" th:object="${user}" method="post">
 
-            <div class="field">
-                <label for="username">Username</label>
-                <input type="text" id="username" th:field="*{username}" required />
-            </div>
+				<input type="hidden" th:field="*{userId}" />
 
-            <div class="field">
-                <label for="email">Email</label>
-                <input type="email" id="email" th:field="*{email}" required />
-            </div>
+				<div class="form-row">
+					<div class="field">
+						<label for="firstName">First name</label> <input type="text"
+							id="firstName" th:field="*{firstName}" required />
+					</div>
+					<div class="field">
+						<label for="lastName">Last name</label> <input type="text"
+							id="lastName" th:field="*{lastName}" required />
+					</div>
+				</div>
 
-            <div class="field">
-                <label for="passwordHash">Password</label>
-                <input type="password" id="passwordHash" th:field="*{passwordHash}"
-                       th:required="${user.userId == 0}" />
-                <span class="hint" th:if="${user.userId != 0}">Leave blank to keep the current password.</span>
-                <span class="hint" th:if="${user.userId == 0}">Required for new accounts.</span>
-            </div>
+				<div class="field">
+					<label for="username">Username</label> <input type="text"
+						id="username" th:field="*{username}" required />
+				</div>
 
-            <hr class="divider" />
+				<div class="field">
+					<label for="email">Email</label> <input type="email" id="email"
+						th:field="*{email}" required />
+				</div>
 
-            <p class="roles-label">Roles</p>
-            <div class="roles">
-                <div class="checkbox-row">
-                    <input type="checkbox" id="isInstructor" th:field="*{isInstructor}" value="YES" />
-                    <label for="isInstructor">Instructor</label>
-                </div>
-                <div class="checkbox-row">
-                    <input type="checkbox" id="isAdmin" th:field="*{isAdmin}" value="YES" />
-                    <label for="isAdmin">System Admin</label>
-                </div>
-            </div>
+				<div class="field">
+					<label for="passwordHash">Password</label> <input type="password"
+						id="passwordHash" th:field="*{passwordHash}"
+						th:required="${user.userId == 0}" /> <span class="hint"
+						th:if="${user.userId != 0}">Leave blank to keep the current
+						password.</span> <span class="hint" th:if="${user.userId == 0}">Required
+						for new accounts.</span>
+				</div>
 
-            <div class="submit-row">
-                <input type="submit"
-                       th:value="${user.userId == 0 ? 'Add user' : 'Save changes'}" />
-            </div>
+				<hr class="divider" />
 
-        </form>
+				<p class="roles-label">Roles</p>
+				<div class="roles">
+					<div class="checkbox-row">
+						<input type="checkbox" id="isInstructor"
+							th:field="*{isInstructor}" value="YES" /> <label
+							for="isInstructor">Instructor</label>
+					</div>
+					<div class="checkbox-row">
+						<input type="checkbox" id="isAdmin" th:field="*{isAdmin}"
+							value="YES" /> <label for="isAdmin">System Admin</label>
+					</div>
+				</div>
 
-        <div class="back-link">
-            <a th:href="@{/admin}">Back to dashboard</a>
-        </div>
+				<div class="submit-row">
+					<input type="submit"
+						th:value="${user.userId == 0 ? 'Add user' : 'Save changes'}" />
+				</div>
 
-    </div>
-</div>
+			</form>
 
-<footer>Academi Gymraeg</footer>
+			<div class="back-link">
+				<a th:href="@{/admin}">Back to dashboard</a>
+			</div>
+
+		</div>
+	</div>
+
+	<footer>Academi Gymraeg</footer>
 
 </body>
 </html>
