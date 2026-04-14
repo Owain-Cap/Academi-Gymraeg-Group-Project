@@ -38,23 +38,79 @@ public class TestGeneratorService {
 
 	@Transactional
 	public Test generateTestForUser(String username) {
+		//check for tests in progress
+		var existingTest = testRepository.findByUsernameAndStatus(username, Test.TestStatus.IN_PROGRESS);
+		// resume existing test if one exists rather than generating new.
+		if (existingTest.isPresent()) {
+			return existingTest.get();
+		}
+		
+		
 		List<Noun> nouns = nounRepository.findAll();
+		List<Noun> validNouns = new ArrayList<>();
 
-		if (nouns.size() < 3) {
+		
+		//add all valid nouns from DB to list called validNouns
+		for (Noun noun : nouns) {
+			if (noun.getEnglish() != null && noun.getWelsh() != null && noun.getGender() != null) {
+				validNouns.add(noun);
+			}
+		}
+		//check there are 20 nouns available
+		if (validNouns.size() < 20) {
 			throw new IllegalStateException("Not enough nouns available for test, please speak to your instructor");
 		}
-		List<QuestionBlueprint> questionList = buildQuestionList(nouns);
-
-		if (questionList.size() < 20) {
-			throw new IllegalStateException("Not enough questions, please contact your instructor or administrator");
+		
+		//shuffle the list to randomise the nouns
+		Collections.shuffle(validNouns);
+		
+		List<Noun> selectedNouns = validNouns.subList(0,  20);
+		
+		//create a list of questions;
+		// 7 welsh to english, 7 english to welsh and 6 gender questions
+		List<Question.QuestionType> questionTypes = new ArrayList<>();
+		for (int i = 0; i < 7; i++) {
+			questionTypes.add(Question.QuestionType.ENGLISH);
+		}
+		for (int i = 0; i < 7; i++) {
+			questionTypes.add(Question.QuestionType.WELSH);
+		}
+		for (int i = 0; i < 6; i++) {
+			questionTypes.add(Question.QuestionType.GENDER);
+		}
+		
+		//shuffle questions to randomise the order
+		Collections.shuffle(questionTypes);
+		
+		//create the questions and answer combinations in a list called questionList
+		List<QuestionBlueprint> questionList = new ArrayList<>();
+		for (int i = 0; i < 20; i++) {
+			questionList.add(buildQuestionList(selectedNouns.get(i), questionTypes.get(i)));
 		}
 
+		//shuffle questions again to further randomise
 		Collections.shuffle(questionList);
 
-		// add test date-time
-		Test test = new Test(0, username, 0, LocalDateTime.now());
+
+		
+
+		// save test in db 
+		//set 30 min timer and in progress status
+		LocalDateTime testStarted = LocalDateTime.now();
+
+		Test test = new Test(
+			0,
+			username,
+			0,
+			testStarted,
+			Test.TestStatus.IN_PROGRESS,
+			testStarted.plusMinutes(30)
+		);
+
 		Test savedTest = testRepository.save(test);
 
+		
+		//create multiple choice for gender type questions
 		for (int i = 0; i < 20; i++) {
 			QuestionBlueprint blueprint = questionList.get(i);
 
@@ -66,6 +122,7 @@ public class TestGeneratorService {
 				optionB = "FEMININE";
 			}
 
+			//save questions in db
 			TestQuestions testQuestion = new TestQuestions(0, savedTest, blueprint.questionText(),
 					blueprint.questionType(), i + 1, optionA, optionB, blueprint.correctAnswer(), null,
 					TestQuestions.AnswerStatus.NOT_ANSWERED, false);
@@ -76,8 +133,29 @@ public class TestGeneratorService {
 	}
 
 	public Test getTestById(long testId) {
-		return testRepository.findById(testId).orElseThrow(() -> new IllegalArgumentException("Test not found"));
+		Test test = testRepository.findById(testId).orElseThrow(() -> new IllegalArgumentException("Test not found"));
+		
+		//if the test was started more than 30 minutes ago, automatically submit it to the database
+		if (test.getStatus() == Test.TestStatus.IN_PROGRESS && LocalDateTime.now().isAfter(test.getExpiresAt())) {
+			
+			List<TestQuestions> questions = getQuestionsForTest(test);
+			
+			for (TestQuestions q : questions) {
+				if (q.getUserAnswer() == null) {
+					//mark unanswered questions as skipped
+					q.setUserAnswer(SKIPPED); 
+					q.setAnswerStatus(AnswerStatus.SKIPPED);
+					
+					testQuestionRepository.save(q);
+				}
+			}
+			//save test in database
+			test.setStatus(Test.TestStatus.SUBMITTED);
+			testRepository.save(test);
+		}
+		return test;
 	}
+	
 
 	public List<TestQuestions> getQuestionsForTest(Test test) {
 		return testQuestionRepository.findByTestOrderByPositionAsc(test);
@@ -86,6 +164,12 @@ public class TestGeneratorService {
 	@Transactional
 	public void submitTest(long testId, List<String> answers) {
 		Test test = getTestById(testId);
+		
+		//stop a user editting the test after submission
+		if (test.getStatus() == Test.TestStatus.SUBMITTED) {
+			throw new IllegalStateException("This test has already been subbmitted");
+		}
+		
 		List<TestQuestions> questions = getQuestionsForTest(test);
 
 		validateSubmittedAnswers(questions, answers);
@@ -134,7 +218,9 @@ public class TestGeneratorService {
 		}
 
 		test.setResult(score);
+		test.setStatus(Test.TestStatus.SUBMITTED);
 		testRepository.save(test);
+
 	}
 
 	private void validateSubmittedAnswers(List<TestQuestions> questions, List<String> answers) {
@@ -220,26 +306,36 @@ public class TestGeneratorService {
 
 	}
 
-	private List<QuestionBlueprint> buildQuestionList(List<Noun> nouns) {
-		List<QuestionBlueprint> questions = new ArrayList<>();
+	private QuestionBlueprint buildQuestionList(Noun noun,  Question.QuestionType questionType) {
+		switch (questionType) {
+		case ENGLISH:
+			return new QuestionBlueprint(Question.QuestionType.ENGLISH,
+					"What is the meaning of \"" + noun.getWelsh() + "\"?", noun.getEnglish());
 
-		for (Noun noun : nouns) {
-			if (noun.getEnglish() != null && noun.getWelsh() != null && noun.getGender() != null) {
-				questions.add(new QuestionBlueprint(Question.QuestionType.ENGLISH,
-						"What is the meaning of \"" + noun.getWelsh() + "\"?", noun.getEnglish()));
+		case WELSH:
+			return new QuestionBlueprint(Question.QuestionType.WELSH,
+					"What is the Welsh for \"" + noun.getEnglish() + "\"?", noun.getWelsh());
 
-				questions.add(new QuestionBlueprint(Question.QuestionType.WELSH,
-						"What is the Welsh for \"" + noun.getEnglish() + "\"?", noun.getWelsh()));
+		case GENDER:
+			return new QuestionBlueprint(Question.QuestionType.GENDER,
+					"What gender is the word \"" + noun.getWelsh() + "\"?", noun.getGender().name());
 
-				questions.add(new QuestionBlueprint(Question.QuestionType.GENDER,
-						"What gender is the word \"" + noun.getWelsh() + "\"?", noun.getGender().name()));
-			}
+		default:
+			throw new IllegalArgumentException("Unsupported question type");
 		}
-
-		return questions;
 	}
 
 
 	private record QuestionBlueprint(Question.QuestionType questionType, String questionText, String correctAnswer) {
+	}
+	
+	public boolean hasActiveTest(String username) {
+		//check if a user has an in progress test active
+		return testRepository.existsByUsernameAndStatus(username, Test.TestStatus.IN_PROGRESS);
+	}
+	
+	public Test getActiveTest(String username) {
+		//get in progress tests for the user
+		return testRepository.findByUsernameAndStatus(username, Test.TestStatus.IN_PROGRESS).orElse(null);
 	}
 }

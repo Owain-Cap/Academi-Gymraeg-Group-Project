@@ -1,0 +1,76 @@
+package uk.ac.bangor.cs.group2.academicymraeg.controller;
+
+import java.util.List;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import uk.ac.bangor.cs.group2.academicymraeg.models.Test;
+import uk.ac.bangor.cs.group2.academicymraeg.models.TestQuestions;
+import uk.ac.bangor.cs.group2.academicymraeg.repository.TestQuestionRepository;
+import uk.ac.bangor.cs.group2.academicymraeg.repository.TestRepository;
+import uk.ac.bangor.cs.group2.academicymraeg.service.TestGeneratorService;
+
+@Controller
+public class TestHistoryController {
+
+    private final TestRepository testRepository;
+	private TestQuestionRepository testQuestionRepository;
+	private final TestGeneratorService testGeneratorService;
+    
+
+    public TestHistoryController(TestRepository testRepository, TestQuestionRepository testQuestionRepository, TestGeneratorService testGeneratorService) {
+        this.testRepository = testRepository;
+        this.testQuestionRepository = testQuestionRepository;
+        this.testGeneratorService = testGeneratorService;
+    }
+
+    @GetMapping("/my-tests")
+    public String viewTestHistory(Authentication authentication, Model model) {
+        String username = authentication.getName();
+        
+        
+        //if there's an active test 
+        Test activeTest = testGeneratorService.getActiveTest(username);
+        if (activeTest != null) {
+            model.addAttribute("activeTestId", activeTest.getTestId());
+            model.addAttribute("message", "You cannot access previous tests while a test is in progress.");
+            return "test-locked";
+        }
+        
+        List<Test> tests = testRepository.findByUsernameAndStatusOrderByCreatedAtDesc(username, Test.TestStatus.SUBMITTED);
+        model.addAttribute("tests", tests);
+        return "test-history";
+    }
+    
+    
+    @GetMapping("/review-test/{testId}")
+    public String reviewTest(@PathVariable Long testId, Authentication authentication, Model model) {
+        String username = authentication.getName();
+        
+     // if the user has an active test, show the locked page instead
+        Test activeTest = testGeneratorService.getActiveTest(username);
+        if (activeTest != null) {
+            model.addAttribute("activeTestId", activeTest.getTestId());
+            model.addAttribute("message", "You cannot access previous tests while a test is in progress.");
+            return "test-locked";
+        }
+        
+        Test test = testRepository.findById(testId)
+        	    .orElseThrow(() -> new IllegalArgumentException("Test not found"));
+
+        if (!test.getUsername().equals(username)) {
+            throw new IllegalArgumentException("Not allowed");
+        }
+
+        // Load test questions
+        List<TestQuestions> questions = testQuestionRepository.findByTestOrderByPositionAsc(test);
+
+        model.addAttribute("test", test);
+        model.addAttribute("questions", questions);
+        return "review-test";
+    }
+}
