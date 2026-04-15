@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+/* Error Page Styles */
+.error-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.error-code {
+    font-family: "Fraunces", serif;
+    font-size: 120px;
+    font-weight: 700;
+    color: var(--green-mid);
+    margin-bottom: 16px;
+    line-height: 1;
+    text-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
+}
+
+.error-title {
+    font-family: "Fraunces", serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text);
+}
+
+.error-msg {
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 40px;
+    max-width: 480px;
+    line-height: 1.6;
+}
+
+.btn-home {
+    background: var(--green-mid);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 40px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-home:hover {
+    background: var(--green-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}

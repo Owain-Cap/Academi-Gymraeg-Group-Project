@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Error - Academi Gymraeg</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="/styles/style.css" rel="stylesheet">
+<link href="/css/error.css" rel="stylesheet">
+</head>
+
+<!-- Page intended to prevent White label errors in order to be user friendly -->
+<body>
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="nav-logo">
+            <a th:href="@{/}" class="nav-logo">Academi <em>Gymraeg</em></a>
+        </div>
+    </div>
+
+    <!-- Error Content -->
+    <div class="error-container">
+        <!-- If there is a status code, display it (e.g. 403, 404) -->
+        <div class="error-code" th:text="${status} ?: 'Wait!'">Wait!</div>
+        
+        <div class="error-title">
+            <span th:if="${status == 403}">Access Denied</span>
+            <span th:if="${status == 404}">Page Not Found</span>
+            <span th:if="${status != 403 and status != 404}">Oops! Something went wrong.</span>
+        </div>
+        
+        <div class="error-msg">
+            <span th:if="${status == 403}">You do not have the required permissions to access this page. If you believe this is a mistake, please contact the system administrator.</span>
+            <span th:if="${status == 404}">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</span>
+            <span th:if="${status != 403 and status != 404}" th:text="${message} ?: 'An unexpected error has occurred. Please try again later.'">An unexpected error has occurred. Please try again later.</span>
+        </div>
+
+        <a th:href="@{/}" class="btn-home">Return to Homepage</a>
+    </div>
+
+    <!-- Footer -->
+    <footer>Academi Gymraeg</footer>
+
+</body>
+</html>
