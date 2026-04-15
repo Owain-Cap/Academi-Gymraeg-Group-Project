@@ -3,6 +3,7 @@
 <head>
 <title>Test History</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="/styles/style.css" rel="stylesheet">
 <style>
 :root {
 	--green-dark: #1f3d2b;
@@ -211,8 +212,18 @@ footer {
 
 <body>
 
-	<div class="topbar">
-		<a class="nav-logo" th:href="@{/}">Academi <em>Gymraeg</em></a>
+		<div class="topbar">
+		<div class="nav-logo">
+			<a th:href="@{/}" class="nav-logo">Academi <em>Gymraeg</em></a>
+		</div>
+
+		<div class="nav-right">
+			<span class="nav-user" th:text="'Helo, ' + ${username}"></span>
+
+			<form th:action="@{/logout}" method="post">
+				<button type="submit" class="logout-btn">Logout</button>
+			</form>
+		</div>
 	</div>
 
 	<div class="page">

@@ -3,6 +3,7 @@ package uk.ac.bangor.cs.group2.academicymraeg.controller;
 import java.time.LocalDateTime;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,9 @@ public class NounView {
 	    }
 
 	    model.addAttribute("search", search);
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	String username = auth.getName();
+    	model.addAttribute("username", username);
 
 	    return "noun";
 	}
@@ -46,6 +50,9 @@ public class NounView {
 		noun.setCreatedAt(LocalDateTime.now()); 
 		model.addAttribute("noun", noun);
 		model.addAttribute("isNew", true);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	String username = auth.getName();
+    	model.addAttribute("username", username);
 		return "editNoun";
 	}
 
@@ -55,6 +62,9 @@ public class NounView {
 		Noun noun = nounService.getNounById(nounId);
 		model.addAttribute("noun", noun);
 		model.addAttribute("isNew", false);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	String username = auth.getName();
+    	model.addAttribute("username", username);
 		return "editNoun";
 	}
 

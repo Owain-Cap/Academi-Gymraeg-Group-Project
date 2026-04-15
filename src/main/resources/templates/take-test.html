@@ -157,7 +157,15 @@ footer {
 
 	<div class="topbar">
 		<div class="nav-logo">
-			Academi <em>Gymraeg</em>
+			<a th:href="@{/}" class="nav-logo">Academi <em>Gymraeg</em></a>
+		</div>
+
+		<div class="nav-right">
+			<span class="nav-user" th:text="'Helo, ' + ${username}"></span>
+
+			<form th:action="@{/logout}" method="post">
+				<button type="submit" class="logout-btn">Logout</button>
+			</form>
 		</div>
 	</div>
 

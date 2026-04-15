@@ -3,6 +3,7 @@ package uk.ac.bangor.cs.group2.academicymraeg.controller;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,10 @@ public class TestHistoryController {
 
     @GetMapping("/my-tests")
     public String viewTestHistory(Authentication authentication, Model model) {
-        String username = authentication.getName();
+       
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	String username = auth.getName();
+    	model.addAttribute("username", username);
         
         
         //if there's an active test 
@@ -43,13 +47,16 @@ public class TestHistoryController {
         
         List<Test> tests = testRepository.findByUsernameAndStatusOrderByCreatedAtDesc(username, Test.TestStatus.SUBMITTED);
         model.addAttribute("tests", tests);
+        
         return "test-history";
     }
     
     
     @GetMapping("/review-test/{testId}")
     public String reviewTest(@PathVariable Long testId, Authentication authentication, Model model) {
-        String username = authentication.getName();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	String username = auth.getName();
+    	model.addAttribute("username", username);
         
      // if the user has an active test, show the locked page instead
         Test activeTest = testGeneratorService.getActiveTest(username);
