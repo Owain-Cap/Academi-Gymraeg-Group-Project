@@ -42,7 +42,83 @@ class TestGeneratorServiceTest {
 	
 //--------------------------TESTS-------------------------------//
 
+//--------------generateTestForUser()------
+	@Test
+	void testGenerateTestForUser() {
+		// no existing test
+		when(testRepository.findByUsernameAndStatus("alice",
+				uk.ac.bangor.cs.group2.academicymraeg.models.Test.TestStatus.IN_PROGRESS)).thenReturn(Optional.empty());
 
+		// mock 20 valid nouns
+		java.util.List<uk.ac.bangor.cs.group2.academicymraeg.models.Noun> nouns = new java.util.ArrayList<>();
+
+		for (int i = 0; i < 20; i++) {
+			uk.ac.bangor.cs.group2.academicymraeg.models.Noun noun = org.mockito.Mockito
+					.mock(uk.ac.bangor.cs.group2.academicymraeg.models.Noun.class);
+
+			when(noun.getEnglish()).thenReturn("english" + i);
+			when(noun.getWelsh()).thenReturn("welsh" + i);
+			when(noun.getGender()).thenReturn(uk.ac.bangor.cs.group2.academicymraeg.models.Noun.Gender.MASCULINE);
+
+			nouns.add(noun);
+		}
+
+		when(nounRepository.findAll()).thenReturn(nouns);
+
+		// mock save and return the same test
+		when(testRepository.save(org.mockito.Mockito.any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+		// generate test
+		uk.ac.bangor.cs.group2.academicymraeg.models.Test result = testGeneratorService.generateTestForUser("alice");
+
+		// check the test exists
+		assertNotNull(result);
+		
+		// check the test beloongs to the correct user 
+		assertEquals("alice", result.getUsername());
+
+		// check test was saved
+		verify(testRepository).save(any());
+
+		// check 20 questions created
+		verify(testQuestionRepository, times(20)).save(org.mockito.Mockito.any());
+	}
+
+	@Test
+	void testGenerateTestForUser_hasActiveTest() {
+		// sets up mock in-progress test
+		uk.ac.bangor.cs.group2.academicymraeg.models.Test activeTest = new uk.ac.bangor.cs.group2.academicymraeg.models.Test(
+				1, "alice", 0, java.time.LocalDateTime.now(),
+				uk.ac.bangor.cs.group2.academicymraeg.models.Test.TestStatus.IN_PROGRESS,
+				java.time.LocalDateTime.now().plusMinutes(30));
+
+		// mock repository to return existing test
+		when(testRepository.findByUsernameAndStatus("alice",
+				uk.ac.bangor.cs.group2.academicymraeg.models.Test.TestStatus.IN_PROGRESS))
+				.thenReturn(Optional.of(activeTest));
+
+		// request test generation
+		uk.ac.bangor.cs.group2.academicymraeg.models.Test result = testGeneratorService.generateTestForUser("alice");
+
+		// check the same test is returned
+		assertSame(activeTest, result);
+
+		// check no new test is saved
+		verify(testRepository, org.mockito.Mockito.never()).save(any());
+	}
+
+	@Test
+	void testGenerateTestForUser_notEnoughNouns() {
+		// no existing test
+		when(testRepository.findByUsernameAndStatus("alice",
+				uk.ac.bangor.cs.group2.academicymraeg.models.Test.TestStatus.IN_PROGRESS)).thenReturn(Optional.empty());
+
+		// mock fewer than 20 nouns
+		when(nounRepository.findAll()).thenReturn(java.util.List.of());
+
+		// check an exception is thrown
+		assertThrows(IllegalStateException.class, () -> testGeneratorService.generateTestForUser("alice"));
+	}
 
 //--------------getTestById()------
 
