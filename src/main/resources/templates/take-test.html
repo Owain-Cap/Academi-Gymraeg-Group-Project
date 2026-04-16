@@ -8,8 +8,12 @@
 body {
 	background-image: url('/images/backgroundtest2.jpg');
 }
+
 .topbar {
 	border-bottom: 3px solid #2f6f4f;
+	position: sticky;
+	top: 0;
+	z-index: 1000;
 }
 
 .main {
@@ -146,10 +150,41 @@ body {
 	display: flex;
 	justify-content: flex-end;
 }
+
 footer {
 	border-top: 3px solid #2f6f4f;
 	text-decoration: underline;
 	text-decoration-color: rgba(255, 255, 255, 0.4);
+}
+
+.progress-wrapper {
+	padding: 12px 24px;
+	background: rgba(255,255,255,0.6);
+	backdrop-filter: blur(4px);
+	position: sticky;
+	top: 48px;
+	z-index: 999;
+}
+
+.progress-bar {
+	width: 100%;
+	height: 10px;
+	background: #e3e8e3;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.progress-fill {
+	height: 100%;
+	width: 0%;
+	background: #2f6f4f;
+	transition: width 0.3s ease;
+}
+
+.progress-text {
+	margin-top: 6px;
+	font-size: 12px;
+	color: #1f3d2b;
 }
 </style>
 </head>
@@ -169,6 +204,13 @@ footer {
 		</div>
 	</div>
 
+	<div class="progress-wrapper">
+		<div class="progress-bar">
+			<div class="progress-fill" id="progressFill"></div>
+		</div>
+		<div class="progress-text" id="progressText">0% complete</div>
+	</div>
+
 	<div class="main">
 		<div class="container">
 
@@ -176,8 +218,12 @@ footer {
 			<h1 class="page-title">Take a Test</h1>
 
 			<div class="meta">
-				<div><strong>Test ID:</strong> <span th:text="${test.testId}"></span></div>
-				<div><strong>User:</strong> <span th:text="${test.username}"></span></div>
+				<div>
+					<strong>Test ID:</strong> <span th:text="${test.testId}"></span>
+				</div>
+				<div>
+					<strong>User:</strong> <span th:text="${test.username}"></span>
+				</div>
 			</div>
 
 			<div th:if="${errorMessage}" class="error-message">
@@ -223,7 +269,8 @@ footer {
 						</div>
 					</div>
 
-					<div th:unless="${question.questionType.name() == 'GENDER'}" class="text-answer">
+					<div th:unless="${question.questionType.name() == 'GENDER'}"
+						class="text-answer">
 						<input class="text-input" type="text"
 							th:name="|answers[${stat.index}]|"
 							th:id="|answer-${stat.index}|"
@@ -257,72 +304,112 @@ footer {
 		}
 	});
 	
-		const SKIPPED_VALUE = "SKIPPED_BY_USER";
+	const SKIPPED_VALUE = "SKIPPED_BY_USER";
 
-		function skipQuestion(index) {
-			const input = document.getElementById("answer-" + index);
-			const card = document.getElementById("question-card-" + index);
+	function skipQuestion(index) {
+		const input = document.getElementById("answer-" + index);
+		const card = document.getElementById("question-card-" + index);
 
-			if (card) {
-				card.classList.remove("unanswered");
+		if (card) {
+			card.classList.remove("unanswered");
+		}
+
+		if (input) {
+			input.value = SKIPPED_VALUE;
+		}
+
+		updateProgress();
+	}
+
+	function validateBeforeSubmit() {
+		const questionCards = document.querySelectorAll(".question-card");
+		let firstUnansweredCard = null;
+		let skippedCount = 0;
+
+		questionCards.forEach(card => card.classList.remove("unanswered"));
+
+		for (let i = 0; i < questionCards.length; i++) {
+			const card = questionCards[i];
+			const inputs = document.getElementsByName("answers[" + i + "]");
+
+			if (!inputs || inputs.length === 0) continue;
+
+			let answerValue = null;
+			const firstInput = inputs[0];
+
+			if (firstInput.type === "radio") {
+				for (let j = 0; j < inputs.length; j++) {
+					if (inputs[j].checked) {
+						answerValue = inputs[j].value;
+						break;
+					}
+				}
+			} else {
+				answerValue = firstInput.value;
 			}
 
-			if (input) {
-				input.value = SKIPPED_VALUE;
+			if (answerValue == null || answerValue.trim() === "") {
+				card.classList.add("unanswered");
+				if (!firstUnansweredCard) {
+					firstUnansweredCard = card;
+				}
+			} else if (answerValue.trim().toUpperCase() === SKIPPED_VALUE) {
+				skippedCount++;
 			}
 		}
 
-		function validateBeforeSubmit() {
-			const questionCards = document.querySelectorAll(".question-card");
-			let firstUnansweredCard = null;
-			let skippedCount = 0;
-
-			questionCards.forEach(card => card.classList.remove("unanswered"));
-
-			for (let i = 0; i < questionCards.length; i++) {
-				const card = questionCards[i];
-				const inputs = document.getElementsByName("answers[" + i + "]");
-
-				if (!inputs || inputs.length === 0) {
-					continue;
-				}
-
-				let answerValue = null;
-				const firstInput = inputs[0];
-
-				if (firstInput.type === "radio") {
-					for (let j = 0; j < inputs.length; j++) {
-						if (inputs[j].checked) {
-							answerValue = inputs[j].value;
-							break;
-						}
-					}
-				} else {
-					answerValue = firstInput.value;
-				}
-
-				if (answerValue == null || answerValue.trim() === "") {
-					card.classList.add("unanswered");
-					if (!firstUnansweredCard) {
-						firstUnansweredCard = card;
-					}
-				} else if (answerValue.trim().toUpperCase() === SKIPPED_VALUE) {
-					skippedCount++;
-				}
-			}
-
-			if (firstUnansweredCard) {
-				alert("Please answer or skip all questions before submitting.");
-				firstUnansweredCard.scrollIntoView({ behavior: "smooth", block: "center" });
-				return false;
-			}
-
-			if (skippedCount > 0) {
-				return confirm("Are you sure you want to submit with skipped questions?");
-			}
-
-			return true;
+		if (firstUnansweredCard) {
+			alert("Please answer or skip all questions before submitting.");
+			firstUnansweredCard.scrollIntoView({ behavior: "smooth", block: "center" });
+			return false;
 		}
+
+		if (skippedCount > 0) {
+			return confirm("Are you sure you want to submit with skipped questions?");
+		}
+
+		return true;
+	}
+
+	function updateProgress() {
+		const questionCards = document.querySelectorAll(".question-card");
+		let answered = 0;
+
+		questionCards.forEach((card, index) => {
+			const inputs = document.getElementsByName("answers[" + index + "]");
+			if (!inputs || inputs.length === 0) return;
+
+			let value = null;
+
+			if (inputs[0].type === "radio") {
+				for (let i = 0; i < inputs.length; i++) {
+					if (inputs[i].checked) {
+						value = inputs[i].value;
+						break;
+					}
+				}
+			} else {
+				value = inputs[0].value;
+			}
+
+			if (value && value.trim() !== "") {
+				answered++;
+			}
+		});
+
+		const total = questionCards.length;
+		const percent = Math.round((answered / total) * 100);
+
+		document.getElementById("progressFill").style.width = percent + "%";
+		document.getElementById("progressText").innerText = percent + "% complete";
+	}
+
+	document.addEventListener("DOMContentLoaded", () => {
+		document.addEventListener("input", updateProgress);
+		document.addEventListener("change", updateProgress);
+		updateProgress();
+	});
 	</script>
+
 </body>
 </html>

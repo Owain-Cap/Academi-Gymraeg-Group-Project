@@ -148,27 +148,27 @@ body {
 }
 
 .grade-row {
-    display: flex;
-    align-items: center;
-    gap: 85px;
-    margin-top: 8px;
+	display: flex;
+	align-items: center;
+	gap: 85px;
+	margin-top: 8px;
 }
 
 .grade-button {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 40px;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    background-color:#ebeff5;
-    color: var(--text);
-    transition: background 0.2s, color 0.2s;
+	display: inline-block;
+	padding: 4px 12px;
+	border-radius: 40px;
+	font-size: 13px;
+	font-weight: 600;
+	text-decoration: none;
+	background-color: #ebeff5;
+	color: var(--text);
+	transition: background 0.2s, color 0.2s;
 }
 
 .grade-button:hover {
-    background-color: var(--border);
-    color: var(--text);
+	background-color: var(--border);
+	color: var(--text);
 }
 
 /* EMPTY STATE */
@@ -207,12 +207,37 @@ footer {
 	background: rgba(31, 61, 43, 0.95);
 	border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
+.avg-score-card {
+    background: rgba(247, 251, 248, 0.95);
+    border: 1px solid #e3e8e3;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 280px;
+}
+
+.avg-label {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2f6f4f;
+    font-weight: 600;
+}
+
+.avg-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e2a3a;
+}
 </style>
 </head>
 
 <body>
 
-		<div class="topbar">
+	<div class="topbar">
 		<div class="nav-logo">
 			<a th:href="@{/}" class="nav-logo">Academi <em>Gymraeg</em></a>
 		</div>
@@ -231,6 +256,11 @@ footer {
 
 			<h1 class="page-heading">Test History</h1>
 			<p class="page-message">All completed tests.</p>
+			<div class="avg-score-card" th:if="${!tests.isEmpty()}">
+				<span class="avg-label">Average Score</span> <span class="avg-value"
+					th:text="${#numbers.formatDecimal(#aggregates.avg(tests.![result]), 0, 0) + '%'}">
+				</span>
+			</div>
 
 			<div th:if="${tests.isEmpty()}" class="empty">You have not
 				completed any tests yet.</div>
@@ -245,8 +275,8 @@ footer {
 						<span th:text="${test.result + '%'}"
 							th:classappend="${test.result >= 70} ? 'grade grade-high' :
 						                 (${test.result >= 40} ? 'grade grade-mid' : 'grade grade-low')">
-						</span> 
-						<a class="grade-button" th:href="@{'/review-test/' + ${test.testId}}" >Review Test</a>
+						</span> <a class="grade-button"
+							th:href="@{'/review-test/' + ${test.testId}}">Review Test</a>
 					</div>
 				</div>
 			</div>
