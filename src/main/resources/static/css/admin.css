@@ -116,8 +116,21 @@
     align-items: center;
 }
 
+.btn-delete {
+    background-color: var(--red, #dc2626);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s;
+    font-family: inherit;
+}
+
 .btn-delete:hover {
-    text-decoration: underline;
+    background-color: var(--red-dark, #b91c1c);
 }
 
 /* User Table Row Hover Effect */
@@ -127,4 +140,9 @@ tbody tr {
 
 tbody tr:hover {
     background-color: #f0f4f0; /* Gentle light grey/green to match the app aesthetic */
+}
+
+/* Fix text wrap on Add New User button for Admin Dashboard only */
+.admin-page .btn-add {
+    white-space: nowrap;
 }
