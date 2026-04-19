@@ -19,20 +19,37 @@ import uk.ac.bangor.cs.group2.academicymraeg.models.TestQuestions;
 import uk.ac.bangor.cs.group2.academicymraeg.models.TestSubmissionForm;
 import uk.ac.bangor.cs.group2.academicymraeg.service.TestGeneratorService;
 
+
+/**
+ * Controller responsible for handling the process of taking a test.
+ * 
+ * Including:
+ * Starting a new test or resuming an existing one</li>
+ * Displaying test questions</li>
+ * Submitting answers</li>
+ * Redirecting to the review page when a test is completed</li>
+ * 
+ */
 @Controller
 public class TakeTestController {
 	private final TestGeneratorService testGeneratorService;
 
+	
+	/**
+	 * Constructor for injecting the TestGeneratorService dependency.
+	 *
+	 * @param testGeneratorService service used to generate and manage tests
+	 */
 	public TakeTestController(TestGeneratorService testGeneratorService) {
 		this.testGeneratorService = testGeneratorService;
 	}
 
-//	@GetMapping("/tests/take")
-//	public String startTest() {
-//		Test test = testGeneratorService.generateTestForUser("demoUser");
-//		return "redirect:/tests/take/" + test.getTestId();
-//	}
-
+	/**
+	 * Starts or resumes a test for the current user.
+	 * 
+	 * @param principal the current user
+	 * @return redirect to the test page for the generated or inprogress test
+	 */
 	@GetMapping("/tests/take")
 	public String startTest(Principal principal) {
 		// Get username
@@ -41,6 +58,21 @@ public class TakeTestController {
 		return "redirect:/tests/take/" + test.getTestId();
 	}
 
+	
+	/**
+	 * Displays a test for the user to complete.
+	 * <p>
+	 * Making sure that the test belongs to the current user
+	 * and the test has not already been submitted
+	 * 
+	 * If the test is already submitted, the user is redirected to review test.
+	 *
+	 * @param testId the ID of the test to display
+	 * @param principal the current user
+	 * @param model used to pass data to the view
+	 * @param httpResponse used to stop the browser caching the test
+	 * @return the "take-test" view or a redirect to review test
+	 */
 	@GetMapping("/tests/take/{testId}")
 	public String showTest(@PathVariable long testId, Principal principal, Model model, HttpServletResponse httpResponse) {
 		
@@ -59,7 +91,7 @@ public class TakeTestController {
 		// check this test is not already submitted
 		// if it is redirect to view results
 		if (test.getStatus() == Test.TestStatus.SUBMITTED) {
-			return "redirect:/tests/result/" + testId;
+			return "redirect:/review-test/" + testId;
 		}
 
 		// render new or in progress test
@@ -80,13 +112,28 @@ public class TakeTestController {
 		return "take-test";
 	}
 
+	
+	/**
+	 * Submits a completed test.
+	 * 
+	 * successful submission = answers processed, user redirected to
+	 * review test.
+	 * If submission fails the test is reloaded, an error message is 
+	 * displayed and the user remains on the test page
+	 *
+	 * @param testId the ID of the test being submitted
+	 * @param testSubmissionForm form containing user's answers
+	 * @param principal the current user
+	 * @param model used to pass data to the view
+	 * @return redirect to review test or "take-test" view if an errors occur
+	 */
 	@PostMapping("/tests/take/{testId}")
 	public String submitTest(@PathVariable long testId, @ModelAttribute TestSubmissionForm testSubmissionForm,
 			Principal principal, Model model) {
 		
 		try {
 			testGeneratorService.submitTest(testId, testSubmissionForm.getAnswers());
-			return "redirect:/tests/result/" + testId;
+			return "redirect:/review-test/" + testId;
 		} catch (IllegalArgumentException | IllegalStateException e) {
 			Test test = testGeneratorService.getTestById(testId);
 
@@ -97,7 +144,7 @@ public class TakeTestController {
 
 			//if a user tried to alter a submitted test redirect them to the submitted test result
 			if (test.getStatus() == Test.TestStatus.SUBMITTED) {
-				return "redirect:/tests/result/" + testId;
+				return "redirect:/review-test/" + testId;
 			}
 
 			List<TestQuestions> questions = testGeneratorService.getQuestionsForTest(test);
@@ -110,43 +157,44 @@ public class TakeTestController {
 		}
 	}
 
-	@GetMapping("/tests/result/{testId}")
-	public String showResult(@PathVariable long testId, Principal principal, Model model) {
-		
-		Test test = testGeneratorService.getTestById(testId);
-
-		// Check the test belongs to this user
-		if (!test.getUsername().equals(principal.getName())) {
-			throw new IllegalArgumentException("You do not have access to this test");
-		}
-
-		// check the test is submitted and not in progress.
-		if (test.getStatus() != Test.TestStatus.SUBMITTED) {
-			return "redirect:/tests/take/" + testId;
-		}
-
-		List<TestQuestions> questions = testGeneratorService.getQuestionsForTest(test);
-
-		int correctCount = 0;
-		int skippedCount = 0;
-		int incorrectCount = 0;
-
-		for (TestQuestions question : questions) {
-			if (question.getAnswerStatus() == TestQuestions.AnswerStatus.CORRECT) {
-				correctCount++;
-			} else if (question.getAnswerStatus() == TestQuestions.AnswerStatus.SKIPPED) {
-				skippedCount++;
-			} else if (question.getAnswerStatus() == TestQuestions.AnswerStatus.INCORRECT) {
-				incorrectCount++;
-			}
-		}
-		model.addAttribute("test", test);
-		model.addAttribute("questions", questions);
-		model.addAttribute("correctCount", correctCount);
-		model.addAttribute("skippedCount", skippedCount);
-		model.addAttribute("incorrectCount", incorrectCount);
-
-		return "test-result";
-	}
+//	@GetMapping("/review-test/{testId}")
+//	public String showResult(@PathVariable long testId, Principal principal, Model model) {
+//		
+//		Test test = testGeneratorService.getTestById(testId);
+//
+//		// Check the test belongs to this user
+//		if (!test.getUsername().equals(principal.getName())) {
+//			throw new IllegalArgumentException("You do not have access to this test");
+//		}
+//
+//		// check the test is submitted and not in progress.
+//		if (test.getStatus() != Test.TestStatus.SUBMITTED) {
+//			return "redirect:/tests/take/" + testId;
+//		}
+//
+//		List<TestQuestions> questions = testGeneratorService.getQuestionsForTest(test);
+//
+//		int correctCount = 0;
+//		int skippedCount = 0;
+//		int incorrectCount = 0;
+//
+//		for (TestQuestions question : questions) {
+//			if (question.getAnswerStatus() == TestQuestions.AnswerStatus.CORRECT) {
+//				correctCount++;
+//			} else if (question.getAnswerStatus() == TestQuestions.AnswerStatus.SKIPPED) {
+//				skippedCount++;
+//			} else if (question.getAnswerStatus() == TestQuestions.AnswerStatus.INCORRECT) {
+//				incorrectCount++;
+//			}
+//		}
+//	
+//		model.addAttribute("test", test);
+//		model.addAttribute("questions", questions);
+//		model.addAttribute("correctCount", correctCount);
+//		model.addAttribute("skippedCount", skippedCount);
+//		model.addAttribute("incorrectCount", incorrectCount);
+//
+//		return "test-result";
+//	}
 
 }
