@@ -16,11 +16,11 @@ import uk.ac.bangor.cs.group2.academicymraeg.models.Noun;
 import uk.ac.bangor.cs.group2.academicymraeg.service.NounService;
 
 @Controller
-public class NounView {
+public class NounViewController {
 
 	private final NounService nounService;
 
-	public NounView(NounService nounService) {
+	public NounViewController(NounService nounService) {
 		this.nounService = nounService;
 	}
 
