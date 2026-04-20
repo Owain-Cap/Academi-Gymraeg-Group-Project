@@ -48,9 +48,8 @@ public class TestHistoryController {
         List<Test> tests = testRepository.findByUsernameAndStatusOrderByCreatedAtDesc(username, Test.TestStatus.SUBMITTED);
         
       //converts the score to a percentage
-        // so its core divided the possible amount x 100
         for (Test test : tests) {
-        	int percentage = (int) Math.round((test.getResult() /20) * 100);
+        	int percentage = (int) Math.round((test.getResult() * 100.0) / 20);
             test.setResult(percentage);
         }
         
@@ -85,8 +84,7 @@ public class TestHistoryController {
         List<TestQuestions> questions = testQuestionRepository.findByTestOrderByPositionAsc(test);
         
         //converts the score to a percentage
-        // so its core divided the possible amount x 100
-        int percentage = (int) Math.round((test.getResult() /20) * 100);
+        int percentage = (int) Math.round((test.getResult() * 100.0) / 20);
         test.setResult(percentage);
         
         long correctCount = questions.stream()
