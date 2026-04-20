@@ -46,8 +46,14 @@ public class TestHistoryController {
         }
         
         List<Test> tests = testRepository.findByUsernameAndStatusOrderByCreatedAtDesc(username, Test.TestStatus.SUBMITTED);
-        model.addAttribute("tests", tests);
         
+      //converts the score to a percentage
+        for (Test test : tests) {
+            int percentage = (int) Math.round((test.getResult() * 100.0) / 20);
+            test.setResult(percentage);
+        }
+        
+        model.addAttribute("tests", tests);
         return "test-history";
     }
     
@@ -72,12 +78,33 @@ public class TestHistoryController {
         if (!test.getUsername().equals(username)) {
             throw new IllegalArgumentException("Not allowed");
         }
+        
 
         // Load test questions
         List<TestQuestions> questions = testQuestionRepository.findByTestOrderByPositionAsc(test);
+        
+        //converts the score to a percentage
+        int percentage = (int) Math.round((test.getResult() * 100.0) / 20);
+        test.setResult(percentage);
+        
+        long correctCount = questions.stream()
+    			.filter(q -> q.getAnswerStatus() == TestQuestions.AnswerStatus.CORRECT)
+    			.count();
+        
+        long incorrectCount = questions.stream()
+    			.filter(q -> q.getAnswerStatus() == TestQuestions.AnswerStatus.INCORRECT)
+    			.count();
+
+    	long skippedCount = questions.stream()
+    			.filter(q -> q.getAnswerStatus() == TestQuestions.AnswerStatus.SKIPPED)
+    			.count();
 
         model.addAttribute("test", test);
         model.addAttribute("questions", questions);
+        model.addAttribute("correctCount",correctCount);
+        model.addAttribute("incorrectCount",incorrectCount);
+        model.addAttribute("skippedCount",skippedCount);
+        
         return "review-test";
     }
 }
