@@ -148,5 +148,11 @@ http://localhost:8080
 - Ensure controller routes match SecurityConfig  
 - Do not store plain-text passwords  
 - Do not enable in-memory users (overrides database authentication)  
-- Method-level security enabled via @EnableMethodSecurity  
+- Method-level security enabled via @EnableMethodSecurity
+
+
+## File Structure
+<img width="1162" height="1353" alt="image" src="https://github.com/user-attachments/assets/a4248a77-ad3c-4654-b82e-6d946e006ffb" />
+
+
 
