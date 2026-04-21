@@ -191,8 +191,10 @@ footer {
 
 			<div class="test-meta">
 				<div th:text="'Score: ' + ${test.result} + '%'"></div>
-				<div
-					th:text="${#temporals.format(test.createdAt, 'dd MMM yyyy, HH:mm')}"></div>
+				<div th:text="'Correct: ' + ${correctCount}"></div>
+				<div th:text="'Incorrect: ' + ${incorrectCount}"></div>
+				<div th:text="'Skipped: ' + ${skippedCount}"></div>
+				<div th:text="${#temporals.format(test.createdAt, 'dd MMM yyyy, HH:mm')}"></div>
 			</div>
 
 			<div th:each="q, iterStat : ${questions}" class="result-card">
