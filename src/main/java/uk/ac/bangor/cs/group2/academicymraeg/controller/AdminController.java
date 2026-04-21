@@ -97,6 +97,15 @@ public class AdminController {
 	// Delete a user
 	@PostMapping("/admin/users/delete/{id}")
 	public String deleteUser(@PathVariable("id") long id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String currentUsername = auth.getName();
+		
+		User userToDelete = userService.getUserById(id).orElse(null);
+		if (userToDelete != null && userToDelete.getUsername().equals(currentUsername)) {
+			// Prevent admin from deleting themselves
+			return "redirect:/admin?error=cannotDeleteSelf";
+		}
+		
 		userService.deleteUserById(id);
 		return "redirect:/admin";
 	}
