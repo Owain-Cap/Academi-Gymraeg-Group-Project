@@ -46,7 +46,13 @@ public class AdminController {
 		return "admin"; // returns the admin.html template
 	}
 
-	// Show the new/edit user form
+	/**
+	 * Displays the form for creating a new user.
+	 * Injects an empty User object into the model for Thymeleaf to bind form data to.
+	 *
+	 * @param model Spring's Model object used to pass data to the view.
+	 * @return The name of the Thymeleaf template to render ("NewUser").
+	 */
 	@GetMapping("/register")
 	public String showNewUserForm(Model model) {
 		model.addAttribute("user", new User());
@@ -56,7 +62,15 @@ public class AdminController {
 		return "NewUser";
 	}
 
-	// Handle form submission for Add/Edit
+	/**
+	 * Handles form submission for adding a new user or editing an existing user.
+	 * Performs validation to ensure usernames are unique if creating a new user,
+	 * and hashes passwords using BCrypt before sending to the database.
+	 *
+	 * @param user  The User object populated from the form data.
+	 * @param model Spring's Model object to pass error messages if validation fails.
+	 * @return A redirect to the "/admin" dashboard on success, or back to the form on failure.
+	 */
 	@PostMapping("/register")
 	public String saveNewUser(@ModelAttribute("user") User user, Model model) {
 		if (user.getUserId() == 0) { // defaults to 0 for new users
@@ -83,7 +97,15 @@ public class AdminController {
 		return "redirect:/admin";
 	}
 
-	// Show the edit user form
+	/**
+	 * Displays the form for editing an existing user.
+	 * Retrieves the user by ID and clears the password hash to prevent the BCrypt string
+	 * from rendering visibly inside the form input.
+	 *
+	 * @param id    The Id of the user to edit, extracted from the PathVariable.
+	 * @param model Springs Model object used to pass the selected user to the view.
+	 * @return The name of the Thymeleaf template to render ("NewUser").
+	 */
 	@GetMapping("/admin/users/edit/{id}")
 	public String showEditUserForm(@PathVariable("id") long id, Model model) {
 		User user = userService.getUserById(id)
@@ -94,7 +116,14 @@ public class AdminController {
 		return "NewUser";
 	}
 
-	// Delete a user
+	/**
+	 * Processes the deletion of a user.
+	 * Enforces a backend security check to prevent the currently logged-in administrator
+	 * from accidentally or maliciously deleting their own account.
+	 *
+	 * @param id The ID of the user to delete, extracted from the PathVariable.
+	 * @return A redirect to the "/admin" dashboard (with an error parameter if deletion of the admin is attempted).
+	 */
 	@PostMapping("/admin/users/delete/{id}")
 	public String deleteUser(@PathVariable("id") long id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
