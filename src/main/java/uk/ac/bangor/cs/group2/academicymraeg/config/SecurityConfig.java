@@ -42,8 +42,13 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
 
-            // Enable default Spring Security login form
-            .formLogin(withDefaults())
+            // Custom login handling
+            .formLogin(form -> form
+            		.loginPage("/login")
+            		.loginProcessingUrl("/login")
+            		.defaultSuccessUrl("/", true)
+            		.permitAll()
+            	)
 
             // Enable logout support
             .logout(logout -> logout
