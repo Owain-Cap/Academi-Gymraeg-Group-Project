@@ -19,9 +19,9 @@ import uk.ac.bangor.cs.group2.academicymraeg.service.TestGeneratorService;
  * Controller responsible for showing a student their submitted tests and
  * allowing them to review a past result.
  *
- * Including: Listing all submitted tests for the current user</li> Showing a
- * full breakdown of a single submitted test</li> Blocking access to history
- * while a test is in progress</li>
+ * Including: Listing all submitted tests for the current user, Showing a full
+ * breakdown of a single submitted test,Blocking access to history while a test
+ * is in progress
  *
  */
 @Controller
