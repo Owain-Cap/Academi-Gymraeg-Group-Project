@@ -24,7 +24,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
 
                 // Public resources (no authentication required)
-                .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
+                .requestMatchers("/css/**", "/images/**", "/js/**", "/styles/**").permitAll()
 
              // STUDENT access (all logged-in users)
                 .requestMatchers("/tests/**", "/my-tests/**")
