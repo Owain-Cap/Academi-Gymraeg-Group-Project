@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>Academi Gymraeg</title>
@@ -43,17 +43,17 @@ body::before {
 		</div>
 
 		<div class="sections-panel">
-			<div class="section-group student">
+			<div class="section-group student" sec:authorize="hasAnyRole('STUDENT','INSTRUCTOR','SYSTEM_ADMIN')">
 				<h3>Student</h3>
 				<a class="section-link" th:href="@{/tests/take}">Take a test</a> <a
 					class="section-link" th:href="@{/my-tests}">View old tests</a>
 			</div>
-			<div class="section-group instructor">
+			<div class="section-group instructor" sec:authorize="hasAnyRole('INSTRUCTOR','SYSTEM_ADMIN')">
 				<h3>Instructor</h3>
 				<a class="section-link" th:href="@{/nouns}">View nouns</a> <a
 					class="section-link" th:href="@{/nouns/edit}">Add a noun</a>
 			</div>
-			<div class="section-group admin">
+			<div class="section-group admin" sec:authorize="hasAnyRole('SYSTEM_ADMIN')">
 				<h3>Admin</h3>
 				<a class="section-link" th:href="@{/admin}">Manage users</a> <a
 					class="section-link" th:href="@{/register}">Add user</a>
