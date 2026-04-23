@@ -5,16 +5,24 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Handles requests for the landing page.
+ */
 @Controller
 public class GreetingController {
 
-    @GetMapping("/")
-    public String landing(Model model) {
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	String username = auth.getName();
-    	model.addAttribute("username", username);
-        return "landing-page";
-    }
+	/**
+	 * Shows the landing page and adds the logged in username to the model.
+	 *
+	 * @param model the model used by the view
+	 * @return the landing page template name
+	 */
+	@GetMapping("/")
+	public String landing(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		model.addAttribute("username", username);
+		return "landing-page";
+	}
 }
