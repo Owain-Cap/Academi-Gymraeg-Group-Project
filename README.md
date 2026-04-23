@@ -124,8 +124,8 @@ http://localhost:8080
 
 
 ## Database
+<img width="1485" height="1080" alt="image" src="https://github.com/user-attachments/assets/dd569c79-aa4a-4063-9827-27caf1bb08af" />
 
-//Leaving blank for now
 
 
 
