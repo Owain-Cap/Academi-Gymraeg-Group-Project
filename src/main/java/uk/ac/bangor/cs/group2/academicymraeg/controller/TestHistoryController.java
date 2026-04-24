@@ -114,16 +114,16 @@ public class TestHistoryController {
 
 		Test test = testRepository.findById(testId).orElseThrow(() -> new IllegalArgumentException("Test not found"));
 
-		//check test belongs to user
+		// check test belongs to user
 		if (!test.getUsername().equals(username)) {
 			throw new IllegalArgumentException("Not allowed");
 		}
 
 		// redirect to the active test if it isn't already submitted
 		if (test.getStatus() != Test.TestStatus.SUBMITTED) {
-		    return "redirect:/tests/take/" + testId;
+			return "redirect:/tests/take/" + testId;
 		}
-		
+
 		// Load test questions
 		List<TestQuestions> questions = testQuestionRepository.findByTestOrderByPositionAsc(test);
 
