@@ -1,6 +1,5 @@
 package uk.ac.bangor.cs.group2.academicymraeg.controller;
 
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

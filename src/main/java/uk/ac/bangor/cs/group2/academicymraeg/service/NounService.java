@@ -18,30 +18,44 @@ public class NounService {
 		this.nounRepository = nounRepository;
 	}
 
-	//gets all the nouns
+	// gets all the nouns
 	public List<Noun> getAllNouns() {
 		return nounRepository.findAll();
 	}
 
-	//used for the edit function which gets the noun by the ID
+	// used for the edit function which gets the noun by the ID
 	public Noun getNounById(Long id) {
 		return nounRepository.findById(id).orElse(null);
 	}
 
-	//save 
+	/**
+	 * Checks whether a noun already exists in the database by comparing either the
+	 * English word or the Welsh word.
+	 * 
+	 * @param english the English word to check
+	 * @param welsh   the Welsh word to check
+	 * @return true if either the English or Welsh word already exists; false
+	 *         otherwise
+	 */
+	public boolean nounExists(String english, String welsh) {
+		return nounRepository.existsByEnglishIgnoreCase(english) || nounRepository.existsByWelshIgnoreCase(welsh);
+	}
+
+	// save
 	public Noun saveNoun(Noun noun) {
 		return nounRepository.save(noun);
 	}
 
-	//deletes by NounID
+	// deletes by NounID
 	public void deleteNoun(Long id) {
 		nounRepository.deleteById(id);
 	}
-	//shows the list for the search function
+
+	// shows the list for the search function
 	public List<Noun> searchNouns(String search) {
-	    return nounRepository.findByEnglishContainingIgnoreCaseOrWelshContainingIgnoreCase(search, search);
+		return nounRepository.findByEnglishContainingIgnoreCaseOrWelshContainingIgnoreCase(search, search);
 	}
-	
+
 	public boolean isValid(String word) {
 		return word.matches("[a-zA-ZáéíóúŵẃỳÁÉÍÓÚŴẂỲ]+");
 	}

@@ -24,71 +24,77 @@ public class NounViewController {
 		this.nounService = nounService;
 	}
 
-	//Main Noun Page
+	// Main Noun Page
 	@GetMapping("/nouns")
 	public String getNouns(@RequestParam(required = false) String search, Model model) {
 
-		//this is the search function on the noun page
-	    if (search != null && !search.isEmpty()) {
-	        model.addAttribute("nouns", nounService.searchNouns(search));
-	    } else {
-	        model.addAttribute("nouns", nounService.getAllNouns());
-	    }
+		// this is the search function on the noun page
+		if (search != null && !search.isEmpty()) {
+			model.addAttribute("nouns", nounService.searchNouns(search));
+		} else {
+			model.addAttribute("nouns", nounService.getAllNouns());
+		}
 
-	    model.addAttribute("search", search);
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	String username = auth.getName();
-    	model.addAttribute("username", username);
+		model.addAttribute("search", search);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		model.addAttribute("username", username);
 
-	    return "noun";
+		return "noun";
 	}
 
-	//This is to add the new noun
+	// This is to add the new noun
 	@GetMapping("/nouns/edit")
 	public String addNoun(Model model) {
 		Noun noun = new Noun();
-		noun.setCreatedAt(LocalDateTime.now()); 
+		noun.setCreatedAt(LocalDateTime.now());
 		model.addAttribute("noun", noun);
 		model.addAttribute("isNew", true);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	String username = auth.getName();
-    	model.addAttribute("username", username);
+		String username = auth.getName();
+		model.addAttribute("username", username);
 		return "editNoun";
 	}
 
-	//editing a noun by ID
+	// editing a noun by ID
 	@GetMapping("/nouns/edit/{nounId}")
 	public String editNoun(@PathVariable Long nounId, Model model) {
 		Noun noun = nounService.getNounById(nounId);
 		model.addAttribute("noun", noun);
 		model.addAttribute("isNew", false);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	String username = auth.getName();
-    	model.addAttribute("username", username);
+		String username = auth.getName();
+		model.addAttribute("username", username);
 		return "editNoun";
 	}
 
-	//this saves the Noun
+	// this saves the Noun
 	@PostMapping("/nouns/save")
-	public String saveNoun(@ModelAttribute Noun noun, Authentication authentication,Model model) {
-		
+	public String saveNoun(@ModelAttribute Noun noun, Authentication authentication, Model model) {
+
 		if (!nounService.isValid(noun.getEnglish()) || !nounService.isValid(noun.getWelsh())) {
-	        
-			
-	        model.addAttribute("error", "Nouns must only contain letters");
-	        model.addAttribute("noun", noun);
-	        model.addAttribute("isNew", noun.getNounId() == null);
-	        return "editNoun";
-	    }
-		
+			model.addAttribute("nounError", "Nouns must only contain letters");
+			model.addAttribute("noun", noun);
+			model.addAttribute("isNew", noun.getNounId() == null);
+			return "editNoun";
+		}
+
+		//check the noun isn't already in the database
+		if (noun.getNounId() == null && nounService.nounExists(noun.getEnglish(), noun.getWelsh())) {
+			model.addAttribute("nounError", "This word is already saved");
+			model.addAttribute("noun", noun);
+			model.addAttribute("isNew", true);
+			return "editNoun";
+		}
+
 		noun.setCreatedAt(LocalDateTime.now());
-		noun.setCreatedByUsername(authentication.getName()); //get the username of the person adding the noun
+		noun.setCreatedByUsername(authentication.getName()); // get the username of the person adding the noun
 		nounService.saveNoun(noun);
-		
+
 		return "redirect:/nouns";
 	}
 
-	//deletes the noun
+	// deletes the noun
 	@PostMapping("/nouns/delete/{nounId}")
 	public String deleteNoun(@PathVariable Long nounId) {
 		nounService.deleteNoun(nounId);
