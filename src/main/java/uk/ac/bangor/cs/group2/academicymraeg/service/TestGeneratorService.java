@@ -42,9 +42,15 @@ public class TestGeneratorService {
 		var existingTest = testRepository.findByUsernameAndStatus(username, Test.TestStatus.IN_PROGRESS);
 		// resume existing test if one exists rather than generating new.
 		if (existingTest.isPresent()) {
-			return existingTest.get();
-		}
-		
+			Test test = existingTest.get();
+			
+			if (LocalDateTime.now().isBefore(test.getExpiresAt())) {
+	            return test; // if test is still valid return it
+	        } else {
+	        	//if test is expired autosubmit it
+	        	getTestById(test.getTestId());
+	        }
+	    }
 		
 		List<Noun> nouns = nounRepository.findAll();
 		List<Noun> validNouns = new ArrayList<>();
