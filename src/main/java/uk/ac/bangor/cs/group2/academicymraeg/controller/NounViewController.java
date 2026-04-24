@@ -28,6 +28,9 @@ public class NounViewController {
 	@GetMapping("/nouns")
 	public String getNouns(@RequestParam(required = false) String search, Model model) {
 
+		//remove white space from input if its not empty
+		search = search == null ? null : search.trim();
+		
 		// this is the search function on the noun page
 		if (search != null && !search.isEmpty()) {
 			model.addAttribute("nouns", nounService.searchNouns(search));
@@ -72,6 +75,10 @@ public class NounViewController {
 	@PostMapping("/nouns/save")
 	public String saveNoun(@ModelAttribute Noun noun, Authentication authentication, Model model) {
 
+		//remove white space from user input
+		noun.setEnglish(noun.getEnglish().trim());
+		noun.setWelsh(noun.getWelsh().trim());
+		
 		if (!nounService.isValid(noun.getEnglish()) || !nounService.isValid(noun.getWelsh())) {
 			model.addAttribute("nounError", "Nouns must only contain letters");
 			model.addAttribute("noun", noun);
