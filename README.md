@@ -27,7 +27,7 @@ controller/    -> Web layer (HTTP endpoints)
 
 
 ## File Structure
-<img width="1162" height="1353" alt="image" src="https://github.com/user-attachments/assets/a4248a77-ad3c-4654-b82e-6d946e006ffb" />
+<img width="1163" height="1353" alt="image" src="https://github.com/user-attachments/assets/515fedef-f0ad-41e5-8b6b-13adcd540d99" />
 
 
 ## class diagram overview
