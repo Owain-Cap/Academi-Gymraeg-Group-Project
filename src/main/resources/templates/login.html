@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Academi Login</title>
+		<link href="/styles/style.css" rel="stylesheet">
+		<style>
+		body {
+			background: var(--bg);
+			color: var(--text);
+		}
+		
+		/* PAGE BODY */
+		.page {
+			flex: 1;
+			display: flex;
+			align-items: flex-start;
+			justify-content: center;
+			padding: 48px 24px 64px;
+		}
+		
+		.container {
+			width: 100%;
+			max-width: 520px;
+		}
+		
+		.page-heading {
+			font-family: "Fraunces", serif;
+			font-size: 32px;
+			font-weight: 700;
+			color: var(--text);
+			margin-bottom: 4px;
+		}
+		
+		.page-message {
+			font-size: 14px;
+			color: var(--muted);
+			margin-bottom: 32px;
+		}
+		
+		form {
+			background: rgba(247, 251, 248, 0.95);
+			border-radius: 12px;
+			padding: 32px;
+			border: 1px solid #e3e8e3;
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+		}
+		
+		.form-row {
+			display: flex;
+			gap: 16px;
+			margin-bottom: 20px;
+		}
+		
+		.field {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+			margin-bottom: 20px;
+		}
+		
+		.form-row .field {
+			margin-bottom: 0;
+		}
+		
+		label {
+			font-size: 13px;
+			font-weight: 600;
+			color: var(--text);
+			margin-bottom: 6px;
+			letter-spacing: 0.02em;
+		}
+		
+		input[type="text"], input[type="email"], input[type="password"] {
+			width: 100%;
+			padding: 11px 14px;
+			border: 1.5px solid var(--border);
+			border-radius: 10px;
+			font-size: 14px;
+			font-family: inherit;
+			background: #fefefe;
+			color: var(--text);
+			transition: border-color 0.2s, box-shadow 0.2s;
+		}
+		
+		input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus
+			{
+			outline: none;
+			border-color: var(--green-mid);
+			box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.12);
+		}
+		
+		.msg-error {
+			background: #ffebee;
+			border-left: 4px solid var(--red);
+			padding: 12px 16px;
+			margin-bottom: 15px;
+			color: var(--red-dark);
+		}
+		</style>
+	</head>
+	<body>
+	<div class="topbar">
+		<div class="nav-logo">
+			<a class="nav-logo">Academi <em>Gymraeg</em></a>
+		</div>
+	</div>
+	
+	<div class="page">
+		<div class="container">
+
+			<h1 class="page-heading">Login</h1>
+			<p class="page-message">Fill in the details below to login to your account. Contact your instructor to register.</p>
+			
+			<div th:if="${param.error}" class="msg-error">
+    				Invalid username or password.
+			</div>
+			
+			
+			<form th:action="@{/login}" method="post">
+				<div class="field">
+					<label for="username">Username</label> 
+					<input type="text" id="username" name="username" required />
+				</div>
+				<div class="field">
+					<label for="password">Password</label> 
+					<input type="password" id="password" name="password" required />
+				</div>
+				
+				<div class="submit-row">
+					<input type="submit" value="Login" />
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<footer>Academi Gymraeg</footer>
+
+	</body>
+</html>

@@ -24,7 +24,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
 
                 // Public resources (no authentication required)
-                .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
+                .requestMatchers("/css/**", "/images/**", "/js/**", "/styles/**").permitAll()
 
              // STUDENT access (all logged-in users)
                 .requestMatchers("/tests/**", "/my-tests/**")
@@ -42,8 +42,13 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
 
-            // Enable default Spring Security login form
-            .formLogin(withDefaults())
+            // Custom login handling
+            .formLogin(form -> form
+            		.loginPage("/login")
+            		.loginProcessingUrl("/login")
+            		.defaultSuccessUrl("/", true)
+            		.permitAll()
+            	)
 
             // Enable logout support
             .logout(logout -> logout
