@@ -31,6 +31,7 @@ controller/    -> Web layer (HTTP endpoints)
 
 
 ## class diagram overview
+<img width="1278" height="1464" alt="image" src="https://github.com/user-attachments/assets/f119e5e1-c8fc-4be0-9078-1beb92e0fb9c" />
 
 
 ## sequence diagram
@@ -42,6 +43,8 @@ controller/    -> Web layer (HTTP endpoints)
 
 
 ## User Model
+<img width="1483" height="1313" alt="image" src="https://github.com/user-attachments/assets/65f2365e-a7f2-4d5b-af83-74b5a77fab26" />
+
 
 Defined in:
 models/User.java
@@ -73,6 +76,7 @@ Responsibilities:
 
 
 ## Nouns
+<img width="1136" height="868" alt="image" src="https://github.com/user-attachments/assets/7532658f-30bd-416f-b0ee-a45445c9eae2" />
 
 Model:
 models/Noun.java
@@ -105,6 +109,8 @@ config/NounInitialiser.java
 
 
 ## Test Logic
+<img width="1887" height="1416" alt="image" src="https://github.com/user-attachments/assets/2535d124-f547-492a-8c0c-ff32c5d0ddeb" />
+
 
 Entities:
 - models/Test.java (a single test taken by a user)
