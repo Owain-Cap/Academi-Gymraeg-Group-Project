@@ -47,7 +47,6 @@ public class NounInitialiser {
         				createNoun("exam","arholiad",Gender.MASCULINE),
         				createNoun("scissors","siswrn",Gender.FEMININE),
         				createNoun("school","ysgol",Gender.FEMININE),
-        				createNoun("board","bwrdd",Gender.MASCULINE),
         				createNoun("test","prawf",Gender.MASCULINE),
         				createNoun("lesson","gwers",Gender.FEMININE),
         				createNoun("reading","darllen",Gender.FEMININE),
