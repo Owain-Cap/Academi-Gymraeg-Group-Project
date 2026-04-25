@@ -39,7 +39,7 @@ controller/    -> Web layer (HTTP endpoints)
 
 
 ## screen wireframes
-// will add once checked
+<img width="2600" height="1142" alt="image" src="https://github.com/user-attachments/assets/f81b900f-fe6b-4be4-ad39-e2fe159810f9" />
 
 
 ## User Model
