@@ -35,7 +35,7 @@ controller/    -> Web layer (HTTP endpoints)
 
 
 ## sequence diagram
-// will add once confirmed its up to date
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/984f2055-181b-4eff-93a7-a8bde49a863e" />
 
 
 ## screen wireframes
