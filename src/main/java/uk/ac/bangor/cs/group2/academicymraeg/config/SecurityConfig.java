@@ -24,7 +24,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
 
                 // Public resources (no authentication required)
-                .requestMatchers("/css/**", "/images/**", "/js/**", "/styles/**").permitAll()
+            	.requestMatchers("/css/**", "/images/**", "/js/**", "/styles/**", "/error", "/favicon.ico").permitAll()
+
 
              // STUDENT access (all logged-in users)
                 .requestMatchers("/tests/**", "/my-tests/**")
@@ -52,8 +53,7 @@ public class SecurityConfig {
 
             // Enable logout support
             .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout")
-                .permitAll()
+            	.logoutSuccessUrl("/login")
             );
 
         return http.build();
