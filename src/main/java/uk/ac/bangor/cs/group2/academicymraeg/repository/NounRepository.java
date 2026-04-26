@@ -26,4 +26,8 @@ public interface NounRepository extends JpaRepository<Noun, Long> {
 	 * @return list of matching nouns
 	 */
 	List<Noun> findByEnglishContainingIgnoreCaseOrWelshContainingIgnoreCase(String english, String welsh);
+	
+	//checks if nouns already exist in the database
+	boolean existsByEnglishIgnoreCase(String english);
+	boolean existsByWelshIgnoreCase(String welsh);
 }

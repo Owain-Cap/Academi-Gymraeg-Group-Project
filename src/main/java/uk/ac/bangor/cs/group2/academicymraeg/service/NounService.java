@@ -48,6 +48,19 @@ public class NounService {
 	}
 
 	/**
+	 * Checks whether a noun already exists in the database by comparing either the
+	 * English word or the Welsh word.
+	 * 
+	 * @param english the English word to check
+	 * @param welsh   the Welsh word to check
+	 * @return true if either the English or Welsh word already exists; false
+	 *         otherwise
+	 */
+	public boolean nounExists(String english, String welsh) {
+		return nounRepository.existsByEnglishIgnoreCase(english) || nounRepository.existsByWelshIgnoreCase(welsh);
+	}
+
+	// save
 	 * saves a noun to the database.
 	 *
 	 * used for both creating and updating nouns.

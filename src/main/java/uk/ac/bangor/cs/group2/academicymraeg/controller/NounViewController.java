@@ -46,23 +46,26 @@ public class NounViewController {
 	 * @return the noun page
 	 */
 
-	//Main Noun Page
+	// Main Noun Page
 	@GetMapping("/nouns")
 	public String getNouns(@RequestParam(required = false) String search, Model model) {
 
-		//this is the search function on the noun page
-	    if (search != null && !search.isEmpty()) {
-	        model.addAttribute("nouns", nounService.searchNouns(search));
-	    } else {
-	        model.addAttribute("nouns", nounService.getAllNouns());
-	    }
+		//remove white space from input if its not empty
+		search = search == null ? null : search.trim();
+		
+		// this is the search function on the noun page
+		if (search != null && !search.isEmpty()) {
+			model.addAttribute("nouns", nounService.searchNouns(search));
+		} else {
+			model.addAttribute("nouns", nounService.getAllNouns());
+		}
 
-	    model.addAttribute("search", search);
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	String username = auth.getName();
-    	model.addAttribute("username", username);
+		model.addAttribute("search", search);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		model.addAttribute("username", username);
 
-	    return "noun";
+		return "noun";
 	}
 
 	/**
@@ -77,12 +80,12 @@ public class NounViewController {
 	@GetMapping("/nouns/edit")
 	public String addNoun(Model model) {
 		Noun noun = new Noun();
-		noun.setCreatedAt(LocalDateTime.now()); 
+		noun.setCreatedAt(LocalDateTime.now());
 		model.addAttribute("noun", noun);
 		model.addAttribute("isNew", true);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	String username = auth.getName();
-    	model.addAttribute("username", username);
+		String username = auth.getName();
+		model.addAttribute("username", username);
 		return "editNoun";
 	}
 
@@ -103,8 +106,8 @@ public class NounViewController {
 		model.addAttribute("noun", noun);
 		model.addAttribute("isNew", false);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	String username = auth.getName();
-    	model.addAttribute("username", username);
+		String username = auth.getName();
+		model.addAttribute("username", username);
 		return "editNoun";
 	}
 
@@ -128,21 +131,31 @@ public class NounViewController {
 	
 	//this saves the Noun
 	@PostMapping("/nouns/save")
-	public String saveNoun(@ModelAttribute Noun noun, Authentication authentication,Model model) {
+	public String saveNoun(@ModelAttribute Noun noun, Authentication authentication, Model model) {
+
+		//remove white space from user input
+		noun.setEnglish(noun.getEnglish().trim());
+		noun.setWelsh(noun.getWelsh().trim());
 		
 		if (!nounService.isValid(noun.getEnglish()) || !nounService.isValid(noun.getWelsh())) {
-	        
-			
-	        model.addAttribute("error", "Nouns must only contain letters");
-	        model.addAttribute("noun", noun);
-	        model.addAttribute("isNew", noun.getNounId() == null);
-	        return "editNoun";
-	    }
-		
+			model.addAttribute("nounError", "Nouns must only contain letters");
+			model.addAttribute("noun", noun);
+			model.addAttribute("isNew", noun.getNounId() == null);
+			return "editNoun";
+		}
+
+		//check the noun isn't already in the database
+		if (noun.getNounId() == null && nounService.nounExists(noun.getEnglish(), noun.getWelsh())) {
+			model.addAttribute("nounError", "This word is already saved");
+			model.addAttribute("noun", noun);
+			model.addAttribute("isNew", true);
+			return "editNoun";
+		}
+
 		noun.setCreatedAt(LocalDateTime.now());
-		noun.setCreatedByUsername(authentication.getName()); //get the username of the person adding the noun
+		noun.setCreatedByUsername(authentication.getName()); // get the username of the person adding the noun
 		nounService.saveNoun(noun);
-		
+
 		return "redirect:/nouns";
 	}
 	
@@ -154,7 +167,7 @@ public class NounViewController {
 	 * @return redirect to the noun page
 	 */
 
-	//deletes the noun
+	// deletes the noun
 	@PostMapping("/nouns/delete/{nounId}")
 	public String deleteNoun(@PathVariable Long nounId) {
 		nounService.deleteNoun(nounId);

@@ -2,6 +2,7 @@ package uk.ac.bangor.cs.group2.academicymraeg.models;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,7 +23,11 @@ public class Noun {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long nounId;
+	
+	@Column(unique = true, nullable = false)
 	private String english;
+	
+	@Column(unique = true, nullable = false)
 	private String welsh;
 
 	/**

@@ -1,6 +1,5 @@
 package uk.ac.bangor.cs.group2.academicymraeg.controller;
 
-import java.net.http.HttpResponse;
 import java.security.Principal;
 import java.util.List;
 
