@@ -1,15 +1,14 @@
-package uk.ac.bangor.cs.group2.academicymraeg;
+package uk.ac.bangor.cs.group2.academicymraeg.config;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
-import uk.ac.bangor.cs.group2.academicymraeg.config.NounInitialiser;
 import uk.ac.bangor.cs.group2.academicymraeg.repository.NounRepository;
 
 @SpringBootTest
-class NounSaving {
+class NounInitialiserTest {
 
 	@Autowired
 	private NounInitialiser nounInitialiser;

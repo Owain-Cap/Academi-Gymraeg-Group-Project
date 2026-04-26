@@ -1,4 +1,4 @@
-package uk.ac.bangor.cs.group2.academicymraeg;
+package uk.ac.bangor.cs.group2.academicymraeg.service;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import uk.ac.bangor.cs.group2.academicymraeg.service.NounService;
 
 @SpringBootTest
-class NounWordTest {
+class NounServiceTest {
 
 	@Autowired
     private NounService nounService;

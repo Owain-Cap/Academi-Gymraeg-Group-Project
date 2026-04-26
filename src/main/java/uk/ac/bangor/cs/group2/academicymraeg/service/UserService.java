@@ -11,9 +11,9 @@ import uk.ac.bangor.cs.group2.academicymraeg.models.User;
 import uk.ac.bangor.cs.group2.academicymraeg.repository.UserRepository;
 
 /**
- * Class for the System Administrators
- * Handles the core logic and operations for Users (Create, Read, Update, Delete).
- * It uses the UserRepository to save or fetch data from the database.
+ * Service class for managing system users.
+ * Handles the core business logic and CRUD operations for the User entity.
+ It uses the UserRepository to save or fetch data from the database.
  * Uses pre-built Spring Data JPA methods
  */
 @Service
@@ -21,7 +21,9 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    // Password encoder used to securely hash user passwords
+    /**
+     * Password encoder used to securely hash user passwords before storing them.
+     */
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -30,7 +32,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // Create or Update a user
+    /**
+     * Creates a new user or updates an existing one.
+     * Evaluates the given users password to ensure it is encoded properly in BCrypt format.
+     * Also enforces default values for role flags (IsInstructor, IsAdmin) to avoid null references.
+     *
+     * @param user The User entity to be saved or updated.
+     * @return The persisted User entity.
+     */
     public User saveUser(User user) {
 
         // Ensure password is encoded before saving
@@ -52,27 +61,50 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // Read - find user by ID
+    /**
+     * Retrieves a user by their unique database ID.
+     *
+     * @param id The unique identifier of the user.
+     * @return An Optional containing the User if found, otherwise empty.
+     */
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
-    // Read - find user by Username
+    /**
+     * Retrieves a user by their unique username.
+     *
+     * @param username The exact username to query.
+     * @return An Optional containing the User if found, otherwise empty.
+     */
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    // Read - get all users
+    /**
+     * Retrieves a complete list of all users registered in the system.
+     *
+     * @return A List of all stored User entities.
+     */
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // Delete a user by ID
+    /**
+     * Deletes a user from the system by their unique database ID.
+     *
+     * @param id The unique identifier of the user to remove.
+     */
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
 
-    // Check if user exists
+    /**
+     * Checks whether a user with the specified ID currently exists in the database.
+     *
+     * @param id The unique identifier to check.
+     * @return True if the user exists, false otherwise.
+     */
     public boolean userExists(Long id) {
         return userRepository.existsById(id);
     }
