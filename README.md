@@ -27,23 +27,23 @@ controller/    -> Web layer (HTTP endpoints)
 
 
 ## File Structure
-<img width="1163" height="1353" alt="image" src="https://github.com/user-attachments/assets/515fedef-f0ad-41e5-8b6b-13adcd540d99" />
+<img width="900" height="1000" alt="image" src="https://github.com/user-attachments/assets/515fedef-f0ad-41e5-8b6b-13adcd540d99" />
 
 
 ## class diagram overview
-<img width="1278" height="1464" alt="image" src="https://github.com/user-attachments/assets/f119e5e1-c8fc-4be0-9078-1beb92e0fb9c" />
+<img width="900" height="950" alt="image" src="https://github.com/user-attachments/assets/f119e5e1-c8fc-4be0-9078-1beb92e0fb9c" />
 
 
 ## sequence diagram
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/984f2055-181b-4eff-93a7-a8bde49a863e" />
+<img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/984f2055-181b-4eff-93a7-a8bde49a863e" />
 
 
 ## screen wireframes
-<img width="2600" height="1142" alt="image" src="https://github.com/user-attachments/assets/f81b900f-fe6b-4be4-ad39-e2fe159810f9" />
+<img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/f81b900f-fe6b-4be4-ad39-e2fe159810f9" />
 
 
 ## User Model
-<img width="1483" height="1313" alt="image" src="https://github.com/user-attachments/assets/65f2365e-a7f2-4d5b-af83-74b5a77fab26" />
+<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/65f2365e-a7f2-4d5b-af83-74b5a77fab26" />
 
 
 Defined in:
@@ -76,7 +76,7 @@ Responsibilities:
 
 
 ## Nouns
-<img width="1136" height="868" alt="image" src="https://github.com/user-attachments/assets/7532658f-30bd-416f-b0ee-a45445c9eae2" />
+<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/7532658f-30bd-416f-b0ee-a45445c9eae2" />
 
 Model:
 models/Noun.java
@@ -109,7 +109,7 @@ config/NounInitialiser.java
 
 
 ## Test Logic
-<img width="1887" height="1416" alt="image" src="https://github.com/user-attachments/assets/2535d124-f547-492a-8c0c-ff32c5d0ddeb" />
+<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/2535d124-f547-492a-8c0c-ff32c5d0ddeb" />
 
 
 Entities:
@@ -221,7 +221,7 @@ Key tables:
 - test (test records per user)
 - test_questions (questions belonging to a test)
 
-<img width="1485" height="1080" alt="image" src="https://github.com/user-attachments/assets/dd569c79-aa4a-4063-9827-27caf1bb08af" />
+<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/dd569c79-aa4a-4063-9827-27caf1bb08af" />
 
 
 ## Creating Users (Important)
