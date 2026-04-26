@@ -1,6 +1,5 @@
-package uk.ac.bangor.cs.group2.academicymraeg;
+package uk.ac.bangor.cs.group2.academicymraeg.controller;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -16,31 +15,37 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class NounViewTest {
+class NounViewControllerTest {
 
 	@Autowired
-	//This acts like HHTP request, instead of starting the server it pretends it did
+	// This acts like a HTTP request, instead of starting the server it pretends it did
 	private MockMvc mockMvc;
 
 	@Test
 	void contextLoads() {
+		// checks that the Spring context loads correctly
 	}
 
 	@Test
-	@WithMockUser(username = "SYSTEMTEST") 
+	@WithMockUser(username = "SYSTEMTEST", roles = "SYSTEM_ADMIN")
 	void testSaveValidNoun() throws Exception {
 		// Submitting a valid noun should redirect to /nouns
-		mockMvc.perform(post("/nouns/save").param("english", "school").param("welsh", "ysgol")
-				.with(csrf())).andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/nouns"));
+		mockMvc.perform(post("/nouns/save")
+				.param("english", "school")
+				.param("welsh", "ysgol"))
+				.andExpect(status().is3xxRedirection()) // expects redirect
+				.andExpect(redirectedUrl("/nouns")); // redirected to noun list page
 	}
 
 	@Test
-	@WithMockUser(username = "SYSTEMTEST")
+	@WithMockUser(username = "SYSTEMTEST", roles = "SYSTEM_ADMIN")
 	void testSaveInvalidNoun() throws Exception {
-		// submitting an invalid noun with numbers should redisplay form with error
-		mockMvc.perform(post("/nouns/save").param("english", "school123").param("welsh", "ysgol").with(csrf()))
+		// Submitting an invalid noun (contains numbers) should redisplay form with error
+		mockMvc.perform(post("/nouns/save")
+				.param("english", "school123")
+				.param("welsh", "ysgol"))
 				.andExpect(status().isOk()) // form displayed again
 				.andExpect(model().attributeExists("error")) // shows error message
-				.andExpect(view().name("editNoun")); // returns to the edit noun 
+				.andExpect(view().name("editNoun")); // returns to edit noun page
 	}
 }
