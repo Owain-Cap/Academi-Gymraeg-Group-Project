@@ -61,7 +61,7 @@ public class NounService {
 	}
 
 	// save
-	 * saves a noun to the database.
+	 /** saves a noun to the database.
 	 *
 	 * used for both creating and updating nouns.
 	 *
