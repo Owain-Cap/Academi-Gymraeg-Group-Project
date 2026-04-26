@@ -18,8 +18,36 @@ import uk.ac.bangor.cs.group2.academicymraeg.repository.NounRepository;
 import uk.ac.bangor.cs.group2.academicymraeg.repository.TestQuestionRepository;
 import uk.ac.bangor.cs.group2.academicymraeg.repository.TestRepository;
 
+
+/**
+ * Service responsible for generating and submitting tests.
+ * 
+ * <p>This service handles the full lifecycle of a test including:
+ * <ul>
+ *     <li>Generating new tests with randomised questions</li>
+ *     <li>Resuming existing in-progress tests</li>
+ *     <li>Automatically submitting expired tests</li>
+ *     <li>Validating and marking submitted answers</li>
+ * </ul>
+ * 
+ * <p>Tests are generated using a random selection of nouns from the database,
+ * with a fixed distribution of question types (English, Welsh, and Gender).
+ * 
+ * <p>Answer evaluation includes support for Welsh circumflexes, allowing answers
+ * to be marked correct even if accents are missing, while optionally flagging
+ * this to the user.
+ */
 @Service
 public class TestGeneratorService {
+	
+    /**
+     * Constructs the TestGeneratorService with required repositories.
+     *
+     * @param nounRepository repository for accessing noun data
+     * @param testRepository repository for storing and retrieving tests
+     * @param testQuestionRepository repository for storing and retrieving test questions
+     */
+	
 	private NounRepository nounRepository;
 	private TestRepository testRepository;
 	private TestQuestionRepository testQuestionRepository;
@@ -36,15 +64,36 @@ public class TestGeneratorService {
 		this.testQuestionRepository = testQuestionRepository;
 	}
 
+    /**
+     * Generates a new test for a user, or resumes an existing one.
+     *
+     * If the user already has an in-progress test:
+     * 		If the test is still valid (not expired), it is returned
+     * 		If the test has expired, it is automatically submitted and a new test is generated
+     * 
+     *
+     * A new test consists of 20 randomly selected nouns, with: 7 English-to-Welsh questions
+     * 7 Welsh-to-English questions, 6 gender identification questions
+     *
+     * @param username the user requesting the test
+     * @return a new or existing in-progress Test
+     * @throws IllegalStateException if there are insufficient valid nouns available
+     */
 	@Transactional
 	public Test generateTestForUser(String username) {
 		//check for tests in progress
 		var existingTest = testRepository.findByUsernameAndStatus(username, Test.TestStatus.IN_PROGRESS);
 		// resume existing test if one exists rather than generating new.
 		if (existingTest.isPresent()) {
-			return existingTest.get();
-		}
-		
+			Test test = existingTest.get();
+			
+			if (LocalDateTime.now().isBefore(test.getExpiresAt())) {
+	            return test; // if test is still valid return it
+	        } else {
+	        	//if test is expired autosubmit it
+	        	getTestById(test.getTestId());
+	        }
+	    }
 		
 		List<Noun> nouns = nounRepository.findAll();
 		List<Noun> validNouns = new ArrayList<>();
@@ -92,8 +141,6 @@ public class TestGeneratorService {
 		Collections.shuffle(questionList);
 
 
-		
-
 		// save test in db 
 		//set 30 min timer and in progress status
 		LocalDateTime testStarted = LocalDateTime.now();
@@ -131,7 +178,17 @@ public class TestGeneratorService {
 		}
 		return savedTest;
 	}
-
+	
+    /**
+     * Retrieves a test by its ID.
+     *
+     * If the test is still marked as in-progress but has exceeded its expiry time,
+     * it is automatically submitted. Any unanswered questions are marked as skipped.
+     *
+     * @param testId the ID of the test
+     * @return the Test object
+     * @throws IllegalArgumentException if the test does not exist
+     */
 	public Test getTestById(long testId) {
 		Test test = testRepository.findById(testId).orElseThrow(() -> new IllegalArgumentException("Test not found"));
 		
@@ -156,11 +213,32 @@ public class TestGeneratorService {
 		return test;
 	}
 	
-
+    /**
+    * Retrieves all questions associated with a given test, ordered by position.
+    *
+    * @param test the test whose questions are to be retrieved
+    * @return list of TestQuestions in order
+    */
 	public List<TestQuestions> getQuestionsForTest(Test test) {
 		return testQuestionRepository.findByTestOrderByPositionAsc(test);
 	}
 
+	
+    /**
+     * Submits a completed test and marks the answers.
+     *
+     * This method:
+     * 		Validates all submitted answers
+     *     	Marks each question as correct, incorrect, or skipped
+     *     	Applies diacritic-aware comparison for translation questions
+     *     	Calculates and stores the final score
+     *     	Updates the test status to SUBMITTED
+     *
+     * @param testId the ID of the test being submitted
+     * @param answers list of user-submitted answers
+     * @throws IllegalStateException if the test has already been submitted
+     * @throws IllegalArgumentException if validation fails
+     */
 	@Transactional
 	public void submitTest(long testId, List<String> answers) {
 		Test test = getTestById(testId);
@@ -223,6 +301,18 @@ public class TestGeneratorService {
 
 	}
 
+    /**
+     * Validates the list of submitted answers against the test questions.
+     *
+     *All questions are answered or explicitly skipped
+     *Answers are not empty
+     *Answers meet format and length requirements
+     *Gender answers are restricted to valid values
+     *
+     * @param questions the list of test questions
+     * @param answers the list of submitted answers
+     * @throws IllegalArgumentException if any validation rule is violated
+     */
 	private void validateSubmittedAnswers(List<TestQuestions> questions, List<String> answers) {
 		// make sure answers aren't empty or are intentional skipped
 		if (answers == null || answers.size() < questions.size()) {
@@ -270,6 +360,20 @@ public class TestGeneratorService {
 		}
 	}
 	
+    /**
+     * Compares a user’s answer to the correct answer.
+     *
+     * Checks for:
+     * 		Exact match (including diacritics)
+     * 		Match ignoring diacritics
+     * 		Incorrect answer
+     * 		Skipped answer
+     *
+     * @param userAnswer the answer provided by the user
+     * @param correctAnswer the correct answer
+     * @param questionType the type of question being evaluated
+     * @return the result of the comparison
+     */
 	private AnswerCheckResult checkAnswer(String userAnswer, String correctAnswer, Question.QuestionType questionType) {
 		if (userAnswer == null || correctAnswer == null || userAnswer.isBlank()) {
 			return AnswerCheckResult.INCORRECT;
@@ -306,6 +410,13 @@ public class TestGeneratorService {
 
 	}
 
+    /**
+     * Constructs a question blueprint based on a noun and question type.
+     *
+     * @param noun the noun used in the question
+     * @param questionType the type of question to generate
+     * @return a QuestionBlueprint containing the question data
+     */
 	private QuestionBlueprint buildQuestionList(Noun noun,  Question.QuestionType questionType) {
 		switch (questionType) {
 		case ENGLISH:
@@ -325,15 +436,27 @@ public class TestGeneratorService {
 		}
 	}
 
-
+	
 	private record QuestionBlueprint(Question.QuestionType questionType, String questionText, String correctAnswer) {
 	}
 	
+    /**
+     * Checks whether a user currently has an active (in-progress) test.
+     *
+     * @param username the user to check
+     * @return true if an in-progress test exists, false otherwise
+     */
 	public boolean hasActiveTest(String username) {
 		//check if a user has an in progress test active
 		return testRepository.existsByUsernameAndStatus(username, Test.TestStatus.IN_PROGRESS);
 	}
 	
+    /**
+     * Retrieves the active (in-progress) test for a user, if one exists.
+     *
+     * @param username the user whose test is being retrieved
+     * @return the active Test, or null if none exists
+     */
 	public Test getActiveTest(String username) {
 		//get in progress tests for the user
 		return testRepository.findByUsernameAndStatus(username, Test.TestStatus.IN_PROGRESS).orElse(null);
