@@ -96,6 +96,10 @@ public class Noun {
 	 *
 	 * @param nounId the noun ID
 	 */
+	public void setNounId(Long nounId) {
+	    this.nounId = nounId;
+	}
+	
 	/**
 	 * gets the english version of the noun.
 	 *
